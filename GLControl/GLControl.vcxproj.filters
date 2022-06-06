@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Context">
+      <UniqueIdentifier>{8893f709-3453-490b-a2bf-84a07c858596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GL">
+      <UniqueIdentifier>{36420f88-379c-4ffc-85af-65d237fba1d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Reader">
+      <UniqueIdentifier>{8a82d332-8061-4a43-a962-31cc4ef29fe5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib">
+      <UniqueIdentifier>{dd07f41e-35fb-4dd2-b130-ff82fc8b61d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{24bde217-86e1-47ce-89ac-f285a0b89601}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Palette">
+      <UniqueIdentifier>{f5c01bb3-3b40-4b26-a80c-ea239fdb37a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{9b2d3e86-df24-409e-abb7-d6acd34c6e24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\XML">
+      <UniqueIdentifier>{5755c300-bd07-46cb-bfcd-d1c1e32ac702}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Screen.h">
+      <Filter>Context</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlContext.h">
+      <Filter>Context</Filter>
+    </ClInclude>
+    <ClInclude Include="ContextContainer.h">
+      <Filter>Context</Filter>
+    </ClInclude>
+    <ClInclude Include="DataContextEngine.h">
+      <Filter>Context</Filter>
+    </ClInclude>
+    <ClInclude Include="ContextInterface.h">
+      <Filter>Context</Filter>
+    </ClInclude>
+    <ClInclude Include="Bridge.h">
+      <Filter>Context</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLControl.h">
+      <Filter>Context</Filter>
+    </ClInclude>
+    <ClInclude Include="BufferBounder.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="BufferOpenGL.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexBuffer.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="IndirectBuffer.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderLoader.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderProgram.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureBuffer.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="CConfig.h">
+      <Filter>Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="lib.h">
+      <Filter>Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Palette.h">
+      <Filter>Palette</Filter>
+    </ClInclude>
+    <ClInclude Include="Render.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderMegdr.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderOrbitTemperature.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneRender.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneRenderBase.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Interpolator.h">
+      <Filter>Reader</Filter>
+    </ClInclude>
+    <ClInclude Include="OrbitReader.h">
+      <Filter>Reader</Filter>
+    </ClInclude>
+    <ClInclude Include="SLevel.h">
+      <Filter>Reader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\XML\tinystr.h">
+      <Filter>Lib\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\XML\tinyxml.h">
+      <Filter>Lib\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\XML\XMLreader.h">
+      <Filter>Lib\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="MegdrReader.h">
+      <Filter>Reader</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Screen.cpp">
+      <Filter>Context</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlContext.cpp">
+      <Filter>Context</Filter>
+    </ClCompile>
+    <ClCompile Include="ContextContainer.cpp">
+      <Filter>Context</Filter>
+    </ClCompile>
+    <ClCompile Include="Bridge.cpp">
+      <Filter>Context</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLControl.cpp">
+      <Filter>Context</Filter>
+    </ClCompile>
+    <ClCompile Include="BufferOpenGL.cpp">
+      <Filter>GL</Filter>
+    </ClCompile>
+    <ClCompile Include="IndexBuffer.cpp">
+      <Filter>GL</Filter>
+    </ClCompile>
+    <ClCompile Include="IndirectBuffer.cpp">
+      <Filter>GL</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderLoader.cpp">
+      <Filter>GL</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderProgram.cpp">
+      <Filter>GL</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureBuffer.cpp">
+      <Filter>GL</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBuffer.cpp">
+      <Filter>GL</Filter>
+    </ClCompile>
+    <ClCompile Include="lib.cpp">
+      <Filter>Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Palette.cpp">
+      <Filter>Palette</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderMegdr.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderOrbitTemperature.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneRender.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneRenderBase.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="OrbitReader.cpp">
+      <Filter>Reader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Include\XML\tinystr.cpp">
+      <Filter>Lib\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Include\XML\tinyxml.cpp">
+      <Filter>Lib\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Include\XML\tinyxmlerror.cpp">
+      <Filter>Lib\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Include\XML\tinyxmlparser.cpp">
+      <Filter>Lib\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Include\XML\XMLreader.cpp">
+      <Filter>Lib\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="Interpolator.cpp">
+      <Filter>Reader</Filter>
+    </ClCompile>
+    <ClCompile Include="MegdrReader.cpp">
+      <Filter>Reader</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader\megdr_fragment.shader">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\megdr_vertex.shader">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\orbittemperature_fragment.shader">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\orbittemperature_vertex.shader">
+      <Filter>Shader</Filter>
+    </None>
+  </ItemGroup>
+</Project>
