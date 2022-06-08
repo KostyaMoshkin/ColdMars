@@ -44,6 +44,8 @@ namespace GL {
 		GLfloat m_fViewAspect = 1.0;
 
 		unsigned m_nFileId = 4;
+		unsigned m_nFirstFile = 0;
+		unsigned m_nLastFile = 2;
 
 		unsigned m_nIndexCount = 0;
 
@@ -66,12 +68,18 @@ namespace GL {
 		void draw() override;
 		void setViewAngle(lib::Matrix4& mPerspective_) override;
 		void lookAt(lib::Matrix4& mView_) override;
-		virtual void rotate(float fAngle_) override;
+		virtual void rotate(lib::Matrix4& mRotate_) override;
 		void bound() override;
 		void unbound() override;
 
 		// Унаследовано через Render
 		virtual bool keyPress(GL::EKeyPress nKey_) override;
+
+	public:
+		void setFileRange(int nFirstFile_, int nLasetFile_);
+
+		const orbit::OrbitReaderPtr getReader();
+
 	};
 }
 

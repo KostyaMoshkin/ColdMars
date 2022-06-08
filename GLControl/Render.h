@@ -44,7 +44,7 @@
         public:
             virtual bool init() = 0;
             virtual void lookAt(lib::Matrix4& mView_) = 0;
-            virtual void rotate(float fAngle_) = 0;
+            virtual void rotate(lib::Matrix4& mRotate_) = 0;
             virtual void setViewAngle(lib::Matrix4& mPerspective_) = 0;
             virtual void draw() = 0;
 

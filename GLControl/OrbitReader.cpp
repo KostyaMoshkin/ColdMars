@@ -66,56 +66,61 @@ namespace orbit
 		return !bError;
 	}
 
-	void OrbitReader::setFileIndex(unsigned nIndex_, std::vector<SPairLevel>& vLevelData_)
+	void OrbitReader::setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_)
 	{
-		m_nFileId = nIndex_;
-
-		std::vector<Snpt> vNpt = readFile(m_vFileList[m_nFileId].c_str());
 		vLevelData_.clear();
 
-		for (unsigned i = 0; i < vNpt.size() - 1; ++i)
+		for (unsigned f = nFirstIndex_; f < nLastIndex_ && f < m_vFileList.size(); ++f)
 		{
-			if (std::abs(vNpt[i + 0].fLatitude - vNpt[i + 1].fLatitude) > m_fAngleContinues || std::abs(vNpt[i + 0].fLongitude - vNpt[i + 1].fLongitude > m_fAngleContinues))
-				continue;
+			std::vector<Snpt> vNpt = readFile(m_vFileList[f].c_str());
 
-			Interpolator interpolator1(vNpt[i + 0].vLevel.data(), vNpt[i + 0].nLevelCount);
-			float fAltitudeMin1 = interpolator1.getAltitudeMin();
-			float fAltitudeMax1 = interpolator1.getAltitudeMax();
+			if (f == nFirstIndex_)
+				m_Snpt = vNpt[0];
 
-			Interpolator interpolator2(vNpt[i + 1].vLevel.data(), vNpt[i + 1].nLevelCount);
-			float fAltitudeMin2 = interpolator2.getAltitudeMin();
-			float fAltitudeMax2 = interpolator2.getAltitudeMax();
-
-			float fAltitudeMinMax = std::max(fAltitudeMin1, fAltitudeMin2);
-			float fAltitudeMaxMin = std::min(std::min(fAltitudeMax1, fAltitudeMax2), (float)m_nAltitudeMAX);
-
-			float fAltitudeStep = (fAltitudeMaxMin - fAltitudeMinMax) / m_nInterpolateCount;
-
-			std::vector<float> vTemperature1;
-			std::vector<float> vTemperature2;
-
-			interpolator1.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, m_nInterpolateCount, vTemperature1);
-			interpolator2.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, m_nInterpolateCount, vTemperature2);
-
-			SPairLevel vertex;
-			vertex.fLatitude_begin	= glm::radians(vNpt[i + 0].fLatitude);
-			vertex.fLatitude_end	= glm::radians(vNpt[i + 1].fLatitude);
-			vertex.fLongitude_begin = glm::radians(vNpt[i + 0].fLongitude);
-			vertex.fLongitude_end	= glm::radians(vNpt[i + 1].fLongitude);
-			vertex.fDistane_begin	= vNpt[i + 0].vLevel[0].fAltitude * 1000;
-			vertex.fDistane_end		= vNpt[i + 1].vLevel[0].fAltitude * 1000;
-
-			vertex.fAltitudeMinMax	= fAltitudeMinMax * 1000;
-			vertex.fAltitudeStep	= fAltitudeStep * 1000;
-
-			vertex.vTemperature.resize(vTemperature1.size() + vTemperature2.size());
-			for (int k = 0; k < vTemperature1.size(); ++k)
+			for (unsigned i = 0; i < vNpt.size() - 1; ++i)
 			{
-				vertex.vTemperature[2 * k + 0] = vTemperature1[k];
-				vertex.vTemperature[2 * k + 1] = vTemperature2[k];
-			}
+				if (std::abs(vNpt[i + 0].fLatitude - vNpt[i + 1].fLatitude) > m_fAngleContinues || std::abs(vNpt[i + 0].fLongitude - vNpt[i + 1].fLongitude > m_fAngleContinues))
+					continue;
 
-			vLevelData_.push_back(std::move(vertex));
+				Interpolator interpolator1(vNpt[i + 0].vLevel.data(), vNpt[i + 0].nLevelCount);
+				float fAltitudeMin1 = interpolator1.getAltitudeMin();
+				float fAltitudeMax1 = interpolator1.getAltitudeMax();
+
+				Interpolator interpolator2(vNpt[i + 1].vLevel.data(), vNpt[i + 1].nLevelCount);
+				float fAltitudeMin2 = interpolator2.getAltitudeMin();
+				float fAltitudeMax2 = interpolator2.getAltitudeMax();
+
+				float fAltitudeMinMax = std::max(fAltitudeMin1, fAltitudeMin2);
+				float fAltitudeMaxMin = std::min(std::min(fAltitudeMax1, fAltitudeMax2), (float)m_nAltitudeMAX);
+
+				float fAltitudeStep = (fAltitudeMaxMin - fAltitudeMinMax) / m_nInterpolateCount;
+
+				std::vector<float> vTemperature1;
+				std::vector<float> vTemperature2;
+
+				interpolator1.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, m_nInterpolateCount, vTemperature1);
+				interpolator2.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, m_nInterpolateCount, vTemperature2);
+
+				SPairLevel vertex;
+				vertex.fLatitude_begin = glm::radians(vNpt[i + 0].fLatitude);
+				vertex.fLatitude_end = glm::radians(vNpt[i + 1].fLatitude);
+				vertex.fLongitude_begin = glm::radians(vNpt[i + 0].fLongitude);
+				vertex.fLongitude_end = glm::radians(vNpt[i + 1].fLongitude);
+				vertex.fDistane_begin = vNpt[i + 0].vLevel[0].fAltitude * 1000;
+				vertex.fDistane_end = vNpt[i + 1].vLevel[0].fAltitude * 1000;
+
+				vertex.fAltitudeMinMax = fAltitudeMinMax * 1000;
+				vertex.fAltitudeStep = fAltitudeStep * 1000;
+
+				vertex.vTemperature.resize(vTemperature1.size() + vTemperature2.size());
+				for (int k = 0; k < vTemperature1.size(); ++k)
+				{
+					vertex.vTemperature[2 * k + 0] = vTemperature1[k];
+					vertex.vTemperature[2 * k + 1] = vTemperature2[k];
+				}
+
+				vLevelData_.push_back(std::move(vertex));
+			}
 		}
 	}
 
@@ -133,9 +138,28 @@ namespace orbit
 	{
 		return m_vvNpt.size();
 	}
-
-	std::vector<Snpt> OrbitReader::operator[](unsigned nIndex_)
+	unsigned OrbitReader::getSpectrumNumb()
 	{
-		return std::move(readFile(m_vFileList[nIndex_].c_str()));
+		return m_Snpt.nSpectrumNumb;
+	}
+
+	unsigned OrbitReader::getInterferogramID()
+	{
+		return m_Snpt.nInterferogramID;
+	}
+
+	float OrbitReader::getJulianDate()
+	{
+		return m_Snpt.fJulianDate;
+	}
+
+	float OrbitReader::getLocalTime()
+	{
+		return m_Snpt.fLocalTime;
+	}
+
+	std::string OrbitReader::getUTC()
+	{
+		return m_Snpt.sUTC;
 	}
 }

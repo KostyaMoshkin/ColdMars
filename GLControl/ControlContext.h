@@ -18,6 +18,9 @@ namespace GL
 
         int m_nVersionSupported = -1;
 
+        int m_nWidth = 0;
+        int m_nHeight = 0;
+
         long m_nAccessCounter = 0;
 
     public:
@@ -29,6 +32,7 @@ namespace GL
         void releaseContext();
 
     public:
+        bool begin_draw();
         bool begin_draw(int width_, int height_);
         void end_draw();
 

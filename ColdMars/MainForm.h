@@ -15,28 +15,11 @@ namespace ColdMars {
 	public ref class MainForm : public System::Windows::Forms::Form
 	{
 	public:
-		MainForm(void)
-		{
-			InitializeComponent();
-			//
-			//TODO: добавьте код конструктора
-			//
-		}
+		MainForm(void);
 
 	protected:
-		/// <summary>
-		/// Освободить все используемые ресурсы.
-		/// </summary>
-		~MainForm()
-		{
-			if (components)
-			{
-				delete components;
-			}
-		}
-	private: System::Windows::Forms::Panel^ panel1;
-	protected:
-	private: System::Windows::Forms::Panel^ panel2;
+		~MainForm();
+
 	private: GLControl::OpenGLControl^ openGLControl1;
 
 	private:
@@ -52,44 +35,23 @@ namespace ColdMars {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->panel1 = (gcnew System::Windows::Forms::Panel());
-			this->panel2 = (gcnew System::Windows::Forms::Panel());
-			this->openGLControl1 = (gcnew GLControl::OpenGLControl());
+			//this->openGLControl1 = (gcnew GLControl::OpenGLControl());
 			this->SuspendLayout();
-			// 
-			// panel1
-			// 
-			this->panel1->Dock = System::Windows::Forms::DockStyle::Right;
-			this->panel1->Location = System::Drawing::Point(432, 0);
-			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(148, 313);
-			this->panel1->TabIndex = 0;
-			// 
-			// panel2
-			// 
-			this->panel2->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->panel2->Dock = System::Windows::Forms::DockStyle::Right;
-			this->panel2->Location = System::Drawing::Point(429, 0);
-			this->panel2->Name = L"panel2";
-			this->panel2->Size = System::Drawing::Size(3, 313);
-			this->panel2->TabIndex = 1;
 			// 
 			// openGLControl1
 			// 
 			this->openGLControl1->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->openGLControl1->Location = System::Drawing::Point(0, 0);
 			this->openGLControl1->Name = L"openGLControl1";
-			this->openGLControl1->Size = System::Drawing::Size(429, 313);
+			this->openGLControl1->Size = System::Drawing::Size(1256, 923);
 			this->openGLControl1->TabIndex = 2;
 			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(580, 313);
+			this->ClientSize = System::Drawing::Size(1381, 608);
 			this->Controls->Add(this->openGLControl1);
-			this->Controls->Add(this->panel2);
-			this->Controls->Add(this->panel1);
 			this->Name = L"MainForm";
 			this->Text = L"MainForm";
 			this->ResumeLayout(false);

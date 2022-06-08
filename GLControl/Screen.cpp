@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Screen.h"
 
+#include  <utility>
+
 namespace GL
 {
 
@@ -22,6 +24,10 @@ namespace GL
         this->HandleCreated += gcnew System::EventHandler(this, &Screen::OnHandleCreated);
         this->HandleDestroyed += gcnew System::EventHandler(this, &Screen::OnHandleDestroyed);
         this->SizeChanged += gcnew System::EventHandler(this, &Screen::Screen_OnSizeChanged);
+        this->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &Screen::ScreenMouseDown);
+        this->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &Screen::ScreenMouseMove);
+        this->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &Screen::ScreenMouseUp);
+        this->MouseWheel += gcnew System::Windows::Forms::MouseEventHandler(this, &Screen::ScreenMouseWheel);
         this->ResumeLayout(false);
 
     }
@@ -76,7 +82,7 @@ namespace GL
         if (stateChanged)
         {
             m_pDataContextEngine->on_handle_changed();
-            m_pDataContextEngine->draw();
+            //m_pDataContextEngine->draw();
         }
     }
 
@@ -95,12 +101,53 @@ namespace GL
         }
     }
 
+    System::Void Screen::ScreenMouseWheel(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+    {
+        m_pDataContextEngine->on_mouse_scroll(1.0f * e->Delta / 60);
+
+        return System::Void();
+    }
+
     System::IntPtr Screen::get_hWnd()
     {
         if (m_WndState == System::Windows::Forms::FormWindowState::Minimized)
             return System::IntPtr::Zero;
 
         return System::IntPtr(m_hWnd);
+    }
+
+    System::Void Screen::ScreenMouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+    {
+        if (e->Button != System::Windows::Forms::MouseButtons::Left)
+            return;
+
+        m_nMousePositionX = e->X;
+        m_nMousePositionY = e->Y;
+
+        m_pDataContextEngine->on_mouse_down();
+        return System::Void();
+    }
+
+    System::Void Screen::ScreenMouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+    {
+        if (e->Button != System::Windows::Forms::MouseButtons::Left)
+            return;
+
+        m_pDataContextEngine->on_mouse_up();
+        return System::Void();
+    }
+
+    System::Void Screen::ScreenMouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+    {
+        if (e->Button != System::Windows::Forms::MouseButtons::Left)
+            return;
+
+        m_pDataContextEngine->on_mouse_move(m_nMousePositionX - e->X, m_nMousePositionY - e->Y);
+  
+        m_nMousePositionX = e->X;
+        m_nMousePositionY = e->Y;
+        
+        return System::Void();
     }
 
     System::Windows::Forms::Control^ Screen::ViewControl::get()

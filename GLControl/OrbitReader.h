@@ -53,7 +53,7 @@ namespace orbit
 		std::vector < std::vector<Snpt>> m_vvNpt;
 		std::vector<SPairLevel> m_vVertex;
 
-		unsigned m_nFileId = 0;
+		Snpt m_Snpt;
 
 		unsigned m_nAltitudeMAX = 90;   //  km
 		unsigned m_nInterpolateCount = 30;
@@ -74,7 +74,7 @@ namespace orbit
 	public:
 		bool init();
 
-		void setFileIndex(unsigned nIndex_, std::vector<SPairLevel>& vLevelData_);
+		void setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_);
 
 		size_t getRecCount(unsigned nIndex_);
 
@@ -82,9 +82,11 @@ namespace orbit
 
 		size_t getCount();
 
-		std::vector<Snpt> operator[](unsigned index_);
-
-	private:
+		unsigned getSpectrumNumb();
+		unsigned getInterferogramID();
+		float getJulianDate();
+		float getLocalTime();
+		std::string getUTC();
 
 	};
 }

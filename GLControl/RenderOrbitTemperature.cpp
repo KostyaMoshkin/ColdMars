@@ -31,6 +31,12 @@ namespace GL {
 		m_pOrbitTemperatureProgram->setUniformMat4f("m_mView", &mView_[0][0]);
 	}
 
+	void RenderOrbitTemperature::rotate(lib::Matrix4& mRotate_)
+	{
+		BufferBounder<ShaderProgram> programBounder(m_pOrbitTemperatureProgram);
+		m_pOrbitTemperatureProgram->setUniformMat4f("m_mRotate", &mRotate_[0][0]);
+	}
+
 	bool RenderOrbitTemperature::fillPalette()
 	{
 		float fDataMin;
@@ -61,7 +67,7 @@ namespace GL {
 
 	bool RenderOrbitTemperature::fillVertex()
 	{
-		m_pOrbitReader->setFileIndex(m_nFileId, m_vLevelData);
+		m_pOrbitReader->setFileIndex(m_nFirstFile, m_nLastFile, m_vLevelData);
 
 		//-------------------------------------------------------------------------------------------------
 
@@ -159,16 +165,6 @@ namespace GL {
 		return true;
 	}
 
-	void RenderOrbitTemperature::rotate(float fAngle_)
-	{
-		BufferBounder<ShaderProgram> programBounder(m_pOrbitTemperatureProgram);
-
-		lib::Matrix4 rotate = glm::rotate(lib::Matrix4(1.0f), 0.2f, glm::vec3(0, 0, 1));
-		rotate = glm::rotate(rotate, fAngle_, glm::vec3(0, 1, 0));
-
-		m_pOrbitTemperatureProgram->setUniformMat4f("m_mRotate", &rotate[0][0]);
-	}
-
 	void RenderOrbitTemperature::draw()
 	{
 		if (!isVisible())
@@ -217,6 +213,19 @@ namespace GL {
 		}
 
 		return true;
+	}
+
+	void RenderOrbitTemperature::setFileRange(int nFirstFile_, int nLasetFile_)
+	{
+		m_nFirstFile = (unsigned)nFirstFile_;
+		m_nLastFile = (unsigned)nLasetFile_;
+
+		fillVertex();
+	}
+
+	const orbit::OrbitReaderPtr RenderOrbitTemperature::getReader()
+	{
+		return m_pOrbitReader;
 	}
 
 	void RenderOrbitTemperature::bound()

@@ -12,6 +12,8 @@
 
 #include <memory>
 
+#pragma managed(push, off)
+
 #define STB_IMAGE_IMPLEMENTATION
 #include <STB/stb_image.h>
 
@@ -41,16 +43,10 @@ namespace GL {
 		m_pMegdrProgram->setUniformMat4f("m_mView", &mView_[0][0]);
 	}
 
-	void RenderMegdr::rotate(float fAngle_)
+	void RenderMegdr::rotate(lib::Matrix4& mRotate_)
 	{
 		BufferBounder<ShaderProgram> programBounder(m_pMegdrProgram);
-
-		lib::Matrix4 rotate = glm::rotate(lib::Matrix4(1.0f), 0.2f, glm::vec3(0, 0, 1));
-		rotate = glm::rotate(rotate, fAngle_, glm::vec3(0, 1, 0));
-
-		m_pMegdrProgram->setUniformMat4f("m_mRotate", &rotate[0][0]);
-
-
+		m_pMegdrProgram->setUniformMat4f("m_mRotate", &mRotate_[0][0]);
 	}
 
 	bool RenderMegdr::init()
@@ -282,3 +278,5 @@ namespace GL {
 	}
 
 }
+
+#pragma managed(pop)

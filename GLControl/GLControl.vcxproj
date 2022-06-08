@@ -103,7 +103,8 @@
       <NoEntryPoint>false</NoEntryPoint>
     </Link>
     <PostBuildEvent>
-      <Command>copy D:\VisualStudioProjects\GLControl\x64\Release\*.dll D:\VisualStudioProjects\GLControlDemo\x64\Debug\*.*</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -160,7 +161,8 @@
       <NoEntryPoint>false</NoEntryPoint>
     </Link>
     <PostBuildEvent>
-      <Command>copy D:\VisualStudioProjects\GLControl\x64\Release\*.dll D:\VisualStudioProjects\GLControlDemo\x64\Debug\*.*</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

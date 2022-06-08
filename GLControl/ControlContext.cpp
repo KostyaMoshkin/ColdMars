@@ -3,7 +3,7 @@
 #include "ControlContext.h"
 
 #include <GLEW/glew.h>
-#include <GLEW/wglew.h>
+//#include <GLEW/wglew.h>
 
 #include <string>
 
@@ -20,20 +20,32 @@ namespace GL
 
     //---------------------------------------------------------------------------------
 
-    bool ControlContext::begin_draw(int width_, int height_)
+    bool ControlContext::begin_draw()
     {
         if (!makeCurrent())
             return false;
 
-        if (width_ * height_ == 0)
+        if (m_nWidth * m_nHeight == 0)
             return true;
 
-        glViewport(0, 0, width_, height_);
+        int nWindowSize = std::min<int>(m_nWidth, m_nHeight);
+
+        glViewport(0, 0, nWindowSize, nWindowSize);
 
         glClearColor(1.0f, 1.0f, 1.0f, 1);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        glEnable(GL_DEPTH_TEST);
+
         return true;
+    }
+
+    bool ControlContext::begin_draw(int width_, int height_)
+    {
+        m_nWidth = width_;
+        m_nHeight = height_;
+
+        return begin_draw();
     }
 
     void ControlContext::end_draw()
@@ -57,8 +69,8 @@ namespace GL
 
         m_nVersionSupported = GL::ControlContext::getOpenGLVersion();
 
-        //if (!createContext())
-        //    return false;
+        if (!createContext())
+            return false;
 
         return true;
     }
@@ -160,7 +172,7 @@ namespace GL
         try
         {
             glewInitResult = glewInit();
-            wglewInit();
+            //wglewInit();
         }
         catch (...)
         {
@@ -177,7 +189,7 @@ namespace GL
 
         m_rendContext = tempContext;
 
-        //wglMakeCurrent(m_hDC, nullptr);
+        wglMakeCurrent(m_hDC, nullptr);
         glew_created = true;
         return true;
     }
