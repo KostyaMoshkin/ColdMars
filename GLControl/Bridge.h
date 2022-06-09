@@ -50,7 +50,6 @@ namespace GL
 		float m_fMoveX = 0.0f;
 		float m_fMoveY = 0.0f;
 
-
 		lib::Vector3 m_vCamPosition3D;
 		lib::Vector3 m_vCamRight3D;
 
@@ -96,6 +95,8 @@ namespace GL
 		float getJulianDate();
 		float getLocalTime();
 		std::string getUTC();
+
+		void getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_);
 
 	};
 

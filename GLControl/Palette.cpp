@@ -59,10 +59,10 @@ namespace GL {
 		while (!!xmlColor)
 		{
 			unsigned nColor = 0;
-			int nHeight = 0;
+			int nTemperature = 0;
 
-			if (lib::XMLreader::getInt(xmlColor, nColor) && lib::XMLreader::getInt(xmlColor, sHeight(), nHeight))
-				add(nHeight, { nColor >> 16, (nColor & 0x00FF00) >> 8, nColor & 0x0000FF });
+			if (lib::XMLreader::getInt(xmlColor, nColor) && lib::XMLreader::getInt(xmlColor, sTemperature(), nTemperature))
+				add(nTemperature, { nColor >> 16, (nColor & 0x00FF00) >> 8, nColor & 0x0000FF });
 
 			xmlColor = xmlColor->NextSibling(sColor());
 		}
@@ -101,6 +101,19 @@ namespace GL {
 
 		m_nActivePaletteID = iterPalette->first;
 		return fillPalette(m_nActivePaletteID);
+	}
+
+	void Palette::getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_)
+	{
+		vPalette_.resize(m_nPaletteInterpolate);
+
+		for (int i = 0; i < vPalette_.size(); ++i)
+		{
+			vPalette_[i] = get(m_nMinValue + int(1.0 * i / m_nPaletteInterpolate * (m_nMaxValue - m_nMinValue)));
+		}
+
+		nPaletteMin_ = m_nMinValue;
+		nPaletteMax_ = m_nMaxValue;
 	}
 
 	void Palette::arrange()

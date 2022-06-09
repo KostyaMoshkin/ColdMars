@@ -13,6 +13,13 @@ namespace GLControl {
 		this->panelGL->Controls->Add(m_pBridge->getScreen()->ViewControl);
 
 		this->textBoxOrbitQuantity->Text = gcnew System::String(std::to_string(m_nOrbitQuantity).c_str());
+
+		for (int i = 0; i < 10; ++i)
+		{
+			m_vLabel[i] = (gcnew System::Windows::Forms::Label());
+			this->panelLabels->Controls->Add(m_vLabel[i]);
+		}
+
 	}
 
 	OpenGLControl::~OpenGLControl()
@@ -45,6 +52,8 @@ namespace GLControl {
 	System::Void OpenGLControl::OpenGLControl_Resize(System::Object^ sender, System::EventArgs^ e)
 	{
 		runRender();
+
+		this->pictureBox1->Refresh();
 	}
 
 	System::Void OpenGLControl::trackBarOrbit_Scroll(System::Object^ sender, System::EventArgs^ e)
@@ -74,6 +83,48 @@ namespace GLControl {
 	System::Void OpenGLControl::buttonSetOrbit_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		m_pBridge->setFileRange(this->trackBarOrbit->Value, this->trackBarOrbit->Value + m_nOrbitQuantity);
+
+		return System::Void();
+	}
+
+	System::Void OpenGLControl::pictureBox1_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
+	{
+		std::vector<lib::iPoint3D> vPalette;
+
+		int nPaletteMin;
+		int nPaletteMax;
+
+		m_pBridge->getPalette(vPalette, nPaletteMin, nPaletteMax);
+
+		for (int y = 0; y < this->panelLabels->Size.Height; ++y)
+		{
+			int nPaletteIndex = int(1.0 * y * vPalette.size() / this->panelLabels->Size.Height);
+			lib::iPoint3D vColor = vPalette[nPaletteIndex];
+			System::Drawing::Color penColor = System::Drawing::Color::FromArgb((int)vColor.r, (int)vColor.g, (int)vColor.b);
+			System::Drawing::Pen^ pPen = gcnew System::Drawing::Pen(penColor, 1.0f);
+			e->Graphics->DrawLine(pPen, System::Drawing::Point(0, y), System::Drawing::Point(this->panelLabels->Size.Width, y));
+		}
+
+		//---------------------------------------------------------------------------
+
+		unsigned nLabelCount = 10;
+
+		double fFactor = 1.0 * this->panelLabels->Size.Height / (nLabelCount - 1);
+
+		for (int i = 0; i < nLabelCount; i += 1)
+		{
+			int nYpos = i * fFactor - 6;
+			if (i == 0)
+				nYpos += 6;
+			else if (i == nLabelCount - 1)
+				nYpos -= 7;
+
+			m_vLabel[i]->Location = System::Drawing::Point(0, nYpos);
+			m_vLabel[i]->AutoSize = true;
+			m_vLabel[i]->Size = System::Drawing::Size(25, 13);
+			m_vLabel[i]->TabIndex = i;
+			m_vLabel[i]->Text = gcnew System::String(std::to_string(nPaletteMin + i * (nPaletteMax - nPaletteMin) / (nLabelCount - 1)).c_str());
+		}
 
 		return System::Void();
 	}

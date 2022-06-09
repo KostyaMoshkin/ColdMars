@@ -19,7 +19,7 @@ namespace GL {
 		static const char* sPalette()			{ return "Palette";			}
 		static const char* sPaletteDefault()	{ return "PaletteDefault";	}
 		static const char* sId()				{ return "id";				}
-		static const char* sHeight()			{ return "Height";			}
+		static const char* sTemperature()		{ return "Temperature";		}
 		static const char* sColor()				{ return "Color";			}
 		static const char* sInterpolate()		{ return "interpolate";		}
 
@@ -53,6 +53,7 @@ namespace GL {
 		unsigned getInterpolate();
 		bool fillPalette(unsigned nPaletteID_);
 		bool changePalette(bool bDirection_ = true);
+		void getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_);
 	};
 }
 

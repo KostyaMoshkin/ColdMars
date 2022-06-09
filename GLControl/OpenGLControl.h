@@ -22,6 +22,9 @@ namespace GLControl {
 
 		unsigned m_nOrbitQuantity = 2;
 
+
+		static  cli::array<System::Windows::Forms::Label^>^ m_vLabel = gcnew cli::array<System::Windows::Forms::Label^>(10);
+
 	private: System::Windows::Forms::Button^ buttonSetOrbit;
 	private: System::Windows::Forms::Panel^ panelInfo;
 	private: System::Windows::Forms::Label^ labelIterferogramID;
@@ -34,12 +37,14 @@ namespace GLControl {
 
 	private: System::Windows::Forms::Label^ label6;
 
-
-
-
 	private: System::Windows::Forms::Label^ labelLocalTime;
 	private: System::Windows::Forms::Label^ labelUTC;
 	private: System::Windows::Forms::Label^ label3;
+	private: System::Windows::Forms::PictureBox^ pictureBox1;
+	private: System::Windows::Forms::Panel^ panelPalette;
+	private: System::Windows::Forms::Panel^ panelLabels;
+
+
 
 	private: System::Windows::Forms::Label^ label8;
 
@@ -53,7 +58,6 @@ namespace GLControl {
 		~OpenGLControl();
 
 	private: System::Windows::Forms::Panel^ panelControl;
-	protected:
 	private: System::Windows::Forms::Panel^ panelSeparator;
 	private: System::Windows::Forms::Panel^ panelGL;
 	private: System::Windows::Forms::Panel^ panelOrbit;
@@ -79,6 +83,8 @@ namespace GLControl {
 		{
 			this->panelControl = (gcnew System::Windows::Forms::Panel());
 			this->panelInfo = (gcnew System::Windows::Forms::Panel());
+			this->labelUTC = (gcnew System::Windows::Forms::Label());
+			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->labelLocalTime = (gcnew System::Windows::Forms::Label());
 			this->label8 = (gcnew System::Windows::Forms::Label());
 			this->labelJulianDate = (gcnew System::Windows::Forms::Label());
@@ -97,12 +103,15 @@ namespace GLControl {
 			this->trackBarOrbit = (gcnew System::Windows::Forms::TrackBar());
 			this->panelSeparator = (gcnew System::Windows::Forms::Panel());
 			this->panelGL = (gcnew System::Windows::Forms::Panel());
-			this->label3 = (gcnew System::Windows::Forms::Label());
-			this->labelUTC = (gcnew System::Windows::Forms::Label());
+			this->panelPalette = (gcnew System::Windows::Forms::Panel());
+			this->panelLabels = (gcnew System::Windows::Forms::Panel());
+			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->panelControl->SuspendLayout();
 			this->panelInfo->SuspendLayout();
 			this->panelOrbit->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarOrbit))->BeginInit();
+			this->panelPalette->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// panelControl
@@ -133,6 +142,24 @@ namespace GLControl {
 			this->panelInfo->Name = L"panelInfo";
 			this->panelInfo->Size = System::Drawing::Size(297, 96);
 			this->panelInfo->TabIndex = 2;
+			// 
+			// labelUTC
+			// 
+			this->labelUTC->AutoSize = true;
+			this->labelUTC->Location = System::Drawing::Point(104, 65);
+			this->labelUTC->Name = L"labelUTC";
+			this->labelUTC->Size = System::Drawing::Size(35, 13);
+			this->labelUTC->TabIndex = 9;
+			this->labelUTC->Text = L"label5";
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->Location = System::Drawing::Point(67, 65);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(29, 13);
+			this->label3->TabIndex = 8;
+			this->label3->Text = L"UTC";
 			// 
 			// labelLocalTime
 			// 
@@ -298,32 +325,40 @@ namespace GLControl {
 			this->panelGL->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->panelGL->Location = System::Drawing::Point(0, 0);
 			this->panelGL->Name = L"panelGL";
-			this->panelGL->Size = System::Drawing::Size(602, 492);
+			this->panelGL->Size = System::Drawing::Size(402, 492);
 			this->panelGL->TabIndex = 2;
 			// 
-			// label3
+			// panelPalette
 			// 
-			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(67, 65);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(29, 13);
-			this->label3->TabIndex = 8;
-			this->label3->Text = L"UTC";
+			this->panelPalette->Controls->Add(this->pictureBox1);
+			this->panelPalette->Controls->Add(this->panelLabels);
+			this->panelPalette->Dock = System::Windows::Forms::DockStyle::Right;
+			this->panelPalette->Name = L"panelPalette";
+			this->panelPalette->Size = System::Drawing::Size(75, 492);
+			this->panelPalette->TabIndex = 0;
 			// 
-			// labelUTC
+			// panelLabels
 			// 
-			this->labelUTC->AutoSize = true;
-			this->labelUTC->Location = System::Drawing::Point(104, 65);
-			this->labelUTC->Name = L"labelUTC";
-			this->labelUTC->Size = System::Drawing::Size(35, 13);
-			this->labelUTC->TabIndex = 9;
-			this->labelUTC->Text = L"label5";
+			this->panelLabels->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->panelLabels->Name = L"panelLabels";
+			this->panelLabels->Size = System::Drawing::Size(25, 492);
+			this->panelLabels->TabIndex = 1;
+			// 
+			// pictureBox1
+			// 
+			this->pictureBox1->Dock = System::Windows::Forms::DockStyle::Right;
+			this->pictureBox1->Name = L"pictureBox1";
+			this->pictureBox1->Size = System::Drawing::Size(50, 492);
+			this->pictureBox1->TabIndex = 0;
+			this->pictureBox1->TabStop = false;
+			this->pictureBox1->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &OpenGLControl::pictureBox1_Paint);
 			// 
 			// OpenGLControl
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->Controls->Add(this->panelGL);
+			this->Controls->Add(this->panelPalette);
 			this->Controls->Add(this->panelSeparator);
 			this->Controls->Add(this->panelControl);
 			this->Name = L"OpenGLControl";
@@ -337,6 +372,8 @@ namespace GLControl {
 			this->panelOrbit->ResumeLayout(false);
 			this->panelOrbit->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarOrbit))->EndInit();
+			this->panelPalette->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
 
 		}
@@ -355,6 +392,8 @@ namespace GLControl {
 		System::Void textBoxOrbitQuantity_TextChanged(System::Object^ sender, System::EventArgs^ e);
 
 		System::Void buttonSetOrbit_Click(System::Object^ sender, System::EventArgs^ e);
+
+		System::Void pictureBox1_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
 
 	private:
 		void init();

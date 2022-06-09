@@ -234,6 +234,11 @@ namespace GL {
 		return m_pOrbitReader;
 	}
 
+	void RenderOrbitTemperature::getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_)
+	{
+		m_pPalette->getPalette(vPalette_, nPaletteMin_, nPaletteMax_);
+	}
+
 	void RenderOrbitTemperature::bound()
 	{
 		glBindVertexArray(m_nVAO);
