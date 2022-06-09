@@ -239,6 +239,16 @@ namespace GL {
 		m_pPalette->getPalette(vPalette_, nPaletteMin_, nPaletteMax_);
 	}
 
+	unsigned RenderOrbitTemperature::getOrbit_by_number(unsigned nNumber_)
+	{
+		return m_pOrbitReader->getOrbit_by_number(nNumber_);
+	}
+
+	unsigned RenderOrbitTemperature::getOrbit_by_LS(unsigned nNumber_)
+	{
+		return m_pOrbitReader->getOrbit_by_LS(nNumber_);
+	}
+
 	void RenderOrbitTemperature::bound()
 	{
 		glBindVertexArray(m_nVAO);

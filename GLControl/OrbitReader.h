@@ -3,6 +3,7 @@
 #include "SLevel.h"
 
 #include <vector>
+#include <map>
 
 namespace orbit
 {
@@ -50,7 +51,10 @@ namespace orbit
 	class OrbitReader : public lib::CConfig
 	{
 		std::vector<std::string> m_vFileList;
-		std::vector < std::vector<Snpt>> m_vvNpt;
+		std::map<int, int> m_mLS;
+		std::map<int, int> m_mOrbit;
+
+		std::vector <std::vector<Snpt>> m_vvNpt;
 		std::vector<SPairLevel> m_vVertex;
 
 		Snpt m_Snpt;
@@ -83,10 +87,14 @@ namespace orbit
 		size_t getCount();
 
 		unsigned getSpectrumNumb();
-		unsigned getInterferogramID();
 		float getJulianDate();
 		float getLocalTime();
+		float getLS();
 		std::string getUTC();
+
+		unsigned getOrbit_by_number(unsigned nNumber_);
+
+		unsigned getOrbit_by_LS(unsigned nNumber_);
 
 	};
 }

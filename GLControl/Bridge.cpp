@@ -185,8 +185,8 @@ namespace GL
 
 	void Bridge::on_mouse_right_btn_move(int nMoveX_, int nMoveY_)
 	{
-		m_fMoveX -= 1.0f * nMoveX_ / m_pScreen->ViewControl->Size.Width;
-		m_fMoveY += 1.0f * nMoveY_ / m_pScreen->ViewControl->Size.Width;
+		m_fMoveX -= 2.0f * nMoveX_ / m_pScreen->ViewControl->Size.Width;
+		m_fMoveY += 2.0f * nMoveY_ / m_pScreen->ViewControl->Size.Width;
 
 		m_pControlContext->begin_draw();
 
@@ -238,7 +238,7 @@ namespace GL
 		draw();
 	}
 
-	std::string Bridge::getOrbit(unsigned nIndex_)
+	std::string Bridge::getOrbit_by_index(unsigned nIndex_)
 	{
 		if (nIndex_ >= m_vFileList.size())
 			return std::string();
@@ -251,6 +251,16 @@ namespace GL
 		std::string  sNumber = sFileName.substr(nNamePos, nPointPos - nNamePos);
 
 		return sNumber;
+	}
+
+	unsigned Bridge::getOrbit_by_LS(unsigned nIndex_)
+	{
+		return m_pRenderOrbitTemperature->getOrbit_by_LS(nIndex_);
+	}
+
+	unsigned Bridge::getOrbit_by_number(unsigned nIndex_)
+	{
+		return m_pRenderOrbitTemperature->getOrbit_by_number(nIndex_);
 	}
 
 	ContextInterface^ Bridge::getScreen()
@@ -268,9 +278,9 @@ namespace GL
 		return m_pRenderOrbitTemperature->getReader()->getSpectrumNumb();
 	}
 
-	unsigned Bridge::getInterferogramID()
+	float Bridge::getLS()
 	{
-		return m_pRenderOrbitTemperature->getReader()->getInterferogramID();
+		return m_pRenderOrbitTemperature->getReader()->getLS();
 	}
 
 	float Bridge::getJulianDate()

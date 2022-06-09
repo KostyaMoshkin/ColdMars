@@ -9,7 +9,7 @@
 
 namespace orbit
 {
-	std::vector<Snpt> readFile(const char* sFileName_)
+	std::vector<Snpt> readFile(const char* sFileName_, bool bHoleFile_ = true)
 	{
 		std::ifstream strFile(sFileName_);
 		if (!strFile.is_open())
@@ -27,6 +27,9 @@ namespace orbit
 			strFile >> vNpt[i].fDistancToSun >> vNpt[i].fLongitude >> vNpt[i].fLatitude >> vNpt[i].fLS >> vNpt[i].fLocalTime >> vNpt[i].fSunZenit >> vNpt[i].fObserverZenit;
 			strFile >> vNpt[i].fSurfaceTemp >> vNpt[i].fDustOpticalDepth >> vNpt[i].fIceOpticalDepth;
 			strFile >> vNpt[i].nLevelCount;
+
+			if (!bHoleFile_)
+				break;
 
 			vNpt[i].vLevel.resize(vNpt[i].nLevelCount);
 			for (unsigned j = 0; j < vNpt[i].nLevelCount; ++j)
@@ -60,6 +63,22 @@ namespace orbit
 			m_nInterpolateCount = 30;
 
 		m_vFileList = lib::create_file_list(sOrbitDir.c_str());
+
+		for (int i = 0; i < m_vFileList.size(); ++i)
+		{
+			size_t nPointPos = m_vFileList[i].find(".");
+			size_t nNamePos = m_vFileList[i].find_last_of("\\") + 2;
+
+			std::string  sNumber = m_vFileList[i].substr(nNamePos, nPointPos - nNamePos);
+
+			m_mOrbit[std::stoi(sNumber)] = i;
+
+			//-----------------------------------------------
+
+			std::vector<Snpt> vNpt = readFile(m_vFileList[i].c_str(), false);
+
+			m_mLS[int(vNpt[0].fLS * 100)] = i;
+		}
 
 		bool bError = false;
 
@@ -143,9 +162,9 @@ namespace orbit
 		return m_Snpt.nSpectrumNumb;
 	}
 
-	unsigned OrbitReader::getInterferogramID()
+	float OrbitReader::getLS()
 	{
-		return m_Snpt.nInterferogramID;
+		return m_Snpt.fLS;
 	}
 
 	float OrbitReader::getJulianDate()
@@ -156,6 +175,23 @@ namespace orbit
 	float OrbitReader::getLocalTime()
 	{
 		return m_Snpt.fLocalTime;
+	}
+
+	unsigned OrbitReader::getOrbit_by_number(unsigned nNumber_)
+	{
+		if (m_mOrbit.find(nNumber_) != m_mOrbit.end())
+			return m_mOrbit[nNumber_];
+
+		for (auto const& [key, value] : m_mOrbit)
+			if (key <= nNumber_)
+				return value;
+
+		return UINT_MAX;
+	}
+
+	unsigned OrbitReader::getOrbit_by_LS(unsigned nNumber_)
+	{
+		return m_mLS[nNumber_];
 	}
 
 	std::string OrbitReader::getUTC()
