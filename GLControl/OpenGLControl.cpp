@@ -110,7 +110,7 @@ namespace GLControl {
 
 		double fFactor = 1.0 * this->panelLabels->Size.Height / (nLabelCount - 1);
 
-		for (int i = 0; i < nLabelCount; i += 1)
+		for (unsigned i = 0; i < nLabelCount; i += 1)
 		{
 			int nYpos = int(i * fFactor) - 6;
 			if (i == 0)
