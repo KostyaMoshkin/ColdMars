@@ -101,19 +101,18 @@ namespace GLControl {
 			int nPaletteIndex = int(1.0 * y * vPalette.size() / this->panelLabels->Size.Height);
 			lib::iPoint3D vColor = vPalette[nPaletteIndex];
 			System::Drawing::Color penColor = System::Drawing::Color::FromArgb((int)vColor.r, (int)vColor.g, (int)vColor.b);
-			System::Drawing::Pen^ pPen = gcnew System::Drawing::Pen(penColor, 1.0f);
-			e->Graphics->DrawLine(pPen, System::Drawing::Point(0, y), System::Drawing::Point(this->panelLabels->Size.Width, y));
+			e->Graphics->DrawLine(gcnew System::Drawing::Pen(penColor, 1.0f), System::Drawing::Point(0, y), System::Drawing::Point(this->panelLabels->Size.Width, y));
 		}
 
 		//---------------------------------------------------------------------------
 
-		unsigned nLabelCount = 10;
+		const unsigned nLabelCount = std::min(this->panelLabels->Size.Height / 30, 10);
 
 		double fFactor = 1.0 * this->panelLabels->Size.Height / (nLabelCount - 1);
 
 		for (int i = 0; i < nLabelCount; i += 1)
 		{
-			int nYpos = i * fFactor - 6;
+			int nYpos = int(i * fFactor) - 6;
 			if (i == 0)
 				nYpos += 6;
 			else if (i == nLabelCount - 1)
