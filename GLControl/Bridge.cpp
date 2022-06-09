@@ -302,4 +302,20 @@ namespace GL
 	{
 		m_pRenderOrbitTemperature->getPalette(vPalette_, nPaletteMin_, nPaletteMax_);
 	}
+	float Bridge::getScale()
+	{
+		return m_pRenderMegdr->getScale();
+	}
+
+	void Bridge::setScale(float fScale_)
+	{
+		m_pControlContext->begin_draw();
+
+		m_pRenderMegdr->setScale(fScale_);
+		m_pRenderOrbitTemperature->setScale(fScale_);
+
+		m_pSceneRender->draw();
+
+		m_pControlContext->end_draw();
+	}
 }

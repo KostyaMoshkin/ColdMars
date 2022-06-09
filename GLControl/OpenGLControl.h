@@ -24,6 +24,8 @@ namespace GLControl {
 		unsigned m_nOrbitQuantity = 2;
 		unsigned m_nLS = 0;
 
+		unsigned m_nScale = 500;
+
 		int m_nTimerSpeed = 0;
 
 		static  cli::array<System::Windows::Forms::Label^>^ m_vLabel = gcnew cli::array<System::Windows::Forms::Label^>(10);
@@ -49,6 +51,10 @@ namespace GLControl {
 	private: System::Windows::Forms::Button^ buttonRew;
 	private: System::Windows::Forms::Button^ buttonRewPlay;
 	private: System::Windows::Forms::Timer^ timer1;
+	private: System::Windows::Forms::Button^ buttonScalePlus;
+	private: System::Windows::Forms::Button^ buttonScaleMinus;
+	private: System::Windows::Forms::TextBox^ textBoxScale;
+	private: System::Windows::Forms::Label^ label2;
 
 
 
@@ -118,6 +124,10 @@ namespace GLControl {
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->panelLabels = (gcnew System::Windows::Forms::Panel());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->textBoxScale = (gcnew System::Windows::Forms::TextBox());
+			this->buttonScaleMinus = (gcnew System::Windows::Forms::Button());
+			this->buttonScalePlus = (gcnew System::Windows::Forms::Button());
 			this->panelControl->SuspendLayout();
 			this->panelInfo->SuspendLayout();
 			this->panelOrbit->SuspendLayout();
@@ -208,6 +218,10 @@ namespace GLControl {
 			// 
 			// panelOrbit
 			// 
+			this->panelOrbit->Controls->Add(this->buttonScalePlus);
+			this->panelOrbit->Controls->Add(this->buttonScaleMinus);
+			this->panelOrbit->Controls->Add(this->textBoxScale);
+			this->panelOrbit->Controls->Add(this->label2);
 			this->panelOrbit->Controls->Add(this->panelOrbiMovie);
 			this->panelOrbit->Controls->Add(this->textBoxLS);
 			this->panelOrbit->Controls->Add(this->label5);
@@ -401,6 +415,42 @@ namespace GLControl {
 			// 
 			this->timer1->Tick += gcnew System::EventHandler(this, &OpenGLControl::timer1_Tick);
 			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Location = System::Drawing::Point(21, 162);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(34, 13);
+			this->label2->TabIndex = 9;
+			this->label2->Text = L"Scale";
+			// 
+			// textBoxScale
+			// 
+			this->textBoxScale->Location = System::Drawing::Point(62, 155);
+			this->textBoxScale->Name = L"textBoxScale";
+			this->textBoxScale->Size = System::Drawing::Size(100, 20);
+			this->textBoxScale->TabIndex = 10;
+			// 
+			// buttonScaleMinus
+			// 
+			this->buttonScaleMinus->Location = System::Drawing::Point(183, 155);
+			this->buttonScaleMinus->Name = L"buttonScaleMinus";
+			this->buttonScaleMinus->Size = System::Drawing::Size(20, 20);
+			this->buttonScaleMinus->TabIndex = 11;
+			this->buttonScaleMinus->Text = L"-";
+			this->buttonScaleMinus->UseVisualStyleBackColor = true;
+			this->buttonScaleMinus->Click += gcnew System::EventHandler(this, &OpenGLControl::buttonScaleMinus_Click);
+			// 
+			// buttonScalePlus
+			// 
+			this->buttonScalePlus->Location = System::Drawing::Point(205, 155);
+			this->buttonScalePlus->Name = L"buttonScalePlus";
+			this->buttonScalePlus->Size = System::Drawing::Size(20, 20);
+			this->buttonScalePlus->TabIndex = 12;
+			this->buttonScalePlus->Text = L"+";
+			this->buttonScalePlus->UseVisualStyleBackColor = true;
+			this->buttonScalePlus->Click += gcnew System::EventHandler(this, &OpenGLControl::buttonScalePlus_Click);
+			// 
 			// OpenGLControl
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -454,6 +504,9 @@ namespace GLControl {
 		System::Void buttonFwdPlay_Click(System::Object^ sender, System::EventArgs^ e);
 
 		System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e);
+
+		System::Void buttonScaleMinus_Click(System::Object^ sender, System::EventArgs^ e);
+		System::Void buttonScalePlus_Click(System::Object^ sender, System::EventArgs^ e);
 
 	private:
 		void init();

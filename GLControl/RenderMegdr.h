@@ -39,8 +39,6 @@ namespace GL {
 
 		lib::fPoint2D m_fCamPosition;
 
-		float m_fScale = 5.0f;
-
 		GLuint m_nVAO = 0;
 
 	public:
@@ -64,6 +62,9 @@ namespace GL {
 		void translate(lib::Matrix4& mTranslate_) override;
 		void bound() override;
 		void unbound() override;
+
+		float getScale() override;
+		void setScale(float fScale_) override;
 
 		// Унаследовано через Render
 		virtual bool keyPress(GL::EKeyPress nKey_) override;

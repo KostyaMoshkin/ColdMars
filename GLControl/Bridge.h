@@ -100,6 +100,9 @@ namespace GL
 
 		void getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_);
 
+		float getScale();
+		void setScale(float fScale_);
+
 	};
 
 }

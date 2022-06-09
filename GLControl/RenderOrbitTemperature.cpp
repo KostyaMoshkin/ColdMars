@@ -258,4 +258,14 @@ namespace GL {
 	{
 		glBindVertexArray(0);
 	}
+	float RenderOrbitTemperature::getScale()
+	{
+		return m_fScale;
+	}
+
+	void RenderOrbitTemperature::setScale(float fScale_)
+	{
+		m_fScale = fScale_;
+		setScale();
+	}
 }

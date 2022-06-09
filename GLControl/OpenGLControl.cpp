@@ -77,6 +77,7 @@ namespace GLControl {
 		this->labelUTC->Text = gcnew System::String(m_pBridge->getUTC().c_str());
 		this->textBoxOrbitQuantity->Text = gcnew System::String(std::to_string(m_nOrbitQuantity).c_str());
 		this->textBoxLS->Text = gcnew System::String(std::to_string(m_pBridge->getLS()).c_str());
+		this->textBoxScale->Text = gcnew System::String(std::to_string(m_pBridge->getScale()).c_str());
 
 		double fLS;
 		if (!System::Double::TryParse(this->textBoxLS->Text, System::Globalization::NumberStyles::AllowDecimalPoint, System::Globalization::CultureInfo::CurrentCulture, fLS) &&
@@ -105,6 +106,14 @@ namespace GLControl {
 
 		unsigned nLS = unsigned(fLS * 100);
 
+		double fScale;
+		if (!System::Double::TryParse(this->textBoxScale->Text, System::Globalization::NumberStyles::AllowDecimalPoint, System::Globalization::CultureInfo::CurrentCulture, fScale) &&
+			!System::Double::TryParse(this->textBoxScale->Text, System::Globalization::NumberStyles::AllowDecimalPoint, System::Globalization::CultureInfo::InvariantCulture, fScale)
+			)
+			fScale = m_nScale;
+
+		unsigned nScale = unsigned(fScale * 100);
+
 		if (m_nOrbitQuantity != nOrbitQuantity)
 		{
 			m_nOrbitQuantity = std::min(nOrbitQuantity, m_pBridge->getFileCount() - m_nOrbitCurrentIndex - 1);
@@ -115,6 +124,12 @@ namespace GLControl {
 			m_nOrbitCurrentIndex = m_pBridge->getOrbit_by_LS(int(fLS * 100));
 
 			m_nLS = nLS;
+		}
+		else if (m_nScale != nScale)
+		{
+			m_pBridge->setScale(1.0f * nScale / 100.0f);
+
+			m_nScale = nScale;
 		}
 		else
 		{
@@ -244,7 +259,7 @@ namespace GLControl {
 			return;
 		}
 		else
-			m_nTimerSpeed /= 2;
+			m_nTimerSpeed = m_nTimerSpeed < 200 ? m_nTimerSpeed : m_nTimerSpeed / 2;
 
 		this->timer1->Interval = std::abs(m_nTimerSpeed);
 		this->timer1->Start();
@@ -263,7 +278,7 @@ namespace GLControl {
 			return;
 		}
 		else
-			m_nTimerSpeed /= 2;
+			m_nTimerSpeed = m_nTimerSpeed > -200 ? m_nTimerSpeed : m_nTimerSpeed / 2;
 
 		this->timer1->Interval = std::abs(m_nTimerSpeed);
 		this->timer1->Start();
@@ -285,6 +300,26 @@ namespace GLControl {
 			this->timer1->Stop();
 			m_nTimerSpeed = 0;
 		}
+
+		return System::Void();
+	}
+
+	System::Void OpenGLControl::buttonScaleMinus_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		m_nScale = unsigned(1.0 * m_nScale / 1.2);
+		m_pBridge->setScale(1.0f * m_nScale / 100.0f);
+
+		updateOrbitInfo();
+
+		return System::Void();
+	}
+
+	System::Void OpenGLControl::buttonScalePlus_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		m_nScale = unsigned(1.0 * m_nScale * 1.2);
+		m_pBridge->setScale(1.0f * m_nScale / 100.0f);
+
+		updateOrbitInfo();
 
 		return System::Void();
 	}

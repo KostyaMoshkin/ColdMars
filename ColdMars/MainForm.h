@@ -54,6 +54,7 @@ namespace ColdMars {
 			this->Controls->Add(this->openGLControl1);
 			this->Name = L"MainForm";
 			this->Text = L"MainForm";
+			this->WindowState = System::Windows::Forms::FormWindowState::Maximized;
 			this->ResumeLayout(false);
 
 		}

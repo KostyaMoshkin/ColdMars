@@ -37,6 +37,9 @@
           bool m_bVisible = false;
           int m_nVersionFull = 0;
 
+      protected:
+          float m_fScale = 5.0f;
+
       public:
           Render() = default;
           virtual ~Render() = default;
@@ -54,12 +57,18 @@
             virtual void bound() = 0;
             virtual void unbound() = 0;
 
+
+      public:
+            virtual float getScale() = 0;
+            virtual void setScale(float fScale_) = 0;
+
       public:
           void setVisible(bool bVisible_) { m_bVisible = bVisible_; }
           bool isVisible() { return m_bVisible; }
 
           void setVersionGl(int nVersionFull_) { m_nVersionFull = nVersionFull_; }
           int getVersionGl() { return m_nVersionFull; }
+
       };
 
 }

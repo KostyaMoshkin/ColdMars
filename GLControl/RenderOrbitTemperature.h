@@ -39,7 +39,6 @@ namespace GL {
 
 		std::vector<orbit::SPairLevel> m_vLevelData;
 
-		float m_fScale = 5.0f;
 		float m_fViewAngle = 45.0;
 		GLfloat m_fViewAspect = 1.0;
 
@@ -72,6 +71,9 @@ namespace GL {
 		void translate(lib::Matrix4& mTranslate_) override;
 		void bound() override;
 		void unbound() override;
+
+		float getScale() override;
+		void setScale(float fScale_) override;
 
 		// Унаследовано через Render
 		virtual bool keyPress(GL::EKeyPress nKey_) override;

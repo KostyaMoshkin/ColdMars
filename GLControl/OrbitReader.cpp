@@ -183,7 +183,7 @@ namespace orbit
 			return m_mOrbit[nNumber_];
 
 		for (auto const& [key, value] : m_mOrbit)
-			if (key <= nNumber_)
+			if (key <= (int)nNumber_)
 				return value;
 
 		return UINT_MAX;

@@ -283,6 +283,17 @@ namespace GL {
 		glBindVertexArray(0);
 	}
 
+	float RenderMegdr::getScale()
+	{
+		return m_fScale;
+	}
+
+	void RenderMegdr::setScale(float fScale_)
+	{
+		m_fScale = fScale_;
+		setScale();
+	}
+
 }
 
 #pragma managed(pop)
