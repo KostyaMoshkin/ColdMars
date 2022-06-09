@@ -20,6 +20,9 @@ namespace GL
 		int m_nMousePositionX = 0;
 		int m_nMousePositionY = 0;
 
+		bool m_bMouseLeftDown = false;
+		bool m_bMouseRightDown = false;
+
     public:
 		Screen(System::IntPtr pEngine_);
 
@@ -44,6 +47,7 @@ namespace GL
 		System::Void ScreenMouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 		System::Void ScreenMouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 		System::Void ScreenMouseWheel(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+		System::Void MouseDoubleClick(System::Object^ sender, System::EventArgs^ e);
 
 	};
 

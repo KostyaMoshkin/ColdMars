@@ -67,11 +67,11 @@ namespace GL {
 			pElement->draw();
 	}
 
-	void SceneRender::setViewAngle()
+	void SceneRender::setViewAngle(float fZoom_)
 	{
 		lib::limit(m_fViewAngle, 1.0f, 150.0f);
 
-		lib::Matrix4 mPerspective = glm::perspective(glm::radians(m_fViewAngle), m_fViewAspect, 0.1f, 50.0f);
+		lib::Matrix4 mPerspective = glm::perspective(glm::radians(m_fViewAngle + fZoom_), m_fViewAspect, 0.1f, 50.0f);
 
 		for (RenderPtr pElement : m_vElementRendr)
 			pElement->setViewAngle(mPerspective);
@@ -79,14 +79,22 @@ namespace GL {
 
 	void SceneRender::rotate(float fAngle_)
 	{
-		m_fRotate += fAngle_;
-
 		lib::Matrix4 rotate = lib::Matrix4(1.0f);
 		rotate = glm::rotate(rotate, 0.2f, glm::vec3(0, 0, 1));
-		rotate = glm::rotate(rotate, m_fRotate, glm::vec3(0, 1, 0));
+		rotate = glm::rotate(rotate, fAngle_, glm::vec3(0, 1, 0));
 
 		for (RenderPtr pElement : m_vElementRendr)
 			pElement->rotate(rotate);
+	}
+
+	void SceneRender::translate(float fMoveV_, float fMoveY_)
+	{
+		lib::Matrix4 mTranslate = lib::Matrix4(1.0f);
+		mTranslate = glm::translate(mTranslate, lib::Vector3(fMoveV_, 0, 0));
+		mTranslate = glm::translate(mTranslate, lib::Vector3(0, fMoveY_, 0));
+
+		for (RenderPtr pElement : m_vElementRendr)
+			pElement->translate(mTranslate);
 	}
 
 	void SceneRender::lookAt(lib::dPoint3D fCamPosition_, lib::dPoint3D vCamCenter_, lib::dPoint3D vCamUp_)
@@ -97,12 +105,12 @@ namespace GL {
 			pElement->lookAt(mView);
 	}
 
-	void SceneRender::mouseScroll(float fZoom_)
-	{
-		m_fViewAngle += fZoom_;
+	//void SceneRender::mouseScroll(float fZoom_)
+	//{
+	//	m_fViewAngle += fZoom_;
 
-		setViewAngle();
-	}
+	//	setViewAngle();
+	//}
 
 	bool SceneRender::read_error(bool check_error_, const char* szFileName /*= __FILE__*/, unsigned nLine /*= __LINE__*/, const char* szDateTime /*= __TIMESTAMP__*/)
 	{

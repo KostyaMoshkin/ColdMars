@@ -28,6 +28,7 @@ namespace GL
         this->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &Screen::ScreenMouseMove);
         this->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &Screen::ScreenMouseUp);
         this->MouseWheel += gcnew System::Windows::Forms::MouseEventHandler(this, &Screen::ScreenMouseWheel);
+        this->DoubleClick += gcnew System::EventHandler(this, &Screen::MouseDoubleClick);
         this->ResumeLayout(false);
 
     }
@@ -108,6 +109,13 @@ namespace GL
         return System::Void();
     }
 
+    System::Void Screen::MouseDoubleClick(System::Object^ sender, System::EventArgs^ e)
+    {
+        m_pDataContextEngine->on_mouse_double_click();
+
+        return System::Void();
+    }
+
     System::IntPtr Screen::get_hWnd()
     {
         if (m_WndState == System::Windows::Forms::FormWindowState::Minimized)
@@ -118,32 +126,43 @@ namespace GL
 
     System::Void Screen::ScreenMouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
     {
-        if (e->Button != System::Windows::Forms::MouseButtons::Left)
-            return;
+        if (e->Button == System::Windows::Forms::MouseButtons::Left)
+        {
+            m_bMouseLeftDown = true;
+            m_bMouseRightDown = false;
 
-        m_nMousePositionX = e->X;
-        m_nMousePositionY = e->Y;
+            m_nMousePositionX = e->X;
+            m_nMousePositionY = e->Y;
+        }
+        else if (e->Button == System::Windows::Forms::MouseButtons::Right)
+        {
+            m_bMouseLeftDown = false;
+            m_bMouseRightDown = true;
+            
+            m_nMousePositionX = e->X;
+            m_nMousePositionY = e->Y;
+        }
 
-        m_pDataContextEngine->on_mouse_down();
         return System::Void();
     }
 
     System::Void Screen::ScreenMouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
     {
-        if (e->Button != System::Windows::Forms::MouseButtons::Left)
-            return;
+        m_bMouseLeftDown = false;
+        m_bMouseRightDown = false;
 
-        m_pDataContextEngine->on_mouse_up();
         return System::Void();
     }
 
     System::Void Screen::ScreenMouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
     {
-        if (e->Button != System::Windows::Forms::MouseButtons::Left)
-            return;
+        if (m_bMouseLeftDown)
+            m_pDataContextEngine->on_mouse_left_btn_move(m_nMousePositionX - e->X, m_nMousePositionY - e->Y);
+        else if (m_bMouseRightDown)
+            m_pDataContextEngine->on_mouse_right_btn_move(m_nMousePositionX - e->X, m_nMousePositionY - e->Y);
+        else
+            return System::Void();
 
-        m_pDataContextEngine->on_mouse_move(m_nMousePositionX - e->X, m_nMousePositionY - e->Y);
-  
         m_nMousePositionX = e->X;
         m_nMousePositionY = e->Y;
         

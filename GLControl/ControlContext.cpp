@@ -28,7 +28,7 @@ namespace GL
         if (m_nWidth * m_nHeight == 0)
             return true;
 
-        int nWindowSize = std::min<int>(m_nWidth, m_nHeight);
+        int nWindowSize = std::max<int>(m_nWidth, m_nHeight);
 
         glViewport(0, 0, nWindowSize, nWindowSize);
 

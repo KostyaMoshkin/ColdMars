@@ -37,6 +37,12 @@ namespace GL {
 		m_pOrbitTemperatureProgram->setUniformMat4f("m_mRotate", &mRotate_[0][0]);
 	}
 
+	void RenderOrbitTemperature::translate(lib::Matrix4& mTranslate_)
+	{
+		BufferBounder<ShaderProgram> programBounder(m_pOrbitTemperatureProgram);
+		m_pOrbitTemperatureProgram->setUniformMat4f("m_mTranslate", &mTranslate_[0][0]);
+	}
+
 	bool RenderOrbitTemperature::fillPalette()
 	{
 		float fDataMin;

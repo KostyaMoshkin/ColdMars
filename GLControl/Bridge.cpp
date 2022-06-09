@@ -22,7 +22,7 @@ namespace GL
 		m_pSceneRender->setConfig(m_pXMLconfig->getRoot());
 		m_pSceneRender->init();
 
-		m_vCamPosition3D = lib::Vector3(0, 0, -6.5);
+		m_vCamPosition3D = lib::Vector3(0, 0, -3.5);
 		m_vCamRight3D = lib::Vector3(1, 0, 0);
 
 	}
@@ -91,7 +91,8 @@ namespace GL
 
 		m_pSceneRender->lookAt(vCamPosition3D, lib::Vector3(0, 0, 0), lib::Vector3(0, 1, 0));
 		m_pSceneRender->rotate(0);
-		m_pSceneRender->mouseScroll(0.0f);
+		m_pSceneRender->translate(0, 0);
+		m_pSceneRender->setViewAngle(0.0f);
 
 		//--------------------------------------------------------------------------
 
@@ -117,17 +118,9 @@ namespace GL
 
 		m_pControlContext->begin_draw(m_pScreen->ViewControl->Size.Width, m_pScreen->ViewControl->Size.Height);
 
-		//init();
-
 		m_pSceneRender->draw();
 
 		m_pControlContext->end_draw();
-	}
-
-	void Bridge::Scroll(float fValue_)
-	{
-		m_fScroll += fValue_;
-		m_pSceneRender->mouseScroll(m_fScroll);
 	}
 
 	void Bridge::on_handle_created()
@@ -160,34 +153,68 @@ namespace GL
 
 	void Bridge::on_mouse_scroll(float fScroll_)
 	{
+		m_fViewAngle += fScroll_;
+
 		m_pControlContext->begin_draw();
 
-		m_pSceneRender->mouseScroll(fScroll_);
+		m_pSceneRender->setViewAngle(m_fViewAngle);
 		m_pSceneRender->draw();
 
 		m_pControlContext->end_draw();
 	}
 
-	void Bridge::on_mouse_down()
-	{
-		m_bMouseFolow = true;
-	}
-
-	void Bridge::on_mouse_up()
-	{
-		m_bMouseFolow = false;
-	}
-
-	void Bridge::on_mouse_move(int nMoveX_, int nMoveY_)
+	void Bridge::on_mouse_left_btn_move(int nMoveX_, int nMoveY_)
 	{
 		lib::Quat qIncline = lib::makeQuat(-m_fInclineAngle * nMoveY_, m_vCamRight3D);
 		m_vCamPosition3D = qIncline * m_vCamPosition3D;
 		lib::Vector3 vCamUp = glm::cross(-m_vCamPosition3D, m_vCamRight3D);
 
+		m_fRotate += -m_fRoteteAngle * nMoveX_;
+
+		//------------------------------------------------------------------------------
+
 		m_pControlContext->begin_draw();
 
 		m_pSceneRender->lookAt(m_vCamPosition3D, lib::Vector3(0, 0, 0), vCamUp);
-		m_pSceneRender->rotate(-m_fRoteteAngle * nMoveX_);
+		m_pSceneRender->rotate(m_fRotate);
+
+		m_pSceneRender->draw();
+
+		m_pControlContext->end_draw();
+	}
+
+	void Bridge::on_mouse_right_btn_move(int nMoveX_, int nMoveY_)
+	{
+		m_fMoveX -= 1.0f * nMoveX_ / m_pScreen->ViewControl->Size.Width;
+		m_fMoveY += 1.0f * nMoveY_ / m_pScreen->ViewControl->Size.Width;
+
+		m_pControlContext->begin_draw();
+
+		m_pSceneRender->translate(m_fMoveX, m_fMoveY);
+
+		m_pSceneRender->draw();
+
+		m_pControlContext->end_draw();
+	}
+
+	void Bridge::on_mouse_double_click()
+	{
+		lib::Vector3 vCamPosition3D(0, 0, -3.5);
+		lib::Vector3 vCamRight3D(1, 0, 0);
+		m_vCamPosition3D = lib::Vector3(0, 0, -3.5);
+
+		m_fRotate = 0;
+		m_fMoveX = 0.0f;
+		m_fMoveY = 0.0f;
+		m_fViewAngle = 0.0f;
+
+
+		m_pControlContext->begin_draw();
+
+		m_pSceneRender->lookAt(vCamPosition3D, lib::Vector3(0, 0, 0), lib::Vector3(0, 1, 0));
+		m_pSceneRender->rotate(0);
+		m_pSceneRender->translate(0, 0);
+		m_pSceneRender->setViewAngle(0.0f);
 
 		m_pSceneRender->draw();
 

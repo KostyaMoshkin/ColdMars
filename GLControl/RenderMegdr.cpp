@@ -49,6 +49,12 @@ namespace GL {
 		m_pMegdrProgram->setUniformMat4f("m_mRotate", &mRotate_[0][0]);
 	}
 
+	void RenderMegdr::translate(lib::Matrix4& mTranslate_)
+	{
+		BufferBounder<ShaderProgram> programBounder(m_pMegdrProgram);
+		m_pMegdrProgram->setUniformMat4f("m_mTranslate", &mTranslate_[0][0]);
+	}
+
 	bool RenderMegdr::init()
 	{
 		m_pIndex = GL::IndexBuffer::Create();

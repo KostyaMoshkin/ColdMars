@@ -22,6 +22,7 @@ uniform int   m_nBaseHeight;
 
 uniform mat4 m_mView;
 uniform mat4 m_mRotate;
+uniform mat4 m_mTranslate;
 uniform mat4 m_mPerspective;
 
 smooth out float fPaletteIndex;
@@ -45,7 +46,7 @@ void main()
 		sin(fLatitude),
 		cos(fLatitude) * cos(fLongitude));
 
-	gl_Position = m_mPerspective * m_mView * m_mRotate * vec4(vPosition, 1.0);
+	gl_Position = m_mTranslate * m_mPerspective * m_mView * m_mRotate * vec4(vPosition, 1.0);
 
 	fPaletteIndex = (m_vTemperature - m_fPaletteValueMin) / (m_fPaletteValueMax - m_fPaletteValueMin);
 }

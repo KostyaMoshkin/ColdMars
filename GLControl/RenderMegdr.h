@@ -60,7 +60,8 @@ namespace GL {
 		void draw() override;
 		void setViewAngle(lib::Matrix4& mPerspective_) override;
 		void lookAt(lib::Matrix4& mView_) override;
-		virtual void rotate(lib::Matrix4& mRotate_) override;
+		void rotate(lib::Matrix4& mRotate_) override;
+		void translate(lib::Matrix4& mTranslate_) override;
 		void bound() override;
 		void unbound() override;
 

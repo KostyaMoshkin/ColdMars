@@ -41,11 +41,15 @@ namespace GL
 		System::IntPtr m_hWnd;
 
 		bool m_bInit = false;
-		bool m_bMouseFolow = false;
 
-		float m_fScroll = 0;
 		float m_fRoteteAngle = 0.02f;
 		float m_fInclineAngle = 0.25f;
+
+		float m_fViewAngle = 0.0f;
+		float m_fRotate = 0.0f;
+		float m_fMoveX = 0.0f;
+		float m_fMoveY = 0.0f;
+
 
 		lib::Vector3 m_vCamPosition3D;
 		lib::Vector3 m_vCamRight3D;
@@ -64,16 +68,14 @@ namespace GL
 	public:
 		void draw() override;
 
-		void Scroll(float fValue_);
-
 		void on_handle_created() override;
 		void on_handle_changed() override;
 		void on_handle_destroyed() override;
 
 		void on_mouse_scroll(float fScroll_) override;
-		void on_mouse_down() override;
-		void on_mouse_up() override;
-		void on_mouse_move(int nMoveX_, int nMoveY_) override;
+		void on_mouse_left_btn_move(int nMoveX_, int nMoveY_) override;
+		void on_mouse_right_btn_move(int nMoveX_, int nMoveY_) override;
+		void on_mouse_double_click() override;
 
 		bool isInit();
 
