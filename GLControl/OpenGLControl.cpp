@@ -69,6 +69,12 @@ namespace GLControl {
 
 	System::Void OpenGLControl::updateOrbitInfo()
 	{
+		if (!m_pBridge->isInit())
+		{
+			this->Visible = false;
+			return System::Void();
+		}
+
 		this->textBoxOrbitStart->Text = gcnew System::String(m_pBridge->getOrbit_by_index(m_nOrbitCurrentIndex).c_str());
 		this->textBoxOrbitEnd->Text = gcnew System::String(m_pBridge->getOrbit_by_index(m_nOrbitCurrentIndex + m_nOrbitQuantity).c_str());
 

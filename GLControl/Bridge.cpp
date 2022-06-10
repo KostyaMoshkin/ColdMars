@@ -129,9 +129,7 @@ namespace GL
 
 		m_pControlContext->initContext((HWND)m_hWnd.ToPointer());
 
-		init();
-
-		m_bInit = true;
+		m_bInit = init();
 	}
 
 	void Bridge::on_handle_changed()
