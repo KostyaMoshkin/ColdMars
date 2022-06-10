@@ -318,4 +318,15 @@ namespace GL
 
 		m_pControlContext->end_draw();
 	}
+
+	void Bridge::setIncludeAtmosphere(bool bInclude_)
+	{
+		m_pControlContext->begin_draw();
+
+		m_pRenderOrbitTemperature->setIncludeAtmosphere(bInclude_);
+
+		m_pSceneRender->draw();
+
+		m_pControlContext->end_draw();
+	}
 }

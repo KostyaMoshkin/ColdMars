@@ -103,6 +103,8 @@ namespace GL
 		float getScale();
 		void setScale(float fScale_);
 
+		void setIncludeAtmosphere(bool bInclude_);
+
 	};
 
 }

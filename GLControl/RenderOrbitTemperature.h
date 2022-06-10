@@ -48,6 +48,8 @@ namespace GL {
 
 		unsigned m_nIndexCount = 0;
 
+		bool m_bIncludeAtmosphere = true;
+
 		GLuint m_nVAO = 0;
 
 	public:
@@ -88,6 +90,8 @@ namespace GL {
 		unsigned getOrbit_by_number(unsigned nNumber_);
 
 		unsigned getOrbit_by_LS(unsigned nNumber_);
+
+		void setIncludeAtmosphere(bool bInclude_);
 	};
 }
 

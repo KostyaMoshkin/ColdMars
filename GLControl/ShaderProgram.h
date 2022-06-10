@@ -57,6 +57,7 @@ namespace GL {
         void setUniformIVec2(const char* name_, const GLint* ivec2_);
         void setUniform1f(const char* name_, const GLfloat* fVal_);
         void setUniform1i(const char* name_, const GLint* nVal_);
+        void setUniform1b(const char* name_, const bool* bVal_);
 
     private:
         void compileProgram();

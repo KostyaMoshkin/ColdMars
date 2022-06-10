@@ -55,6 +55,8 @@ namespace GLControl {
 	private: System::Windows::Forms::Button^ buttonScaleMinus;
 	private: System::Windows::Forms::TextBox^ textBoxScale;
 	private: System::Windows::Forms::Label^ label2;
+	private: System::Windows::Forms::CheckBox^ checkBoxAtmosphere;
+
 
 
 
@@ -104,6 +106,11 @@ namespace GLControl {
 			this->labelJulianDate = (gcnew System::Windows::Forms::Label());
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->panelOrbit = (gcnew System::Windows::Forms::Panel());
+			this->checkBoxAtmosphere = (gcnew System::Windows::Forms::CheckBox());
+			this->buttonScalePlus = (gcnew System::Windows::Forms::Button());
+			this->buttonScaleMinus = (gcnew System::Windows::Forms::Button());
+			this->textBoxScale = (gcnew System::Windows::Forms::TextBox());
+			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->panelOrbiMovie = (gcnew System::Windows::Forms::Panel());
 			this->buttonFwdPlay = (gcnew System::Windows::Forms::Button());
 			this->buttonFwd = (gcnew System::Windows::Forms::Button());
@@ -124,10 +131,6 @@ namespace GLControl {
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->panelLabels = (gcnew System::Windows::Forms::Panel());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
-			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->textBoxScale = (gcnew System::Windows::Forms::TextBox());
-			this->buttonScaleMinus = (gcnew System::Windows::Forms::Button());
-			this->buttonScalePlus = (gcnew System::Windows::Forms::Button());
 			this->panelControl->SuspendLayout();
 			this->panelInfo->SuspendLayout();
 			this->panelOrbit->SuspendLayout();
@@ -157,7 +160,7 @@ namespace GLControl {
 			this->panelInfo->Controls->Add(this->labelJulianDate);
 			this->panelInfo->Controls->Add(this->label6);
 			this->panelInfo->Dock = System::Windows::Forms::DockStyle::Top;
-			this->panelInfo->Location = System::Drawing::Point(0, 181);
+			this->panelInfo->Location = System::Drawing::Point(0, 243);
 			this->panelInfo->Name = L"panelInfo";
 			this->panelInfo->Size = System::Drawing::Size(297, 74);
 			this->panelInfo->TabIndex = 2;
@@ -218,6 +221,7 @@ namespace GLControl {
 			// 
 			// panelOrbit
 			// 
+			this->panelOrbit->Controls->Add(this->checkBoxAtmosphere);
 			this->panelOrbit->Controls->Add(this->buttonScalePlus);
 			this->panelOrbit->Controls->Add(this->buttonScaleMinus);
 			this->panelOrbit->Controls->Add(this->textBoxScale);
@@ -234,8 +238,57 @@ namespace GLControl {
 			this->panelOrbit->Dock = System::Windows::Forms::DockStyle::Top;
 			this->panelOrbit->Location = System::Drawing::Point(0, 0);
 			this->panelOrbit->Name = L"panelOrbit";
-			this->panelOrbit->Size = System::Drawing::Size(297, 181);
+			this->panelOrbit->Size = System::Drawing::Size(297, 243);
 			this->panelOrbit->TabIndex = 1;
+			// 
+			// checkBoxAtmosphere
+			// 
+			this->checkBoxAtmosphere->AutoSize = true;
+			this->checkBoxAtmosphere->Checked = true;
+			this->checkBoxAtmosphere->CheckState = System::Windows::Forms::CheckState::Checked;
+			this->checkBoxAtmosphere->Location = System::Drawing::Point(24, 209);
+			this->checkBoxAtmosphere->Name = L"checkBoxAtmosphere";
+			this->checkBoxAtmosphere->Size = System::Drawing::Size(82, 17);
+			this->checkBoxAtmosphere->TabIndex = 13;
+			this->checkBoxAtmosphere->Text = L"Atmosphere";
+			this->checkBoxAtmosphere->UseVisualStyleBackColor = true;
+			this->checkBoxAtmosphere->CheckedChanged += gcnew System::EventHandler(this, &OpenGLControl::checkBoxAtmosphere_CheckedChanged);
+			// 
+			// buttonScalePlus
+			// 
+			this->buttonScalePlus->Location = System::Drawing::Point(205, 155);
+			this->buttonScalePlus->Name = L"buttonScalePlus";
+			this->buttonScalePlus->Size = System::Drawing::Size(20, 20);
+			this->buttonScalePlus->TabIndex = 12;
+			this->buttonScalePlus->Text = L"+";
+			this->buttonScalePlus->UseVisualStyleBackColor = true;
+			this->buttonScalePlus->Click += gcnew System::EventHandler(this, &OpenGLControl::buttonScalePlus_Click);
+			// 
+			// buttonScaleMinus
+			// 
+			this->buttonScaleMinus->Location = System::Drawing::Point(183, 155);
+			this->buttonScaleMinus->Name = L"buttonScaleMinus";
+			this->buttonScaleMinus->Size = System::Drawing::Size(20, 20);
+			this->buttonScaleMinus->TabIndex = 11;
+			this->buttonScaleMinus->Text = L"-";
+			this->buttonScaleMinus->UseVisualStyleBackColor = true;
+			this->buttonScaleMinus->Click += gcnew System::EventHandler(this, &OpenGLControl::buttonScaleMinus_Click);
+			// 
+			// textBoxScale
+			// 
+			this->textBoxScale->Location = System::Drawing::Point(62, 155);
+			this->textBoxScale->Name = L"textBoxScale";
+			this->textBoxScale->Size = System::Drawing::Size(100, 20);
+			this->textBoxScale->TabIndex = 10;
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Location = System::Drawing::Point(21, 162);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(34, 13);
+			this->label2->TabIndex = 9;
+			this->label2->Text = L"Scale";
 			// 
 			// panelOrbiMovie
 			// 
@@ -306,7 +359,7 @@ namespace GLControl {
 			// 
 			// buttonSetOrbit
 			// 
-			this->buttonSetOrbit->Location = System::Drawing::Point(183, 116);
+			this->buttonSetOrbit->Location = System::Drawing::Point(183, 205);
 			this->buttonSetOrbit->Name = L"buttonSetOrbit";
 			this->buttonSetOrbit->Size = System::Drawing::Size(100, 23);
 			this->buttonSetOrbit->TabIndex = 5;
@@ -415,42 +468,6 @@ namespace GLControl {
 			// 
 			this->timer1->Tick += gcnew System::EventHandler(this, &OpenGLControl::timer1_Tick);
 			// 
-			// label2
-			// 
-			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(21, 162);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(34, 13);
-			this->label2->TabIndex = 9;
-			this->label2->Text = L"Scale";
-			// 
-			// textBoxScale
-			// 
-			this->textBoxScale->Location = System::Drawing::Point(62, 155);
-			this->textBoxScale->Name = L"textBoxScale";
-			this->textBoxScale->Size = System::Drawing::Size(100, 20);
-			this->textBoxScale->TabIndex = 10;
-			// 
-			// buttonScaleMinus
-			// 
-			this->buttonScaleMinus->Location = System::Drawing::Point(183, 155);
-			this->buttonScaleMinus->Name = L"buttonScaleMinus";
-			this->buttonScaleMinus->Size = System::Drawing::Size(20, 20);
-			this->buttonScaleMinus->TabIndex = 11;
-			this->buttonScaleMinus->Text = L"-";
-			this->buttonScaleMinus->UseVisualStyleBackColor = true;
-			this->buttonScaleMinus->Click += gcnew System::EventHandler(this, &OpenGLControl::buttonScaleMinus_Click);
-			// 
-			// buttonScalePlus
-			// 
-			this->buttonScalePlus->Location = System::Drawing::Point(205, 155);
-			this->buttonScalePlus->Name = L"buttonScalePlus";
-			this->buttonScalePlus->Size = System::Drawing::Size(20, 20);
-			this->buttonScalePlus->TabIndex = 12;
-			this->buttonScalePlus->Text = L"+";
-			this->buttonScalePlus->UseVisualStyleBackColor = true;
-			this->buttonScalePlus->Click += gcnew System::EventHandler(this, &OpenGLControl::buttonScalePlus_Click);
-			// 
 			// OpenGLControl
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -507,6 +524,8 @@ namespace GLControl {
 
 		System::Void buttonScaleMinus_Click(System::Object^ sender, System::EventArgs^ e);
 		System::Void buttonScalePlus_Click(System::Object^ sender, System::EventArgs^ e);
+
+		System::Void checkBoxAtmosphere_CheckedChanged(System::Object^ sender, System::EventArgs^ e);
 
 	private:
 		void init();

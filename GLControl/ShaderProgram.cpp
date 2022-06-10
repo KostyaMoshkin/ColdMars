@@ -205,6 +205,17 @@ namespace GL {
         glUniform1i(nUniformLocation, *nVal_);
     }
 
+    void ShaderProgram::setUniform1b(const char* name_, const bool* bVal_)
+    {
+        int nUniformLocation = 0;
+        if (!getUniformLocation(name_, nUniformLocation))
+            return;
+
+        GLint nVal_ = (*bVal_) ? 1 : 0;
+
+        glUniform1i(nUniformLocation, nVal_);
+    }
+
     bool ShaderProgram::getUniformLocation(const char* name_, int& nUniformLocation_)
     {
         nUniformLocation_ = glGetUniformLocation(m_nProgramId, name_);

@@ -75,21 +75,6 @@ namespace GL {
 	{
 		m_pOrbitReader->setFileIndex(m_nFirstFile, m_nLastFile, m_vLevelData);
 
-		//-------------------------------------------------------------------------------------------------
-
-		BufferBounder<ShaderProgram> programBounder(m_pOrbitTemperatureProgram);
-		BufferBounder<RenderOrbitTemperature> renderBounder(this);
-
-		int nBaseHeight;
-		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), BaseHeight()), nBaseHeight))
-			nBaseHeight = 3396000;
-
-		m_pOrbitTemperatureProgram->setUniform1i("m_nBaseHeight", &nBaseHeight);
-
-		//-------------------------------------------------------------------------------------------------
-
-		renderBounder.unbound();
-
 		return true;
 	}
 
@@ -130,6 +115,14 @@ namespace GL {
 		BufferBounder<VertexBuffer> temperatureBounder(m_pTemperatureVertex);
 
 		m_pTemperatureVertex->attribPointer(0, 1, GL_FLOAT, GL_FALSE, 0, 0);
+
+		//-------------------------------------------------------------------------------------------------
+
+		int nBaseHeight;
+		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), BaseHeight()), nBaseHeight))
+			nBaseHeight = 3396000;
+
+		m_pOrbitTemperatureProgram->setUniform1i("m_nBaseHeight", &nBaseHeight);
 
 		//-------------------------------------------------------------------------------------------------
 
@@ -198,7 +191,11 @@ namespace GL {
 			m_pOrbitTemperatureProgram->setUniform1f("m_fLongitude_begin", &levelData.fLongitude_begin);
 			m_pOrbitTemperatureProgram->setUniform1f("m_fLongitude_end", &levelData.fLongitude_end);
 
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)levelData.vTemperature.size());
+			if(m_bIncludeAtmosphere)
+				glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)levelData.vTemperature.size());
+
+			glDrawArrays(GL_LINES, 0, 2);
+
 		}
 
 		renderBounder.unbound();
@@ -247,6 +244,11 @@ namespace GL {
 	unsigned RenderOrbitTemperature::getOrbit_by_LS(unsigned nNumber_)
 	{
 		return m_pOrbitReader->getOrbit_by_LS(nNumber_);
+	}
+
+	void RenderOrbitTemperature::setIncludeAtmosphere(bool bInclude_)
+	{
+		m_bIncludeAtmosphere = bInclude_;
 	}
 
 	void RenderOrbitTemperature::bound()

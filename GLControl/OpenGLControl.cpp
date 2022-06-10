@@ -324,6 +324,13 @@ namespace GLControl {
 		return System::Void();
 	}
 
+	System::Void OpenGLControl::checkBoxAtmosphere_CheckedChanged(System::Object^ sender, System::EventArgs^ e)
+	{
+		m_pBridge->setIncludeAtmosphere(this->checkBoxAtmosphere->Checked);
+
+		return System::Void();
+	}
+
 	void OpenGLControl::init()
 	{
 		if (m_bBridgeInit)
