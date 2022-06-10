@@ -108,9 +108,7 @@ namespace GL {
 		vPalette_.resize(m_nPaletteInterpolate);
 
 		for (int i = 0; i < vPalette_.size(); ++i)
-		{
-			vPalette_[i] = get(m_nMinValue + int(1.0 * i / m_nPaletteInterpolate * (m_nMaxValue - m_nMinValue)));
-		}
+			vPalette_[i] = get(m_nMinValue + 1.0 * i / m_nPaletteInterpolate * (m_nMaxValue - m_nMinValue));
 
 		nPaletteMin_ = m_nMinValue;
 		nPaletteMax_ = m_nMaxValue;
@@ -130,7 +128,7 @@ namespace GL {
 		arrange();
 	}
 
-	lib::iPoint3D Palette::get(int value_)
+	lib::iPoint3D Palette::get(double value_)
 	{
 		if (value_ <= m_nMinValue)
 			return m_vPalette[0].second;
@@ -156,7 +154,7 @@ namespace GL {
 			if (nPaletteValueDistace == 0)
 				continue;
 
-			int nValuDistance = value_ - paletteElementPrevious.first;
+			double nValuDistance = value_ - paletteElementPrevious.first;
 
 			double fRation = 1.0 / nPaletteValueDistace * nValuDistance;
 
