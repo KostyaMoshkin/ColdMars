@@ -135,6 +135,9 @@
     <ClInclude Include="MegdrReader.h">
       <Filter>Reader</Filter>
     </ClInclude>
+    <ClInclude Include="..\Include\LOG\logger.h">
+      <Filter>Lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

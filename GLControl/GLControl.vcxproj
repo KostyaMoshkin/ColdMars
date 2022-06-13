@@ -166,6 +166,10 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Include\LOG\logger.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+    </ClInclude>
     <ClInclude Include="..\Include\XML\tinystr.h" />
     <ClInclude Include="..\Include\XML\tinyxml.h" />
     <ClInclude Include="..\Include\XML\XMLreader.h" />
