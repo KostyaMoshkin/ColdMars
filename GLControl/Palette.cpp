@@ -50,9 +50,9 @@ namespace GL {
 
 		lib::XMLnodePtr xmlActivePalette = nullptr;
 
-		//if (m_vPaletteMap.contains(nPaletteID_))
-		//	xmlActivePalette = m_vPaletteMap[nPaletteID_];
-		//else
+		if (m_vPaletteMap.find(nPaletteID_) != m_vPaletteMap.end())
+			xmlActivePalette = m_vPaletteMap[nPaletteID_];
+		else
 			xmlActivePalette = lib::XMLreader::getNode(getConfig(), sPalette());
 
 		lib::XMLnodePtr xmlColor = lib::XMLreader::getNode(xmlActivePalette, sColor());
