@@ -2,8 +2,9 @@
 
 #include "ControlContext.h"
 
+#include "LOG\logger.h"
+
 #include <GLEW/glew.h>
-//#include <GLEW/wglew.h>
 
 #include <string>
 
@@ -69,10 +70,15 @@ namespace GL
         if (!initGlew())
             return false;
 
+        if (!makeCurrent())
+            return false;
+
         m_nVersionSupported = GL::ControlContext::getOpenGLVersion();
 
         if (!createContext())
             return false;
+
+        toLog("initContext");
 
         return true;
     }

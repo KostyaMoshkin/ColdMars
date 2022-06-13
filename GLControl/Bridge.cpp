@@ -3,12 +3,23 @@
 #include "ContextContainer.h"
 #include "Screen.h"
 
-#include <GLEW/glew.h>
+#include "LOG/logger.h"
 
+#include <GLEW/glew.h>
 namespace GL
 {
 	Bridge::Bridge()
 	{
+		m_pXMLconfig = lib::XMLreader::Create("ColdMars.config");
+
+		lib::LoggerSetup(lib::XMLreader::getNode(m_pXMLconfig->getRoot(), "Logger"));
+
+		toLog("==============================================================");
+		toLog(lib::getCurrentDateTime());
+		toLog("");
+
+		//------------------------------------------------------------------------------
+
 		DataContextEngine* pDataContextEngine = dynamic_cast<DataContextEngine*>(this);
 		m_pScreen = gcnew Screen(System::IntPtr(pDataContextEngine));
 		m_pContextContainer = gcnew ContextContainer(m_pScreen);
@@ -17,8 +28,6 @@ namespace GL
 
 		m_pSceneRender = SceneRender::Create();
 		
-		m_pXMLconfig = lib::XMLreader::Create("ColdMars.config");
-
 		m_pSceneRender->setConfig(m_pXMLconfig->getRoot());
 		m_pSceneRender->init();
 
@@ -40,6 +49,9 @@ namespace GL
 
 		m_pControlContext->begin_draw(m_pScreen->ViewControl->Size.Width, m_pScreen->ViewControl->Size.Height);
 
+		int nVersionFull = m_pSceneRender->GetVersion();
+		toLog("Bridge init. OpenGL version : " + std::to_string(nVersionFull));
+
 		//--------------------------------------------------------------------------
 
 		if (!m_pRenderMegdr)
@@ -48,14 +60,13 @@ namespace GL
 
 			m_pRenderMegdr->setConfig(m_pXMLconfig->getRoot());
 
-			int nVersionFull = m_pSceneRender->GetVersion();
 			m_pRenderMegdr->setVersionGl(nVersionFull);
 
 			if (!m_pRenderMegdr->init())
 			{
 				m_pSceneRender.reset();
 				m_bInit = false;
-				//toLog("OpenGL RenderMegdr init ERROR");
+				toLog("OpenGL RenderMegdr init ERROR");
 				return false;
 			}
 			m_pRenderMegdr->setVisible(true);
@@ -70,14 +81,13 @@ namespace GL
 
 			m_pRenderOrbitTemperature->setConfig(m_pXMLconfig->getRoot());
 
-			int nVersionFull = m_pSceneRender->GetVersion();
 			m_pRenderOrbitTemperature->setVersionGl(nVersionFull);
 
 			if (!m_pRenderOrbitTemperature->init())
 			{
 				m_pSceneRender.reset();
 				m_bInit = false;
-				//toLog("OpenGL RenderOrbitTemperature init ERROR");
+				toLog("OpenGL RenderOrbitTemperature init ERROR");
 				return false;
 			}
 			m_pRenderOrbitTemperature->setVisible(true);
@@ -86,10 +96,9 @@ namespace GL
 
 		//--------------------------------------------------------------------------
 
-		lib::Vector3 vCamPosition3D(0, 0, -3.5);
 		lib::Vector3 vCamRight3D(1, 0, 0);
 
-		m_pSceneRender->lookAt(vCamPosition3D, lib::Vector3(0, 0, 0), lib::Vector3(0, 1, 0));
+		m_pSceneRender->lookAt(m_vCamPosition3D, lib::Vector3(0, 0, 0), lib::Vector3(0, 1, 0));
 		m_pSceneRender->rotate(0);
 		m_pSceneRender->translate(0, 0);
 		m_pSceneRender->setViewAngle(0.0f);
@@ -116,11 +125,10 @@ namespace GL
 		if (!m_bInit)
 			return;
 
-		m_pControlContext->begin_draw(m_pScreen->ViewControl->Size.Width, m_pScreen->ViewControl->Size.Height);
-
-		m_pSceneRender->draw();
-
-		m_pControlContext->end_draw();
+		{
+			ContextSession contextSession(m_pControlContext, m_pScreen->ViewControl->Size.Width, m_pScreen->ViewControl->Size.Height);
+			m_pSceneRender->draw();
+		}
 	}
 
 	void Bridge::on_handle_created()
@@ -153,12 +161,11 @@ namespace GL
 	{
 		m_fViewAngle += fScroll_;
 
-		m_pControlContext->begin_draw();
-
-		m_pSceneRender->setViewAngle(m_fViewAngle);
-		m_pSceneRender->draw();
-
-		m_pControlContext->end_draw();
+		{
+			ContextSession contextSession(m_pControlContext);
+			m_pSceneRender->setViewAngle(m_fViewAngle);
+			m_pSceneRender->draw();
+		}
 	}
 
 	void Bridge::on_mouse_left_btn_move(int nMoveX_, int nMoveY_)
@@ -171,14 +178,12 @@ namespace GL
 
 		//------------------------------------------------------------------------------
 
-		m_pControlContext->begin_draw();
-
-		m_pSceneRender->lookAt(m_vCamPosition3D, lib::Vector3(0, 0, 0), vCamUp);
-		m_pSceneRender->rotate(m_fRotate);
-
-		m_pSceneRender->draw();
-
-		m_pControlContext->end_draw();
+		{
+			ContextSession contextSession(m_pControlContext);
+			m_pSceneRender->lookAt(m_vCamPosition3D, lib::Vector3(0, 0, 0), vCamUp);
+			m_pSceneRender->rotate(m_fRotate);
+			m_pSceneRender->draw();
+		}
 	}
 
 	void Bridge::on_mouse_right_btn_move(int nMoveX_, int nMoveY_)
@@ -186,18 +191,15 @@ namespace GL
 		m_fMoveX -= 2.0f * nMoveX_ / m_pScreen->ViewControl->Size.Width;
 		m_fMoveY += 2.0f * nMoveY_ / m_pScreen->ViewControl->Size.Width;
 
-		m_pControlContext->begin_draw();
-
-		m_pSceneRender->translate(m_fMoveX, m_fMoveY);
-
-		m_pSceneRender->draw();
-
-		m_pControlContext->end_draw();
+		{
+			ContextSession contextSession(m_pControlContext);
+			m_pSceneRender->translate(m_fMoveX, m_fMoveY);
+			m_pSceneRender->draw();
+		}
 	}
 
 	void Bridge::on_mouse_double_click()
 	{
-		lib::Vector3 vCamPosition3D(0, 0, -3.5);
 		lib::Vector3 vCamRight3D(1, 0, 0);
 		m_vCamPosition3D = lib::Vector3(0, 0, -3.5);
 
@@ -206,17 +208,15 @@ namespace GL
 		m_fMoveY = 0.0f;
 		m_fViewAngle = 0.0f;
 
+		{
+			ContextSession contextSession(m_pControlContext);
+			m_pSceneRender->lookAt(m_vCamPosition3D, lib::Vector3(0, 0, 0), lib::Vector3(0, 1, 0));
+			m_pSceneRender->rotate(0);
+			m_pSceneRender->translate(0, 0);
+			m_pSceneRender->setViewAngle(0.0f);
 
-		m_pControlContext->begin_draw();
-
-		m_pSceneRender->lookAt(vCamPosition3D, lib::Vector3(0, 0, 0), lib::Vector3(0, 1, 0));
-		m_pSceneRender->rotate(0);
-		m_pSceneRender->translate(0, 0);
-		m_pSceneRender->setViewAngle(0.0f);
-
-		m_pSceneRender->draw();
-
-		m_pControlContext->end_draw();
+			m_pSceneRender->draw();
+		}
 	}
 
 	bool Bridge::isInit()
@@ -307,24 +307,22 @@ namespace GL
 
 	void Bridge::setScale(float fScale_)
 	{
-		m_pControlContext->begin_draw();
+		{
+			ContextSession contextSession(m_pControlContext);
+			m_pRenderMegdr->setScale(fScale_);
+			m_pRenderOrbitTemperature->setScale(fScale_);
 
-		m_pRenderMegdr->setScale(fScale_);
-		m_pRenderOrbitTemperature->setScale(fScale_);
-
-		m_pSceneRender->draw();
-
-		m_pControlContext->end_draw();
+			m_pSceneRender->draw();
+		}
 	}
 
 	void Bridge::setIncludeAtmosphere(bool bInclude_)
 	{
-		m_pControlContext->begin_draw();
+		{
+			ContextSession contextSession(m_pControlContext);
+			m_pRenderOrbitTemperature->setIncludeAtmosphere(bInclude_);
 
-		m_pRenderOrbitTemperature->setIncludeAtmosphere(bInclude_);
-
-		m_pSceneRender->draw();
-
-		m_pControlContext->end_draw();
+			m_pSceneRender->draw();
+		}
 	}
 }

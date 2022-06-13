@@ -57,6 +57,8 @@ namespace GL {
 
 	bool RenderMegdr::init()
 	{
+		toLog("RenderMegdr init");
+
 		m_pIndex = GL::IndexBuffer::Create();
 		m_pIndirect = GL::IndirectBuffer::Create();
 

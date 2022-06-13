@@ -7,6 +7,8 @@
 
 #include <fstream>
 
+#include "LOG/logger.h"
+
 namespace orbit
 {
 	std::vector<Snpt> readFile(const char* sFileName_, bool bHoleFile_ = true)
@@ -52,9 +54,14 @@ namespace orbit
 
 	bool OrbitReader::init()
 	{
+		toLog("OrbitReader init");
+
 		std::string sOrbitDir;
 		if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), OrbitDir()), sOrbitDir))
+		{
+			toLog("ERROR! Can't find orbit dir tag in config");
 			return false;
+		}
 
 		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), TemperartureAltitudeMax()), m_nAltitudeMAX))
 			m_nAltitudeMAX = 60;
@@ -63,6 +70,7 @@ namespace orbit
 			m_nInterpolateCount = 30;
 
 		m_vFileList = lib::create_file_list(sOrbitDir.c_str());
+		toLog("File list created");
 
 		for (int i = 0; i < m_vFileList.size(); ++i)
 		{
@@ -71,18 +79,35 @@ namespace orbit
 
 			std::string  sNumber = m_vFileList[i].substr(nNamePos, nPointPos - nNamePos);
 
-			m_mOrbit[std::stoi(sNumber)] = i;
+			try
+			{
+				int nNumber = std::stoi(sNumber);
+				m_mOrbit[nNumber] = i;
+			}
+			catch (const std::exception&)
+			{
+				toLog("ERROR! Can't convert to int: " + sNumber);
+				m_vFileList.erase(m_vFileList.begin() + i);
+				--i;
+				continue;
+			}
 
 			//-----------------------------------------------
 
 			std::vector<Snpt> vNpt = readFile(m_vFileList[i].c_str(), false);
 
-			m_mLS[int(vNpt[0].fLS * 100)] = i;
+			if (!vNpt.empty())
+				m_mLS[int(vNpt[0].fLS * 100)] = i;
+			else
+			{
+				toLog("ERROR! Can't open npt file: " + m_vFileList[i]);
+				m_vFileList.erase(m_vFileList.begin() + i);
+				--i;
+				continue;
+			}
 		}
 
-		bool bError = false;
-
-		return !bError;
+		return true;
 	}
 
 	void OrbitReader::setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_)
@@ -109,8 +134,8 @@ namespace orbit
 				float fAltitudeMin2 = interpolator2.getAltitudeMin();
 				float fAltitudeMax2 = interpolator2.getAltitudeMax();
 
-				float fAltitudeMinMax = std::max(fAltitudeMin1, fAltitudeMin2);
-				float fAltitudeMaxMin = std::min(std::min(fAltitudeMax1, fAltitudeMax2), (float)m_nAltitudeMAX);
+				float fAltitudeMinMax = std::max<float>(fAltitudeMin1, fAltitudeMin2);
+				float fAltitudeMaxMin = std::min<float>(std::min<float>(fAltitudeMax1, fAltitudeMax2), (float)m_nAltitudeMAX);
 
 				float fAltitudeStep = (fAltitudeMaxMin - fAltitudeMinMax) / m_nInterpolateCount;
 

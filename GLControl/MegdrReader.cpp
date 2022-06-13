@@ -112,6 +112,8 @@ namespace megdr
 
 	bool MegdrReader::init()
 	{
+		toLog("MegdrReader init");
+
 		lib::XMLnodePtr xmlPaletteDefault = lib::XMLreader::getNode(getConfig(), nMegdrDefault());
 
 		if (!!xmlPaletteDefault && !lib::XMLreader::getInt(xmlPaletteDefault, m_nActiveID))
@@ -154,13 +156,13 @@ namespace megdr
 	{
 		lib::XMLnodePtr xmlActiveMegdr = nullptr;
 
-		//if (m_vMegdrNode.contains(nId_))
-		//	xmlActiveMegdr = m_vMegdrNode[nId_];
-		//else
+		if (m_vMegdrNode.find(nId_) != m_vMegdrNode.end())
+			xmlActiveMegdr = m_vMegdrNode[nId_];
+		else
 			xmlActiveMegdr = lib::XMLreader::getNode(getConfig(), sMegdr());
 
-		//if (m_mvIndeces.contains(nId_))
-		//	return true;
+		if (m_mvIndeces.find(nId_) != m_mvIndeces.end())
+			return true;
 
 		//--------------------------------------------------------------------------------------
 

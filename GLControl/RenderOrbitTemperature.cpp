@@ -80,6 +80,8 @@ namespace GL {
 
 	bool RenderOrbitTemperature::init()
 	{
+		toLog("RenderOrbitTemperature init");
+
 		m_pIndex = GL::IndexBuffer::Create();
 		m_pIndirect = GL::IndirectBuffer::Create();
 
