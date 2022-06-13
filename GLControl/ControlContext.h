@@ -52,4 +52,33 @@ namespace GL
         static int getOpenGLVersion();
 
 	};
+
+    class ContextSession
+    {
+        ControlContextPtr m_pContext;
+        bool m_started = false;
+
+    public:
+        ContextSession(ControlContextPtr pContext_, int width_, int height_)
+            : m_pContext(pContext_)
+        {
+            m_started = m_pContext->begin_draw(width_, height_);
+        }
+
+        ContextSession(ControlContextPtr pContext_)
+            : m_pContext(pContext_)
+        {
+            m_started = m_pContext->begin_draw();
+        }
+
+        ~ContextSession()
+        {
+            m_pContext->end_draw();
+        }
+
+        bool is_started() const
+        {
+            return m_started;
+        }
+    };
 }
