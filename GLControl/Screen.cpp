@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Screen.h"
 
+#include "LOG\logger.h"
+
 #include  <utility>
 
 namespace GL
@@ -10,6 +12,8 @@ namespace GL
     {
         m_pDataContextEngine = reinterpret_cast<DataContextEngine*>(pEngine_.ToPointer());
         InitializeComponent();
+
+        toLog("Screen::Screen InitializeComponent");
     }
     void Screen::InitializeComponent(void)
     {
@@ -23,6 +27,7 @@ namespace GL
         this->BackColor = System::Drawing::Color::Red;
         this->HandleCreated += gcnew System::EventHandler(this, &Screen::OnHandleCreated);
         this->HandleDestroyed += gcnew System::EventHandler(this, &Screen::OnHandleDestroyed);
+        this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Screen::Screen_Paint);
         this->SizeChanged += gcnew System::EventHandler(this, &Screen::Screen_OnSizeChanged);
         this->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &Screen::ScreenMouseDown);
         this->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &Screen::ScreenMouseMove);
@@ -35,6 +40,8 @@ namespace GL
 
     System::Void Screen::OnHandleCreated(System::Object^ /*sender*/, System::EventArgs^ e)
     {
+        toLog("Screen::OnHandleCreated");
+
         m_hWnd = (HWND)Handle.ToPointer();
 
         if (!!m_pDataContextEngine)
@@ -48,19 +55,23 @@ namespace GL
             m_parent_open = true;
             this->ParentForm->Closing += gcnew System::ComponentModel::CancelEventHandler(this, &Screen::ParentForm_Closing);
         }
-
-        //System::Windows::Forms::UserControl::OnHandleCreated(e);
     }
 
     System::Void Screen::OnHandleDestroyed(System::Object^ /*sender*/, System::EventArgs^ e)
     {
-        if (!!m_pDataContextEngine)
-        {
-            m_handle_destroyed = true;
-            m_pDataContextEngine->on_handle_destroyed();
-        }
+        if (!m_pDataContextEngine)
+            return;
 
-        //System::Windows::Forms::UserControl::OnHandleDestroyed(e);
+        m_handle_destroyed = true;
+        m_pDataContextEngine->on_handle_destroyed();
+    }
+
+    System::Void Screen::Screen_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
+    {
+        if (!m_pDataContextEngine)
+            return;
+
+        m_pDataContextEngine->draw();
     }
 
     System::Void Screen::Screen_OnSizeChanged(System::Object^ /*sender*/, System::EventArgs^ e)
@@ -81,10 +92,9 @@ namespace GL
         }
 
         if (stateChanged)
-        {
             m_pDataContextEngine->on_handle_changed();
-            //m_pDataContextEngine->draw();
-        }
+
+        m_pDataContextEngine->draw();
     }
 
     System::Void Screen::ParentForm_Closing(System::Object^ /*sender*/, System::ComponentModel::CancelEventArgs^ /*e*/)

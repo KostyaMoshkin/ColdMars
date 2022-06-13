@@ -39,6 +39,7 @@ namespace GL
 	protected: 
 		System::Void OnHandleCreated(System::Object^ /*sender*/, System::EventArgs^ e);
 		System::Void OnHandleDestroyed(System::Object^ /*sender*/, System::EventArgs^ e);
+		System::Void Screen_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
 		System::Void Screen_OnSizeChanged(System::Object^, System::EventArgs^ e);
 		System::Void ParentForm_Closing(System::Object^, System::ComponentModel::CancelEventArgs^);
 
