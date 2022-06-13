@@ -1,13 +1,29 @@
 #include "pch.h"
 #include "OpenGLControl.h"
 
+#include "LOG\logger.h"
+
 namespace GLControl {
+
+	static bool String_to_double(System::String^ str_, double& value_)
+	{
+		if (!System::Double::TryParse(str_, System::Globalization::NumberStyles::AllowDecimalPoint, System::Globalization::CultureInfo::CurrentCulture, value_) &&
+			!System::Double::TryParse(str_, System::Globalization::NumberStyles::AllowDecimalPoint, System::Globalization::CultureInfo::InvariantCulture, value_)
+			)
+			return false;
+
+		return true;
+	}
+
+	//----------------------------------------------------------------------------------------------------
 
 	OpenGLControl::OpenGLControl()
 	{
 		m_pBridge = new GL::Bridge();
 
 		InitializeComponent();
+
+		toLog("OpenGLControl InitializeComponent");
 
 		m_pBridge->getScreen()->ViewControl->Dock = System::Windows::Forms::DockStyle::Fill;
 		this->panelGL->Controls->Add(m_pBridge->getScreen()->ViewControl);
@@ -19,7 +35,6 @@ namespace GLControl {
 			m_vLabel[i] = (gcnew System::Windows::Forms::Label());
 			this->panelLabels->Controls->Add(m_vLabel[i]);
 		}
-
 	}
 
 	OpenGLControl::~OpenGLControl()
@@ -32,27 +47,12 @@ namespace GLControl {
 		delete m_pBridge;
 	}
 
-	System::Void OpenGLControl::runRender()
-	{
-		if (!m_pBridge->isInit())
-			return System::Void();
-
-		m_pBridge->draw();
-
-		return System::Void();
-	}
-
 	System::Void OpenGLControl::OpenGLControl_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
 	{
 		init();
-
-		runRender();
 	}
-
 	System::Void OpenGLControl::OpenGLControl_Resize(System::Object^ sender, System::EventArgs^ e)
 	{
-		runRender();
-
 		this->pictureBox1->Refresh();
 	}
 
@@ -86,18 +86,11 @@ namespace GLControl {
 		this->textBoxScale->Text = gcnew System::String(std::to_string(m_pBridge->getScale()).c_str());
 
 		double fLS;
-		if (!System::Double::TryParse(this->textBoxLS->Text, System::Globalization::NumberStyles::AllowDecimalPoint, System::Globalization::CultureInfo::CurrentCulture, fLS) &&
-			!System::Double::TryParse(this->textBoxLS->Text, System::Globalization::NumberStyles::AllowDecimalPoint, System::Globalization::CultureInfo::InvariantCulture, fLS)
-			)
+		if (!String_to_double(this->textBoxLS->Text, fLS))
 			fLS = m_nLS;
 
 		unsigned nLS = unsigned(fLS * 100);
 		m_nLS = nLS;
-	}
-
-	System::Void OpenGLControl::textBoxOrbitQuantity_TextChanged(System::Object^ sender, System::EventArgs^ e)
-	{
-		return System::Void();
 	}
 
 	System::Void OpenGLControl::buttonSetOrbit_Click(System::Object^ sender, System::EventArgs^ e)
@@ -105,18 +98,14 @@ namespace GLControl {
 		unsigned nOrbitQuantity = System::Int32::Parse(this->textBoxOrbitQuantity->Text);
 
 		double fLS;
-		if (!System::Double::TryParse(this->textBoxLS->Text, System::Globalization::NumberStyles::AllowDecimalPoint, System::Globalization::CultureInfo::CurrentCulture, fLS) &&
-			!System::Double::TryParse(this->textBoxLS->Text, System::Globalization::NumberStyles::AllowDecimalPoint, System::Globalization::CultureInfo::InvariantCulture, fLS)
-			)
+		if (!String_to_double(this->textBoxLS->Text, fLS))
 			fLS = m_nLS;
 
 		unsigned nLS = unsigned(fLS * 100);
 
 		double fScale;
-		if (!System::Double::TryParse(this->textBoxScale->Text, System::Globalization::NumberStyles::AllowDecimalPoint, System::Globalization::CultureInfo::CurrentCulture, fScale) &&
-			!System::Double::TryParse(this->textBoxScale->Text, System::Globalization::NumberStyles::AllowDecimalPoint, System::Globalization::CultureInfo::InvariantCulture, fScale)
-			)
-			fScale = m_nScale;
+		if (!String_to_double(this->textBoxScale->Text, fScale))
+			fScale = (double)m_nScale;
 
 		unsigned nScale = unsigned(fScale * 100);
 

@@ -383,7 +383,6 @@ namespace GLControl {
 			this->textBoxOrbitQuantity->Size = System::Drawing::Size(100, 20);
 			this->textBoxOrbitQuantity->TabIndex = 3;
 			this->textBoxOrbitQuantity->Text = L"3";
-			this->textBoxOrbitQuantity->TextChanged += gcnew System::EventHandler(this, &OpenGLControl::textBoxOrbitQuantity_TextChanged);
 			// 
 			// textBoxOrbitEnd
 			// 
@@ -497,8 +496,6 @@ namespace GLControl {
 
 	private: 
 
-		System::Void runRender();
-
 		System::Void OpenGLControl_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
 
 		System::Void OpenGLControl_Resize(System::Object^ sender, System::EventArgs^ e);
@@ -506,8 +503,6 @@ namespace GLControl {
 		System::Void trackBarOrbit_Scroll(System::Object^ sender, System::EventArgs^ e);
 
 		System::Void updateOrbitInfo();
-
-		System::Void textBoxOrbitQuantity_TextChanged(System::Object^ sender, System::EventArgs^ e);
 
 		System::Void buttonSetOrbit_Click(System::Object^ sender, System::EventArgs^ e);
 
