@@ -57,8 +57,6 @@ namespace GL {
 
 	bool RenderMegdr::init()
 	{
-		toLog("RenderMegdr init");
-
 		m_pIndex = GL::IndexBuffer::Create();
 		m_pIndirect = GL::IndirectBuffer::Create();
 
@@ -78,7 +76,7 @@ namespace GL {
 		BufferBounder<ShaderProgram> programBounder(m_pMegdrProgram);
 		BufferBounder<RenderMegdr> renderBounder(this);
 
-		//-------------------------------------------------------------------------------------
+		//-------------------------------------------------------------------------------------------------
 
 		m_pAlbedoTexture = GL::TextureBuffer::Create(GL_TEXTURE_2D, GL_TEXTURE1, GL_LINEAR);
 		m_pAlbedoTexture->alignment(1);
@@ -86,7 +84,15 @@ namespace GL {
 		int nPalette = 1;
 		m_pMegdrProgram->setUniform1i("m_tAlbedo", &nPalette);
 
-		//-------------------------------------------------------------------------------------
+		//-------------------------------------------------------------------------------------------------
+
+		m_pDigitsTexture = GL::TextureBuffer::Create(GL_TEXTURE_2D, GL_TEXTURE2, GL_NEAREST);
+		m_pDigitsTexture->alignment(1);
+
+		int nDigit = 2;
+		m_pMegdrProgram->setUniform1i("m_tDigit", &nDigit);
+
+		//-------------------------------------------------------------------------------------------------
 
 		m_pRadiusVertex = GL::VertexBuffer::Create();
 		m_pRadiusVertex->setUsage(GL_STATIC_DRAW);
@@ -117,15 +123,28 @@ namespace GL {
 
 		//-------------------------------------------------------------------------------------------------
 
-		unsigned nMarsTone;
-		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), MarsTone()), nMarsTone))
-			nMarsTone = 0x00c36b15;
-
 		std::string sAlbedoFile;
 		if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), Albedo()), sAlbedoFile))
 			return false;
 
+		unsigned nMarsTone;
+		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), MarsTone()), nMarsTone))
+			nMarsTone = 0x00c36b15;
+
 		if ( !fillAlbedo(sAlbedoFile.c_str(), nMarsTone) )
+			return false;
+
+		//-------------------------------------------------------------------------------------------------
+
+		std::string sDigitFile;
+		if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), Digits()), sDigitFile))
+			return false;
+
+		unsigned nDigitsColor;
+		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), DigitsColor()), nDigitsColor))
+			nMarsTone = 0x00c36b15;
+
+		if ( !fillDigit(sDigitFile.c_str(), nDigitsColor) )
 			return false;
 
 		//-------------------------------------------------------------------------------------------------
@@ -144,6 +163,7 @@ namespace GL {
 		BufferBounder<VertexBuffer> radiusBounder(m_pRadiusVertex);
 		BufferBounder<VertexBuffer> areoidBounder(m_pTopographyVertex);
 		BufferBounder<TextureBuffer> albedoTextureBounder(m_pAlbedoTexture);
+		BufferBounder<TextureBuffer> digitTextureBounder(m_pDigitsTexture);
 		BufferBounder<IndexBuffer> indexBounder(m_pIndex);
 		BufferBounder<IndirectBuffer> indirectBounder(m_pIndirect);
 
@@ -152,6 +172,8 @@ namespace GL {
 		else
 			for (int i = 0; i < (GLsizei)m_pMegdr->getLinesCount() - 1; ++i)
 				glDrawElementsIndirect(GL_TRIANGLE_STRIP, GL_UNSIGNED_INT, (void *)size_t(i * m_pMegdr->getIndirectCommandSize()));
+
+		//-------------------------------------------------------------------------------------------------
 
 		renderBounder.unbound();
 	}
@@ -187,7 +209,7 @@ namespace GL {
 
 		m_pMegdrProgram->setUniformVecf("m_vMarsTone", &vColor.x);
 
-		//-----------------------------------------------------------------------------------
+		//-------------------------------------------------------------------------------------------------
 
 		int nWidth;
 		int nHeight;
@@ -207,7 +229,42 @@ namespace GL {
 
 		stbi_image_free(pImage);
 
-		//-----------------------------------------------------------------------------------
+		//-------------------------------------------------------------------------------------------------
+
+		return true;
+	}
+
+	bool RenderMegdr::fillDigit(const char *sFileName_, unsigned nDigitColor_)
+	{
+		BufferBounder<ShaderProgram> programBounder(m_pMegdrProgram);
+		BufferBounder<TextureBuffer> digitTextureBounder(m_pDigitsTexture);
+
+		lib::fPoint3D vColor;
+		lib::unpackColor(nDigitColor_, vColor);
+
+		m_pMegdrProgram->setUniformVecf("m_vDigitColor", &vColor.x);
+
+		//-------------------------------------------------------------------------------------------------
+
+		int nWidth;
+		int nHeight;
+		int nCompress;
+		stbi_uc* pImage = stbi_load(sFileName_, &nWidth, &nHeight, &nCompress, 1);
+
+		if (pImage == NULL) {
+			toLog("ERROR open image file: " + std::string(sFileName_));
+			return false;
+		}
+
+		if (!m_pDigitsTexture->fillBuffer2D(GL_RED, nWidth, nHeight, GL_RED, GL_UNSIGNED_BYTE, pImage))
+		{
+			toLog("ERROR load digit into GPU");
+			return false;
+		}
+
+		stbi_image_free(pImage);
+
+		//-------------------------------------------------------------------------------------------------
 
 		return true;
 	}
