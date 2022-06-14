@@ -49,4 +49,6 @@ void main()
 	gl_Position = m_mTranslate * m_mPerspective * m_mView * m_mRotate * vec4(vPosition, 1.0);
 
 	fPaletteIndex = (m_fTemperature - m_fPaletteValueMin) / (m_fPaletteValueMax - m_fPaletteValueMin);
+
+	fPaletteIndex = max(min(fPaletteIndex, 0.9999), 0.0001);
 }
