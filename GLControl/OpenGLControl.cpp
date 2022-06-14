@@ -23,8 +23,6 @@ namespace GLControl {
 
 		InitializeComponent();
 
-		toLog("OpenGLControl InitializeComponent");
-
 		m_pBridge->getScreen()->ViewControl->Dock = System::Windows::Forms::DockStyle::Fill;
 		this->panelGL->Controls->Add(m_pBridge->getScreen()->ViewControl);
 
@@ -116,9 +114,13 @@ namespace GLControl {
 		}
 		else if (m_nLS != nLS)
 		{
-			m_nOrbitCurrentIndex = m_pBridge->getOrbit_by_LS(int(fLS * 100));
+			unsigned nFindIndex = m_pBridge->getOrbit_by_LS(nLS);
 
-			m_nLS = nLS;
+			if (nFindIndex != UINT_MAX)
+			{
+				m_nOrbitCurrentIndex = nFindIndex;
+				m_nLS = nLS;
+			}
 		}
 		else if (m_nScale != nScale)
 		{
@@ -136,7 +138,10 @@ namespace GLControl {
 			if (nOrbitCurrentIndex != UINT_MAX)
 			{
 				m_nOrbitCurrentIndex = nOrbitCurrentIndex;
-				m_nOrbitQuantity = m_pBridge->getOrbit_by_number(nOrbitEndNumber) - m_nOrbitCurrentIndex;
+
+				unsigned nOrbitEndIndex = m_pBridge->getOrbit_by_number(nOrbitEndNumber);
+				if (nOrbitEndIndex != UINT_MAX)
+					m_nOrbitQuantity = (nOrbitEndIndex <= m_nOrbitCurrentIndex) ? 1 : nOrbitEndIndex - m_nOrbitCurrentIndex;
 			}
 		}
 
