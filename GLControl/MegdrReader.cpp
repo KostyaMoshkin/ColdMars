@@ -112,8 +112,6 @@ namespace megdr
 
 	bool MegdrReader::init()
 	{
-		toLog("MegdrReader init");
-
 		lib::XMLnodePtr xmlPaletteDefault = lib::XMLreader::getNode(getConfig(), nMegdrDefault());
 
 		if (!!xmlPaletteDefault && !lib::XMLreader::getInt(xmlPaletteDefault, m_nActiveID))

@@ -12,8 +12,6 @@ namespace GL
     {
         m_pDataContextEngine = reinterpret_cast<DataContextEngine*>(pEngine_.ToPointer());
         InitializeComponent();
-
-        toLog("Screen::Screen InitializeComponent");
     }
     void Screen::InitializeComponent(void)
     {
@@ -40,8 +38,6 @@ namespace GL
 
     System::Void Screen::OnHandleCreated(System::Object^ /*sender*/, System::EventArgs^ e)
     {
-        toLog("Screen::OnHandleCreated");
-
         m_hWnd = (HWND)Handle.ToPointer();
 
         if (!!m_pDataContextEngine)

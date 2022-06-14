@@ -78,8 +78,6 @@ namespace GL
         if (!createContext())
             return false;
 
-        toLog("initContext");
-
         return true;
     }
 

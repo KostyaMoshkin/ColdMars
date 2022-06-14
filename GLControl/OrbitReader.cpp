@@ -54,8 +54,6 @@ namespace orbit
 
 	bool OrbitReader::init()
 	{
-		toLog("OrbitReader init");
-
 		std::string sOrbitDir;
 		if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), OrbitDir()), sOrbitDir))
 		{
@@ -70,7 +68,6 @@ namespace orbit
 			m_nInterpolateCount = 30;
 
 		m_vFileList = lib::create_file_list(sOrbitDir.c_str());
-		toLog("File list created");
 
 		for (int i = 0; i < m_vFileList.size(); ++i)
 		{
@@ -213,7 +210,7 @@ namespace orbit
 			return m_mOrbit[nNumber_];
 
 		for (auto const& [key, value] : m_mOrbit)
-			if (key <= (int)nNumber_)
+			if (key >= (int)nNumber_)
 				return value;
 
 		return UINT_MAX;
@@ -221,7 +218,14 @@ namespace orbit
 
 	unsigned OrbitReader::getOrbit_by_LS(unsigned nNumber_)
 	{
-		return m_mLS[nNumber_];
+		if (m_mLS.find(nNumber_) != m_mLS.end())
+			return m_mLS[nNumber_];
+
+		for (auto const& [key, value] : m_mLS)
+			if (key >= (int)nNumber_)
+				return value;
+
+		return UINT_MAX;
 	}
 
 	std::string OrbitReader::getUTC()

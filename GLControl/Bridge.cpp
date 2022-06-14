@@ -50,7 +50,7 @@ namespace GL
 		m_pControlContext->begin_draw(m_pScreen->ViewControl->Size.Width, m_pScreen->ViewControl->Size.Height);
 
 		int nVersionFull = m_pSceneRender->GetVersion();
-		toLog("Bridge init. OpenGL version : " + std::to_string(nVersionFull));
+		toLog("OpenGL version : " + std::to_string(nVersionFull));
 
 		//--------------------------------------------------------------------------
 

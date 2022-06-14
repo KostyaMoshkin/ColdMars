@@ -27,7 +27,7 @@ void main()
 
 	vAlbedoCoords = vec2(x, y);
 
-	float fLatitude = y * 3.1415926 - 3.1415926 / 2.0;
+	float fLatitude = 3.1415926 / 2.0 - y * 3.1415926;
 	float fLongitude = x * 3.1415926 * 2.0;
 
 	vec3 vPosition = fDistance * vec3(
