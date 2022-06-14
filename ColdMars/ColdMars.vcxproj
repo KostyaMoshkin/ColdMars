@@ -85,7 +85,7 @@
       <EntryPointSymbol>main</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
-      <Command>copy *.config ..\x64\Debug\*.* &amp; copy Albedo.bmp ..\x64\Debug\*.*</Command>
+      <Command>copy *.config ..\x64\Debug\*.* &amp; copy *.bmp ..\x64\Debug\*.*</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -117,7 +117,7 @@
       <EntryPointSymbol>main</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
-      <Command>copy *.config ..\x64\Release\*.* &amp; copy Albedo.bmp ..\x64\Release\*.*</Command>
+      <Command>copy *.config ..\x64\Release\*.* &amp; copy *.bmp ..\x64\Release\*.*</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -152,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Albedo.bmp" />
+    <Image Include="Digits.bmp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ColdMars.config" />

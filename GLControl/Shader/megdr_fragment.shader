@@ -1,8 +1,10 @@
 #version 330 core
 
 uniform sampler2D m_tAlbedo;
+//uniform sampler2D m_tDigit;
 
 uniform vec3 m_vMarsTone;
+uniform vec3 m_vDigitColor;
 
 smooth in vec2 vAlbedoCoords;
 

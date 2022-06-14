@@ -21,6 +21,8 @@ namespace GL {
 	{
 		static const char* Albedo()		{ return "Albedo";		}
 		static const char* MarsTone()	{ return "MarsTone";	}
+		static const char* Digits()		{ return "Digits";		}
+		static const char* DigitsColor()	{ return "DigitsColor";	}
 		static const char* BaseHeight()	{ return "BaseHeight"; }
 
 		ShaderProgramPtr m_pMegdrProgram = nullptr;
@@ -30,6 +32,7 @@ namespace GL {
 		IndirectBufferPtr m_pIndirect = nullptr;
 		TextureBufferPtr m_pPaletteTexture = nullptr;
 		TextureBufferPtr m_pAlbedoTexture = nullptr;
+		TextureBufferPtr m_pDigitsTexture = nullptr;
 
 		megdr::MegdrReaderPtr m_pMegdr = nullptr;
 		orbit::OrbitReaderPtr m_pOrbitReader = nullptr;
@@ -51,6 +54,7 @@ namespace GL {
 
 		bool fillVertex();
 		bool fillAlbedo(const char* sFileName_, unsigned nMarsTone_);
+		bool fillDigit(const char* sFileName_, unsigned nMarsTone_);
 
 	public:
 		// Унаследовано через Render
