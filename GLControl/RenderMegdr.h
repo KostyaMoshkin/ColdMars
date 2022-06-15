@@ -19,11 +19,12 @@ namespace GL {
 
 	class RenderMegdr : public Render
 	{
-		static const char* Albedo()		{ return "Albedo";		}
-		static const char* MarsTone()	{ return "MarsTone";	}
-		static const char* Digits()		{ return "Digits";		}
+		static const char* Albedo()			{ return "Albedo";		}
+		static const char* MarsTone()		{ return "MarsTone";	}
+		static const char* NetColor()		{ return "NetColor";	}
+		static const char* Digits()			{ return "Digits";		}
 		static const char* DigitsColor()	{ return "DigitsColor";	}
-		static const char* BaseHeight()	{ return "BaseHeight"; }
+		static const char* BaseHeight()		{ return "BaseHeight";	}
 
 		ShaderProgramPtr m_pMegdrProgram = nullptr;
 		VertexBufferPtr m_pRadiusVertex = nullptr;
@@ -52,7 +53,7 @@ namespace GL {
 	private:
 		void setScale();
 
-		bool fillVertex();
+		bool fillMegdrVertex();
 		bool fillAlbedo(const char* sFileName_, unsigned nMarsTone_);
 		bool fillDigit(const char* sFileName_, unsigned nMarsTone_);
 

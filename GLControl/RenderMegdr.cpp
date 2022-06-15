@@ -104,11 +104,20 @@ namespace GL {
 
 		//-------------------------------------------------------------------------------------------------
 
-		renderBounder.unbound();
+		unsigned nNetColor;
+		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), NetColor()), nNetColor))
+			nNetColor = 0xFFFFFFFF;
+
+		lib::fPoint3D vNetColor;
+		lib::unpackColor(nNetColor, vNetColor);
+
+		m_pMegdrProgram->setUniformVecf("m_vNetColor", &vNetColor.x);
 
 		//-------------------------------------------------------------------------------------------------
 
-		setScale();
+		renderBounder.unbound();
+
+		//-------------------------------------------------------------------------------------------------
 
 		//  Координаты вершин
 		m_pMegdr = megdr::MegdrReader::Create();
@@ -118,7 +127,7 @@ namespace GL {
 		if (!m_pMegdr->init())
 			return false;;
 
-		if (!fillVertex())
+		if (!fillMegdrVertex())
 			return false;
 
 		//-------------------------------------------------------------------------------------------------
@@ -173,8 +182,6 @@ namespace GL {
 			for (int i = 0; i < (GLsizei)m_pMegdr->getLinesCount() - 1; ++i)
 				glDrawElementsIndirect(GL_TRIANGLE_STRIP, GL_UNSIGNED_INT, (void *)size_t(i * m_pMegdr->getIndirectCommandSize()));
 
-		//-------------------------------------------------------------------------------------------------
-
 		renderBounder.unbound();
 	}
 
@@ -190,7 +197,7 @@ namespace GL {
 			if (!m_pMegdr->changeMedgr(nKey_ == GL::EKeyPress::key_6))
 				return false;
 
-			if (!fillVertex())
+			if (!fillMegdrVertex())
 				return false;
 		}
 
@@ -269,7 +276,7 @@ namespace GL {
 		return true;
 	}
 
-	bool RenderMegdr::fillVertex()
+	bool RenderMegdr::fillMegdrVertex()
 	{
 		BufferBounder<ShaderProgram> programBounder(m_pMegdrProgram);
 		BufferBounder<RenderMegdr> renderBounder(this);
@@ -307,7 +314,6 @@ namespace GL {
 		}
 
 		m_pTopographyVertex->attribIPointer(1, 1, GL_SHORT, 0, 0);
-
 
 		//-------------------------------------------------------------------------------------------------
 

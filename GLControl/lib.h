@@ -46,6 +46,7 @@ namespace lib
 
 	using Matrix4 = glm::mat4x4;
 	using Vector3 = glm::vec3;
+	using Vector4 = glm::vec4;
 
 	using Quat = glm::quat;
 
