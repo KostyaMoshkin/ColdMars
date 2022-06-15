@@ -120,7 +120,7 @@ namespace lib {
 
 		try
 		{
-			nValue_ = (unsigned)std::stol(sValue, 0, nBase);
+			nValue_ = (unsigned)std::stoul(sValue, 0, nBase);
 		}
 		catch (const std::exception&)
 		{
