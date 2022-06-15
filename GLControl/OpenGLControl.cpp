@@ -155,7 +155,7 @@ namespace GLControl {
 		return System::Void();
 	}
 
-	System::Void OpenGLControl::pictureBox1_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
+	System::Void OpenGLControl::temperatureScale_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
 	{
 		std::vector<lib::iPoint3D> vPalette;
 
@@ -169,7 +169,8 @@ namespace GLControl {
 			int nPaletteIndex = int(1.0 * y * vPalette.size() / this->panelLabels->Size.Height);
 			lib::iPoint3D vColor = vPalette[nPaletteIndex];
 			System::Drawing::Color penColor = System::Drawing::Color::FromArgb((int)vColor.r, (int)vColor.g, (int)vColor.b);
-			e->Graphics->DrawLine(gcnew System::Drawing::Pen(penColor, 1.0f), System::Drawing::Point(0, y), System::Drawing::Point(this->panelLabels->Size.Width, y));
+			int yPos = this->panelLabels->Size.Height - y - 1;
+			e->Graphics->DrawLine(gcnew System::Drawing::Pen(penColor, 1.0f), System::Drawing::Point(0, yPos), System::Drawing::Point(this->panelLabels->Size.Width, yPos));
 		}
 
 		//---------------------------------------------------------------------------
@@ -180,11 +181,11 @@ namespace GLControl {
 
 		for (unsigned i = 0; i < nLabelCount; i += 1)
 		{
-			int nYpos = int(i * fFactor) - 6;
+			int nYpos = this->panelLabels->Size.Height - int(i * fFactor) - 6;
 			if (i == 0)
-				nYpos += 6;
-			else if (i == nLabelCount - 1)
 				nYpos -= 7;
+			else if (i == nLabelCount - 1)
+				nYpos += 7;
 
 			m_vLabel[i]->Location = System::Drawing::Point(0, nYpos);
 			m_vLabel[i]->AutoSize = true;
