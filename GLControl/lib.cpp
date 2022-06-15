@@ -21,16 +21,16 @@ namespace lib
 
 	void unpackColor(lib::iPoint3D  vColor256_, lib::fPoint3D& vColorRGB_)
 	{
-		vColorRGB_.x = 1.0f * (vColor256_.r) / 255;
-		vColorRGB_.y = 1.0f * (vColor256_.g) / 255;
-		vColorRGB_.z = 1.0f * (vColor256_.b) / 255;
+		vColorRGB_.x = 1.0f * (vColor256_.r) / 256;
+		vColorRGB_.y = 1.0f * (vColor256_.g) / 256;
+		vColorRGB_.z = 1.0f * (vColor256_.b) / 256;
 	}
 
 	void unpackColor(unsigned nColor256_, lib::fPoint3D& vColorRGB_)
 	{
-		vColorRGB_.x = 1.0f * ((nColor256_ & 0x00FF0000) >> 16 ) / 255;
-		vColorRGB_.y = 1.0f * ((nColor256_ & 0x0000FF00) >> 8) / 255;
-		vColorRGB_.z = 1.0f * (nColor256_ & 0x000000FF) / 255;
+		vColorRGB_.x = 1.0f * ((nColor256_ & 0x00FF0000) >> 16 ) / 256;
+		vColorRGB_.y = 1.0f * ((nColor256_ & 0x0000FF00) >> 8) / 256;
+		vColorRGB_.z = 1.0f * (nColor256_ & 0x000000FF) / 256;
 	}
 
 	//------------------------------------------------------------------------------------------
