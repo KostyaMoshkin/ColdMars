@@ -453,7 +453,7 @@ namespace GLControl {
 			this->pictureBox1->Size = System::Drawing::Size(50, 492);
 			this->pictureBox1->TabIndex = 0;
 			this->pictureBox1->TabStop = false;
-			this->pictureBox1->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &OpenGLControl::pictureBox1_Paint);
+			this->pictureBox1->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &OpenGLControl::temperatureScale_Paint);
 			// 
 			// panelLabels
 			// 
@@ -506,7 +506,7 @@ namespace GLControl {
 
 		System::Void buttonSetOrbit_Click(System::Object^ sender, System::EventArgs^ e);
 
-		System::Void pictureBox1_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
+		System::Void temperatureScale_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e);
 
 		System::Void buttonRewPlay_Click(System::Object^ sender, System::EventArgs^ e);
 		System::Void buttonRew_Click(System::Object^ sender, System::EventArgs^ e);
