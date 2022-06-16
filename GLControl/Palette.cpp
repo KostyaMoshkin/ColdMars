@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "Palette.h"
-#include "LOG\logger.h"
 
 namespace GL {
 	Palette::Palette()

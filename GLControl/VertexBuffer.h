@@ -1,8 +1,6 @@
 #pragma once
 #include "BufferOpenGL.h"
 
-#include <memory>
-
   namespace GL {
 
       class VertexBuffer;

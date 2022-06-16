@@ -1,6 +1,5 @@
 #include "pch.h"
 
-#include <fstream>
 #include <streambuf>
 
 #include "ShaderLoader.h"

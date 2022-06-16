@@ -1,7 +1,5 @@
 #include "pch.h"
 
-#include <memory>
-
 #include "XMLreader.h"
 
 namespace lib {

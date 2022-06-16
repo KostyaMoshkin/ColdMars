@@ -6,7 +6,6 @@
 #include "Vocabulary.h"
 
 #include "MegdrReader.h"
-#include "XML\XMLreader.h"
 
 #pragma managed(push, off)
 

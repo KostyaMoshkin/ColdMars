@@ -6,14 +6,11 @@
 #include "ControlContext.h"
 
 #include <vcclr.h>
-#include <memory>
 
 #include "SceneRender.h"
 
 #include "RenderMegdr.h"
 #include "RenderOrbitTemperature.h"
-
-#include "lib.h"
 
 #include "CConfig.h"
 
