@@ -1,9 +1,5 @@
 #pragma once
 
-#include <memory>
-
-#include "XML\XMLreader.h"
-
 namespace lib
 {
 	class CConfig

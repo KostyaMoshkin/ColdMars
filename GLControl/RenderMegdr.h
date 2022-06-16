@@ -9,7 +9,6 @@
 #include "MegdrReader.h"
 #include "OrbitReader.h"
 
-#include "Lib.h"
 #include "Vocabulary.h"
 
 namespace GL {

@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "OpenGLControl.h"
 
-#include "LOG\logger.h"
-
 namespace GLControl {
 
 	static bool String_to_double(System::String^ str_, double& value_)
@@ -109,7 +107,7 @@ namespace GLControl {
 
 		if (m_nOrbitQuantity != nOrbitQuantity)
 		{
-			m_nOrbitQuantity = std::min(nOrbitQuantity, m_pBridge->getFileCount() - m_nOrbitCurrentIndex - 1);
+			m_nOrbitQuantity = std::min<unsigned>(nOrbitQuantity, m_pBridge->getFileCount() - m_nOrbitCurrentIndex - 1);
 
 		}
 		else if (m_nLS != nLS)
@@ -175,7 +173,7 @@ namespace GLControl {
 
 		//---------------------------------------------------------------------------
 
-		const unsigned nLabelCount = std::min(this->panelLabels->Size.Height / 30, 10);
+		const unsigned nLabelCount = std::min<unsigned>(this->panelLabels->Size.Height / 30, 10);
 
 		double fFactor = 1.0 * this->panelLabels->Size.Height / (nLabelCount - 1);
 

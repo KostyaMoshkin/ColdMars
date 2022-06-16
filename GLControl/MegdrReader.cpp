@@ -2,10 +2,7 @@
 
 #include "MegdrReader.h"
 
-#include "LOG/logger.h"
-
 #include <windows.h>
-//#include <future>
 
 namespace megdr
 {

@@ -2,9 +2,6 @@
 
 #include "RenderOrbitTemperature.h"
 #include "BufferBounder.h"
-#include "SLevel.h"
-
-#include <LOG\logger.h>
 
 namespace GL {
 	RenderOrbitTemperature::RenderOrbitTemperature()

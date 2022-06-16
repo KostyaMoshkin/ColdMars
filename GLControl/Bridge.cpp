@@ -3,9 +3,6 @@
 #include "ContextContainer.h"
 #include "Screen.h"
 
-#include "LOG/logger.h"
-
-#include <GLEW/glew.h>
 namespace GL
 {
 	Bridge::Bridge()

@@ -196,7 +196,6 @@
     <ClInclude Include="RenderMegdr.h" />
     <ClInclude Include="RenderOrbitTemperature.h" />
     <ClInclude Include="SceneRender.h" />
-    <ClInclude Include="SceneRenderBase.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="ShaderProgram.h" />
@@ -232,7 +231,6 @@
     <ClCompile Include="RenderMegdr.cpp" />
     <ClCompile Include="RenderOrbitTemperature.cpp" />
     <ClCompile Include="SceneRender.cpp" />
-    <ClCompile Include="SceneRenderBase.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />

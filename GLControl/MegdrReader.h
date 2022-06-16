@@ -1,14 +1,5 @@
 #pragma once
-#include <memory>
-#include <vector>
-#include <map>
-
-#include "lib.h"
 #include "CConfig.h"
-
-#include "XML\XMLReader.h"
-
-#include <GLEW/glew.h>
 
 namespace megdr
 {

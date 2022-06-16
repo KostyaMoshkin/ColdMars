@@ -111,9 +111,6 @@
     <ClInclude Include="SceneRender.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="SceneRenderBase.h">
-      <Filter>Render</Filter>
-    </ClInclude>
     <ClInclude Include="Interpolator.h">
       <Filter>Reader</Filter>
     </ClInclude>
@@ -192,9 +189,6 @@
       <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="SceneRender.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneRenderBase.cpp">
       <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="OrbitReader.cpp">

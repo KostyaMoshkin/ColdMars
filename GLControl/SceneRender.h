@@ -1,12 +1,7 @@
 #pragma once
-#include "SceneRenderBase.h"
 #include "Render.h"
-#include "lib.h"
 #include "Vocabulary.h"
 #include "CConfig.h"
-
-#include <memory>
-#include <vector>
 
 namespace GL {
 
@@ -16,8 +11,6 @@ namespace GL {
 	class SceneRender : public lib::CConfig
 	{
 		static const char* ViewAngle() { return "ViewAngle"; }
-
-		GLFWwindow* m_pWindow = nullptr;
 
 		float m_fViewAspect = 1.0f;
 		float m_fViewAngle = 45.0f;

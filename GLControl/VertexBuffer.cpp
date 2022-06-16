@@ -2,8 +2,6 @@
 
 #include "VertexBuffer.h"
 
-#include <GLEW/glew.h>
-
 namespace GL {
 
       VertexBuffer::VertexBuffer()

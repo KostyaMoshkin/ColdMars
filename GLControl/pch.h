@@ -7,6 +7,23 @@
 #ifndef PCH_H
 #define PCH_H
 
+#include <utility>
+#include <memory>
+#include <vector>
+#include <string>
+#include <map>
+#include <fstream>
+#include <algorithm>
+
+#include <Windows.h>
+
+#include <GLEW/glew.h>
+
+#include "XML\XMLreader.h"
+#include "lib.h"
+#include "LOG\logger.h"
+
+
 // add headers that you want to pre-compile here
 
 #endif //PCH_H

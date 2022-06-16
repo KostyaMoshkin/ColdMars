@@ -2,12 +2,7 @@
 
 #include "BufferOpenGL.h"
 
-#include <GLEW/glew.h>
-
-
 namespace GL {
- 
-  
 
     BufferOpenGL::BufferOpenGL(unsigned int bufferTarget_, int size_, unsigned int bufferUsage_)
     {

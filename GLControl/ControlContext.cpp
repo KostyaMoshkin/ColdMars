@@ -2,12 +2,6 @@
 
 #include "ControlContext.h"
 
-#include "LOG\logger.h"
-
-#include <GLEW/glew.h>
-
-#include <string>
-
 namespace GL
 {
     static void destroy_context(HDC hDC_, HGLRC rendContext_)

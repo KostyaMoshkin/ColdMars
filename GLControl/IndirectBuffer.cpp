@@ -2,8 +2,6 @@
 
 #include "IndirectBuffer.h"
 
-#include <GLEW/glew.h>
-
     namespace GL {
 
       IndirectBuffer::IndirectBuffer(int size_)

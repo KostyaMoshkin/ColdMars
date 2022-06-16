@@ -2,10 +2,6 @@
 
 #include "Interpolator.h"
 
-#include "lib.h"
-
-#include <algorithm>
-
 namespace orbit
 {
 	Interpolator::Interpolator(SLevel* pData_, unsigned nCount_)

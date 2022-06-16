@@ -1,10 +1,6 @@
 #include "pch.h"
 #include "Screen.h"
 
-#include "LOG\logger.h"
-
-#include  <utility>
-
 namespace GL
 {
 

@@ -2,10 +2,6 @@
 
 #include "SceneRender.h"
 
-#include <string>
-
-#include <LOG/logger.h>
-
 namespace GL {
 
 	SceneRender::SceneRender()

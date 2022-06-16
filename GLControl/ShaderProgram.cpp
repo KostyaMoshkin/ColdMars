@@ -5,8 +5,6 @@
 
 #include "Render.h"
 
-#include <LOG/logger.h>
-
 namespace GL {
 
     ShaderProgram::ShaderProgram()

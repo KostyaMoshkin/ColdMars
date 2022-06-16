@@ -1,11 +1,4 @@
 #pragma once
-
-#include <GLEW/glew.h>
-
-#include <string>
-#include <memory>
-#include <vector>
-
 namespace GL {
 
 	class ShaderProgram;

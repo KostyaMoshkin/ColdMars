@@ -1,5 +1,4 @@
 #pragma once
-
 namespace GL {
 
     class DataContextEngine

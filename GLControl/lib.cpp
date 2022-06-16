@@ -1,7 +1,5 @@
 #include "pch.h"
 
-#include "lib.h"
-
 namespace lib
 {
 	std::vector<std::string> create_file_list(const char* sPath_)

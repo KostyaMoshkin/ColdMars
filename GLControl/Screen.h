@@ -3,8 +3,6 @@
 #include "DataContextEngine.h"
 #include "ContextInterface.h"
 
-#include <Windows.h>
-
 namespace GL
 {
 	ref class Screen : public System::Windows::Forms::UserControl, ContextInterface

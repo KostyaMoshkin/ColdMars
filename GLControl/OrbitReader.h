@@ -2,9 +2,6 @@
 #include "CConfig.h"
 #include "SLevel.h"
 
-#include <vector>
-#include <map>
-
 namespace orbit
 {
 	struct SPairLevel

@@ -1,10 +1,7 @@
 #pragma once
 
-#include "lib.h"
 #include "Vocabulary.h"
 #include "CConfig.h"
-
-#include <memory>
 
  namespace GL {
 

@@ -3,12 +3,6 @@
 #include "OrbitReader.h"
 #include "Interpolator.h"
 
-#include "Lib.h"
-
-#include <fstream>
-
-#include "LOG/logger.h"
-
 namespace orbit
 {
 	std::vector<Snpt> readFile(const char* sFileName_, bool bHoleFile_ = true)

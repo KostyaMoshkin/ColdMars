@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #define GL_NEAREST 0x2600
 #define GL_TEXTURE0 0x84C0
 

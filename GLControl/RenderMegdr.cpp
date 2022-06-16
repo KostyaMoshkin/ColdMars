@@ -3,14 +3,10 @@
 #include "RenderMegdr.h"
 #include "BufferBounder.h"
 
-#include "lib.h"
 #include "Vocabulary.h"
 
 #include "MegdrReader.h"
 #include "XML\XMLreader.h"
-#include "LOG\logger.h"
-
-#include <memory>
 
 #pragma managed(push, off)
 

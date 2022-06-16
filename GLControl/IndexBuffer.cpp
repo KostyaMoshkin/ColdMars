@@ -2,9 +2,6 @@
 
 #include "IndexBuffer.h"
 
-#include <GLEW/glew.h>
-
-
 namespace GL {
 
       IndexBuffer::IndexBuffer(int size_)

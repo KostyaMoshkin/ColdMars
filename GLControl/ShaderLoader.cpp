@@ -1,6 +1,5 @@
 #include "pch.h"
 
-#include <string>
 #include <fstream>
 #include <streambuf>
 
@@ -8,7 +7,6 @@
 
 #include "resource.h"
 
-#include <Windows.h>
 #include <WinUser.h>
 
 namespace shader {

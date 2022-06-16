@@ -2,8 +2,6 @@
 
 #include "TextureBuffer.h"
 
-#include <GLEW/glew.h>
-
 namespace GL {
 
       TextureBuffer::TextureBuffer(unsigned int nBufferTarget_, int nTexture_, int nTexParametr_)

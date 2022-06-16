@@ -1,8 +1,6 @@
 #pragma once
 #include "SLevel.h"
 
-#include <vector>
-
 namespace orbit
 {
 	class Interpolator
