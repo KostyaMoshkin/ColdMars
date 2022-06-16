@@ -31,6 +31,9 @@ namespace GL
         bool begin_draw(int width_, int height_);
         void end_draw();
 
+    public:
+        static int getOpenGLVersion();
+
     private:
         bool initWindow(HWND hWnd_);
 
@@ -44,7 +47,6 @@ namespace GL
 
         bool makeCurrent();
 
-        static int getOpenGLVersion();
 
 	};
 

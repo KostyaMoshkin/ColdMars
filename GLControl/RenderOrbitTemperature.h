@@ -39,7 +39,6 @@ namespace GL {
 		std::vector<orbit::SPairLevel> m_vLevelData;
 
 		float m_fViewAngle = 45.0;
-		GLfloat m_fViewAspect = 1.0;
 
 		unsigned m_nFileId = 4;
 		unsigned m_nFirstFile = 0;

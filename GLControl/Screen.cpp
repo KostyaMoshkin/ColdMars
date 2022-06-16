@@ -86,6 +86,8 @@ namespace GL
         if (stateChanged)
             m_pDataContextEngine->on_handle_changed();
 
+        m_pDataContextEngine->sizeChanged(this->Size.Width, this->Size.Height);
+
         m_pDataContextEngine->draw();
     }
 

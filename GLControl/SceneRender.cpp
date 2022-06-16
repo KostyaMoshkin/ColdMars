@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "SceneRender.h"
+#include "ControlContext.h"
 
 namespace GL {
 
@@ -32,22 +33,7 @@ namespace GL {
 
 	int SceneRender::GetVersion()
 	{
-		int nVersionFull = -1;
-
-		const GLubyte* pVersion = glGetString(GL_VERSION);
-		if (!pVersion)
-			return nVersionFull;
-
-		std::string sVersion = (const char*)pVersion;
-		if (sVersion.length() < 3)
-			return nVersionFull;
-
-		int nVersionMain = sVersion[0] - '0';
-		int nVersionSub = sVersion[2] - '0';
-
-		nVersionFull = nVersionMain * 10 + nVersionSub;
-
-		return nVersionFull;
+		return GL::ControlContext::getOpenGLVersion();
 	}
 
 	void SceneRender::addElement(RenderPtr pRender_)
@@ -63,11 +49,19 @@ namespace GL {
 			pElement->draw();
 	}
 
+	void SceneRender::sizeChanged(int nWidth_, int nHeight_)
+	{
+		m_nScreenWidth = nWidth_;
+		m_nScreenHeight = nHeight_;
+
+		setViewAngle(0);
+	}
+
 	void SceneRender::setViewAngle(float fZoom_)
 	{
 		lib::limit(m_fViewAngle, 1.0f, 150.0f);
 
-		lib::Matrix4 mPerspective = glm::perspective(glm::radians(m_fViewAngle + fZoom_), m_fViewAspect, 0.1f, 50.0f);
+		lib::Matrix4 mPerspective = glm::perspective(glm::radians(m_fViewAngle + fZoom_), float(m_nScreenWidth) / m_nScreenHeight, 0.1f, 50.0f);
 
 		for (RenderPtr pElement : m_vElementRendr)
 			pElement->setViewAngle(mPerspective);
@@ -100,13 +94,6 @@ namespace GL {
 		for (RenderPtr pElement : m_vElementRendr)
 			pElement->lookAt(mView);
 	}
-
-	//void SceneRender::mouseScroll(float fZoom_)
-	//{
-	//	m_fViewAngle += fZoom_;
-
-	//	setViewAngle();
-	//}
 
 	bool SceneRender::read_error(bool check_error_, const char* szFileName /*= __FILE__*/, unsigned nLine /*= __LINE__*/, const char* szDateTime /*= __TIMESTAMP__*/)
 	{

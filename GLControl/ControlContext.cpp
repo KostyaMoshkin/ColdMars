@@ -23,9 +23,7 @@ namespace GL
         if (m_nWidth * m_nHeight == 0)
             return true;
 
-        int nWindowSize = std::max<int>(m_nWidth, m_nHeight);
-
-        glViewport(0, 0, nWindowSize, nWindowSize);
+        glViewport(0, 0, m_nWidth, m_nHeight);
 
         glClearColor(1.0f, 1.0f, 1.0f, 1);
         glClear(GL_COLOR_BUFFER_BIT);

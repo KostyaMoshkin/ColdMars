@@ -39,11 +39,11 @@ namespace GL
 
 		bool m_bInit = false;
 
-		float m_fRoteteAngle = 0.02f;
+		float m_fRoteteAngle = 0.005f;
 		float m_fInclineAngle = 0.25f;
 
 		float m_fViewAngle = 0.0f;
-		float m_fRotate = 0.0f;
+		float m_fRotate = 3.14159f;
 		float m_fMoveX = 0.0f;
 		float m_fMoveY = 0.0f;
 
@@ -62,7 +62,9 @@ namespace GL
 		bool init();
 
 	public:
-		void draw() override;
+		void draw() const override;
+
+		void sizeChanged(int nWidth_, int nHeight_) const override;
 
 		void on_handle_created() override;
 		void on_handle_changed() override;

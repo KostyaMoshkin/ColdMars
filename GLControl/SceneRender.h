@@ -12,10 +12,12 @@ namespace GL {
 	{
 		static const char* ViewAngle() { return "ViewAngle"; }
 
-		float m_fViewAspect = 1.0f;
 		float m_fViewAngle = 45.0f;
 
 		std::vector<GL::RenderPtr> m_vElementRendr;
+
+		int m_nScreenWidth = 640;
+		int m_nScreenHeight = 480;
 
 	public:
 		SceneRender();
@@ -35,6 +37,8 @@ namespace GL {
 
 		void draw();
 
+		void sizeChanged(int nWidth_, int nHeight_);
+
 		void setViewAngle(float fZoom_);
 
 		void rotate(float fAngle_);
@@ -42,8 +46,6 @@ namespace GL {
 		void translate(float fMoveV_, float fMoveY_);
 
 		void lookAt(lib::dPoint3D fCamPosition_, lib::dPoint3D vCamCenter_, lib::dPoint3D vCamUp_);
-
-		//void mouseScroll(float fZoom_);
 
 	public:
 		static bool read_error(bool check_error_, const char* szFileName = __FILE__, unsigned nLine = __LINE__, const char* szDateTime = __TIMESTAMP__);

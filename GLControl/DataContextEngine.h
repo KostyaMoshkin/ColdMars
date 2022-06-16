@@ -13,7 +13,8 @@ namespace GL {
       }
 
     public:
-      virtual void draw() = 0;
+      virtual void draw() const = 0;
+      virtual void sizeChanged(int nWidth_, int nHeight_) const = 0;
 
     public:
       virtual void on_handle_created() {}

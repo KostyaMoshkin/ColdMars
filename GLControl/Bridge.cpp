@@ -28,7 +28,7 @@ namespace GL
 		m_pSceneRender->setConfig(m_pXMLconfig->getRoot());
 		m_pSceneRender->init();
 
-		m_vCamPosition3D = lib::Vector3(0, 0, -3.5);
+		m_vCamPosition3D = lib::Vector3(0, 0, -2.5);
 		m_vCamRight3D = lib::Vector3(1, 0, 0);
 
 	}
@@ -96,7 +96,7 @@ namespace GL
 		lib::Vector3 vCamRight3D(1, 0, 0);
 
 		m_pSceneRender->lookAt(m_vCamPosition3D, lib::Vector3(0, 0, 0), lib::Vector3(0, 1, 0));
-		m_pSceneRender->rotate(0);
+		m_pSceneRender->rotate(m_fRotate);
 		m_pSceneRender->translate(0, 0);
 		m_pSceneRender->setViewAngle(0.0f);
 
@@ -117,7 +117,7 @@ namespace GL
 		return true;
 	}
 
-	void Bridge::draw()
+	void Bridge::draw() const
 	{
 		if (!m_bInit)
 			return;
@@ -125,6 +125,17 @@ namespace GL
 		{
 			ContextSession contextSession(m_pControlContext, m_pScreen->ViewControl->Size.Width, m_pScreen->ViewControl->Size.Height);
 			m_pSceneRender->draw();
+		}
+	}
+
+	void Bridge::sizeChanged(int nWidth_, int nHeight_) const
+	{
+		if (!m_pSceneRender)
+			return;
+
+		{
+			ContextSession contextSession(m_pControlContext);
+			m_pSceneRender->sizeChanged(nWidth_, nHeight_);
 		}
 	}
 
@@ -198,9 +209,9 @@ namespace GL
 	void Bridge::on_mouse_double_click()
 	{
 		lib::Vector3 vCamRight3D(1, 0, 0);
-		m_vCamPosition3D = lib::Vector3(0, 0, -3.5);
+		m_vCamPosition3D = lib::Vector3(0, 0, -2.5);
 
-		m_fRotate = 0;
+		m_fRotate = 3.14159f;
 		m_fMoveX = 0.0f;
 		m_fMoveY = 0.0f;
 		m_fViewAngle = 0.0f;
@@ -208,7 +219,7 @@ namespace GL
 		{
 			ContextSession contextSession(m_pControlContext);
 			m_pSceneRender->lookAt(m_vCamPosition3D, lib::Vector3(0, 0, 0), lib::Vector3(0, 1, 0));
-			m_pSceneRender->rotate(0);
+			m_pSceneRender->rotate(m_fRotate);
 			m_pSceneRender->translate(0, 0);
 			m_pSceneRender->setViewAngle(0.0f);
 
