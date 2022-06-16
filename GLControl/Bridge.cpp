@@ -37,6 +37,23 @@ namespace GL
 	{
 	}
 
+	void Bridge::resetView()
+	{
+		lib::Vector3 vCamRight3D(1, 0, 0);
+		m_vCamPosition3D = lib::Vector3(0, 0, -2.5);
+
+		m_fRotate = 3.14159f;
+		m_fMoveX = 0.0f;
+		m_fMoveY = 0.0f;
+		m_fViewAngle = 0.0f;
+
+		m_pSceneRender->lookAt(m_vCamPosition3D, lib::Vector3(0, 0, 0), lib::Vector3(0, 1, 0));
+		m_pSceneRender->rotate(m_fRotate);
+		m_pSceneRender->translate(0, 0);
+		m_pSceneRender->setViewAngle(0.0f);
+
+	}
+
 	bool Bridge::init()
 	{
 		bool bFirsfInit = !m_pRenderMegdr && !m_pRenderOrbitTemperature;
@@ -44,67 +61,58 @@ namespace GL
 		if (!bFirsfInit)
 			return true;
 
-		m_pControlContext->begin_draw(m_pScreen->ViewControl->Size.Width, m_pScreen->ViewControl->Size.Height);
-
-		int nVersionFull = m_pSceneRender->GetVersion();
-		toLog("OpenGL version : " + std::to_string(nVersionFull));
-
-		//--------------------------------------------------------------------------
-
-		if (!m_pRenderMegdr)
 		{
-			m_pRenderMegdr = RenderMegdr::Create();
+			ContextSession contextSession(m_pControlContext, m_pScreen->ViewControl->Size.Width, m_pScreen->ViewControl->Size.Height);
 
-			m_pRenderMegdr->setConfig(m_pXMLconfig->getRoot());
+			int nVersionFull = m_pSceneRender->GetVersion();
+			toLog("OpenGL version : " + std::to_string(nVersionFull));
 
-			m_pRenderMegdr->setVersionGl(nVersionFull);
+			//--------------------------------------------------------------------------
 
-			if (!m_pRenderMegdr->init())
+			if (!m_pRenderMegdr)
 			{
-				m_pSceneRender.reset();
-				m_bInit = false;
-				toLog("OpenGL RenderMegdr init ERROR");
-				return false;
+				m_pRenderMegdr = RenderMegdr::Create();
+
+				m_pRenderMegdr->setConfig(m_pXMLconfig->getRoot());
+
+				m_pRenderMegdr->setVersionGl(nVersionFull);
+
+				if (!m_pRenderMegdr->init())
+				{
+					m_pSceneRender.reset();
+					m_bInit = false;
+					toLog("OpenGL RenderMegdr init ERROR");
+					return false;
+				}
+				m_pRenderMegdr->setVisible(true);
+				m_pSceneRender->addElement(m_pRenderMegdr);
 			}
-			m_pRenderMegdr->setVisible(true);
-			m_pSceneRender->addElement(m_pRenderMegdr);
-		}
 
-		//--------------------------------------------------------------------------
+			//--------------------------------------------------------------------------
 
-		if (!m_pRenderOrbitTemperature)
-		{
-			m_pRenderOrbitTemperature = RenderOrbitTemperature::Create();
-
-			m_pRenderOrbitTemperature->setConfig(m_pXMLconfig->getRoot());
-
-			m_pRenderOrbitTemperature->setVersionGl(nVersionFull);
-
-			if (!m_pRenderOrbitTemperature->init())
+			if (!m_pRenderOrbitTemperature)
 			{
-				m_pSceneRender.reset();
-				m_bInit = false;
-				toLog("OpenGL RenderOrbitTemperature init ERROR");
-				return false;
+				m_pRenderOrbitTemperature = RenderOrbitTemperature::Create();
+
+				m_pRenderOrbitTemperature->setConfig(m_pXMLconfig->getRoot());
+
+				m_pRenderOrbitTemperature->setVersionGl(nVersionFull);
+
+				if (!m_pRenderOrbitTemperature->init())
+				{
+					m_pSceneRender.reset();
+					m_bInit = false;
+					toLog("OpenGL RenderOrbitTemperature init ERROR");
+					return false;
+				}
+				m_pRenderOrbitTemperature->setVisible(true);
+				m_pSceneRender->addElement(m_pRenderOrbitTemperature);
 			}
-			m_pRenderOrbitTemperature->setVisible(true);
-			m_pSceneRender->addElement(m_pRenderOrbitTemperature);
+
+			//--------------------------------------------------------------------------
+
+			resetView();
 		}
-
-		//--------------------------------------------------------------------------
-
-		lib::Vector3 vCamRight3D(1, 0, 0);
-
-		m_pSceneRender->lookAt(m_vCamPosition3D, lib::Vector3(0, 0, 0), lib::Vector3(0, 1, 0));
-		m_pSceneRender->rotate(m_fRotate);
-		m_pSceneRender->translate(0, 0);
-		m_pSceneRender->setViewAngle(0.0f);
-
-		//--------------------------------------------------------------------------
-
-		m_pControlContext->end_draw();
-
-		//--------------------------------------------------------------------------
 
 		std::string sOrbitDir;
 		if (!lib::XMLreader::getSting(lib::XMLreader::getNode(m_pXMLconfig->getRoot(), OrbitDir()), sOrbitDir))
@@ -208,20 +216,9 @@ namespace GL
 
 	void Bridge::on_mouse_double_click()
 	{
-		lib::Vector3 vCamRight3D(1, 0, 0);
-		m_vCamPosition3D = lib::Vector3(0, 0, -2.5);
-
-		m_fRotate = 3.14159f;
-		m_fMoveX = 0.0f;
-		m_fMoveY = 0.0f;
-		m_fViewAngle = 0.0f;
-
 		{
 			ContextSession contextSession(m_pControlContext);
-			m_pSceneRender->lookAt(m_vCamPosition3D, lib::Vector3(0, 0, 0), lib::Vector3(0, 1, 0));
-			m_pSceneRender->rotate(m_fRotate);
-			m_pSceneRender->translate(0, 0);
-			m_pSceneRender->setViewAngle(0.0f);
+			resetView();
 
 			m_pSceneRender->draw();
 		}

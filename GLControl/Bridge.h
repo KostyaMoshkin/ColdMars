@@ -56,6 +56,8 @@ namespace GL
 		Bridge();
 		~Bridge();
 
+		void resetView();
+
 		static BridgePtr Create() { return std::make_shared<Bridge>(); }
 
 	private:
