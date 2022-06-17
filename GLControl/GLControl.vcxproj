@@ -106,6 +106,9 @@
       <Command>
       </Command>
     </PostBuildEvent>
+    <PreLinkEvent>
+      <Command>copy ..\ColdMars\*.config ..\x64\Debug\*.* &amp; copy  ..\ColdMars\*.bmp ..\x64\Debug\*.*</Command>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -161,9 +164,11 @@
       <NoEntryPoint>false</NoEntryPoint>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>copy ..\x64\Release\*.dll E:\Dropbox\Mars\*.*</Command>
     </PostBuildEvent>
+    <PreLinkEvent>
+      <Command>copy  ..\ColdMars\*.config ..\x64\Release\*.* &amp; copy  ..\ColdMars\*.bmp ..\x64\Release\*.*</Command>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\LOG\logger.h">

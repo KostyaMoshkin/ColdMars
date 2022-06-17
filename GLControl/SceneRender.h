@@ -1,6 +1,5 @@
 #pragma once
 #include "Render.h"
-#include "Vocabulary.h"
 #include "CConfig.h"
 
 namespace GL {

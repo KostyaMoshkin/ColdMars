@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vocabulary.h"
+#include "resource.h"
 #include "CConfig.h"
 
  namespace GL {
@@ -48,8 +48,6 @@
             virtual void translate(lib::Matrix4& mTranslate_) = 0;
             virtual void setViewAngle(lib::Matrix4& mPerspective_) = 0;
             virtual void draw() = 0;
-
-            virtual bool keyPress(GL::EKeyPress nKey_) = 0;
 
             virtual void bound() = 0;
             virtual void unbound() = 0;

@@ -40,7 +40,7 @@ namespace GL
 	void Bridge::resetView()
 	{
 		lib::Vector3 vCamRight3D(1, 0, 0);
-		m_vCamPosition3D = lib::Vector3(0, 0, -2.5);
+		m_vCamPosition3D = lib::Vector3(0, 0, -3);
 
 		m_fRotate = 3.14159f;
 		m_fMoveX = 0.0f;
@@ -205,7 +205,7 @@ namespace GL
 	void Bridge::on_mouse_right_btn_move(int nMoveX_, int nMoveY_)
 	{
 		m_fMoveX -= 2.0f * nMoveX_ / m_pScreen->ViewControl->Size.Width;
-		m_fMoveY += 2.0f * nMoveY_ / m_pScreen->ViewControl->Size.Width;
+		m_fMoveY += 3.0f * nMoveY_ / m_pScreen->ViewControl->Size.Width;
 
 		{
 			ContextSession contextSession(m_pControlContext);

@@ -9,8 +9,6 @@
 #include "MegdrReader.h"
 #include "OrbitReader.h"
 
-#include "Vocabulary.h"
-
 namespace GL {
 
 	class RenderMegdr;
@@ -69,9 +67,6 @@ namespace GL {
 
 		float getScale() override;
 		void setScale(float fScale_) override;
-
-		// Унаследовано через Render
-		virtual bool keyPress(GL::EKeyPress nKey_) override;
 	};
 }
 

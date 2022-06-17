@@ -198,23 +198,6 @@ namespace GL {
 		renderBounder.unbound();
 	}
 
-	bool RenderOrbitTemperature::keyPress(GL::EKeyPress nKey_)
-	{
-		if ((nKey_ == GL::EKeyPress::key_1) || (nKey_ == GL::EKeyPress::key_2))
-		{
-			m_fScale = (nKey_ == GL::EKeyPress::key_1) ? m_fScale /= 1.2f : m_fScale *= 1.2f;
-			setScale();
-		}
-		else if ((nKey_ == GL::EKeyPress::key_5) || (nKey_ == GL::EKeyPress::key_6))
-		{
-			m_nFileId = (nKey_ == GL::EKeyPress::key_5) ? --m_nFileId : ++m_nFileId;
-			lib::limit<unsigned>(m_nFileId, 0, (unsigned)m_pOrbitReader->getFileCount() - 1);
-			fillVertex();
-		}
-
-		return true;
-	}
-
 	void RenderOrbitTemperature::setFileRange(int nFirstFile_, int nLasetFile_)
 	{
 		m_nFirstFile = (unsigned)nFirstFile_;

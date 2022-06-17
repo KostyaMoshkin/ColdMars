@@ -10,8 +10,6 @@
 #include "MegdrReader.h"
 #include "OrbitReader.h"
 
-#include "Vocabulary.h"
-
 namespace GL {
 
 	class RenderOrbitTemperature;
@@ -74,9 +72,6 @@ namespace GL {
 
 		float getScale() override;
 		void setScale(float fScale_) override;
-
-		// Унаследовано через Render
-		virtual bool keyPress(GL::EKeyPress nKey_) override;
 
 	public:
 		void setFileRange(int nFirstFile_, int nLasetFile_);

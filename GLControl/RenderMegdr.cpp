@@ -3,8 +3,6 @@
 #include "RenderMegdr.h"
 #include "BufferBounder.h"
 
-#include "Vocabulary.h"
-
 #include "MegdrReader.h"
 
 #pragma managed(push, off)
@@ -182,27 +180,6 @@ namespace GL {
 				glDrawElementsIndirect(GL_TRIANGLE_STRIP, GL_UNSIGNED_INT, (void *)size_t(i * m_pMegdr->getIndirectCommandSize()));
 
 		renderBounder.unbound();
-	}
-
-	bool RenderMegdr::keyPress(GL::EKeyPress nKey_)
-	{
-		if ((nKey_ == GL::EKeyPress::key_1) || (nKey_ == GL::EKeyPress::key_2) )
-		{
-			m_fScale = (nKey_ == GL::EKeyPress::key_1) ? m_fScale /= 1.2f : m_fScale *= 1.2f;
-			setScale();
-		}
-		else if ((nKey_ == GL::EKeyPress::key_5) || (nKey_ == GL::EKeyPress::key_6))
-		{
-			if (!m_pMegdr->changeMedgr(nKey_ == GL::EKeyPress::key_6))
-				return false;
-
-			if (!fillMegdrVertex())
-				return false;
-		}
-
-		Sleep(300);
-
-		return true;
 	}
 
 	bool RenderMegdr::fillAlbedo(const char *sFileName_, unsigned nMarsTone_)
