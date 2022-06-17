@@ -68,7 +68,8 @@ namespace GLControl {
 	private: System::Windows::Forms::TextBox^ textLatitude;
 	private: System::Windows::Forms::TextBox^ textLongitude;
 	private: System::Windows::Forms::Label^ label4;
-	private: System::Windows::Forms::CheckedListBox^ checkedListBox1;
+	private: System::Windows::Forms::CheckedListBox^ checkedListOrbit;
+
 	private: System::Windows::Forms::Button^ buttonAddOrbit;
 
 
@@ -147,7 +148,7 @@ namespace GLControl {
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->buttonAddOrbit = (gcnew System::Windows::Forms::Button());
 			this->panelObitList = (gcnew System::Windows::Forms::Panel());
-			this->checkedListBox1 = (gcnew System::Windows::Forms::CheckedListBox());
+			this->checkedListOrbit = (gcnew System::Windows::Forms::CheckedListBox());
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->textLongitude = (gcnew System::Windows::Forms::TextBox());
 			this->textLatitude = (gcnew System::Windows::Forms::TextBox());
@@ -518,22 +519,22 @@ namespace GLControl {
 			this->panelObitList->Controls->Add(this->textLatitude);
 			this->panelObitList->Controls->Add(this->textLongitude);
 			this->panelObitList->Controls->Add(this->label4);
-			this->panelObitList->Controls->Add(this->checkedListBox1);
+			this->panelObitList->Controls->Add(this->checkedListOrbit);
 			this->panelObitList->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->panelObitList->Location = System::Drawing::Point(0, 317);
 			this->panelObitList->Name = L"panelObitList";
 			this->panelObitList->Size = System::Drawing::Size(297, 175);
 			this->panelObitList->TabIndex = 3;
 			// 
-			// checkedListBox1
+			// checkedListOrbit
 			// 
-			this->checkedListBox1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+			this->checkedListOrbit->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left));
-			this->checkedListBox1->FormattingEnabled = true;
-			this->checkedListBox1->Location = System::Drawing::Point(16, 12);
-			this->checkedListBox1->Name = L"checkedListBox1";
-			this->checkedListBox1->Size = System::Drawing::Size(104, 154);
-			this->checkedListBox1->TabIndex = 0;
+			this->checkedListOrbit->FormattingEnabled = true;
+			this->checkedListOrbit->Location = System::Drawing::Point(16, 12);
+			this->checkedListOrbit->Name = L"checkedListOrbit";
+			this->checkedListOrbit->Size = System::Drawing::Size(104, 154);
+			this->checkedListOrbit->TabIndex = 0;
 			// 
 			// label4
 			// 
