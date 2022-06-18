@@ -11,10 +11,10 @@ smooth in vec2 vAlbedoCoords;
 
 ivec2 getNetCoord()
 {
-	int nLongitude = int(vAlbedoCoords.x * 360.0);
-	int nLatitude = int(vAlbedoCoords.y * 180.0);
+	int nLongitude = (int(vAlbedoCoords.x * 360.0) / 30) * 30;
+	int nLatitude = (int(vAlbedoCoords.y * 180.0) / 30) * 30;
 
-	return ivec2(int(nLongitude / 30) * 30, abs(int(nLatitude / 30) * 30 - 90));
+	return ivec2(nLongitude < 180 ? nLongitude : nLongitude - 360, 90 - nLatitude);
 }
 
 vec2 getDigitCoord()
@@ -69,36 +69,50 @@ float getDigitBrightness(vec2 textDigit_)
 {
 	ivec2 netCoord = getNetCoord();
 
-	int nDigitPosition = int(textDigit_.x * 6);
+	int nDigitPosition = int(textDigit_.x * 8);
 
 	int nDigitToWrite = 0;
 
 	if (nDigitPosition == 0)
 	{
-		nDigitToWrite = netCoord.x / 100;
-		if (nDigitToWrite == 0)
+		if (netCoord.x < 0)
+			nDigitToWrite = 11; //  -
+		else
 			return 0;
 	}
 	else if (nDigitPosition == 1)
 	{
-		nDigitToWrite = (netCoord.x / 10) % 10;
-		if (nDigitToWrite == 0 && netCoord.x / 100 == 0)
-			return 0;
-	}
-	else if (nDigitPosition == 2)
-		nDigitToWrite = netCoord.x % 10;
-	else if (nDigitPosition == 3)
-		nDigitToWrite = 10; //  :
-	else if (nDigitPosition == 4)
-	{
-		nDigitToWrite = netCoord.y / 10;
+		nDigitToWrite = abs(netCoord.x) / 100;
 		if (nDigitToWrite == 0)
 			return 0;
 	}
+	else if (nDigitPosition == 2)
+	{
+		nDigitToWrite = (abs(netCoord.x) / 10) % 10;
+		if (nDigitToWrite == 0 && netCoord.x / 100 == 0)
+			return 0;
+	}
+	else if (nDigitPosition == 3)
+		nDigitToWrite = abs(netCoord.x) % 10;
+	else if (nDigitPosition == 4)
+		nDigitToWrite = 10; //  :
 	else if (nDigitPosition == 5)
-		nDigitToWrite = netCoord.y % 10;
+	{
+		if (netCoord.y < 0)
+			nDigitToWrite = 11; //  -
+		else
+			return 0;
+	}
+	else if (nDigitPosition == 6)
+	{
+		nDigitToWrite = abs(netCoord.y / 10);
+		if (nDigitToWrite == 0)
+			return 0;
+	}
+	else if (nDigitPosition == 7)
+		nDigitToWrite = abs(netCoord.y) % 10;
 
-	float fLetterX = ((textDigit_.x - 1.0 * nDigitPosition / 6) * 6 + nDigitToWrite) / 11;
+	float fLetterX = ((textDigit_.x - 1.0 * nDigitPosition / 8) * 8 + nDigitToWrite) / 12;
 
 	return texture(m_tDigit, vec2(fLetterX, textDigit_.y)).r;
 }
