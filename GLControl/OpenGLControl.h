@@ -113,6 +113,19 @@ namespace GLControl {
 		{
 			this->components = (gcnew System::ComponentModel::Container());
 			this->panelControl = (gcnew System::Windows::Forms::Panel());
+			this->panelObitList = (gcnew System::Windows::Forms::Panel());
+			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+			this->radioButtonSouth = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButtonNorth = (gcnew System::Windows::Forms::RadioButton());
+			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->radioButtonEast = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButtonWest = (gcnew System::Windows::Forms::RadioButton());
+			this->buttonSearchOrbits = (gcnew System::Windows::Forms::Button());
+			this->label7 = (gcnew System::Windows::Forms::Label());
+			this->textLatitude = (gcnew System::Windows::Forms::TextBox());
+			this->textLongitude = (gcnew System::Windows::Forms::TextBox());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->checkedListOrbit = (gcnew System::Windows::Forms::CheckedListBox());
 			this->panelInfo = (gcnew System::Windows::Forms::Panel());
 			this->labelUTC = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
@@ -121,6 +134,7 @@ namespace GLControl {
 			this->labelJulianDate = (gcnew System::Windows::Forms::Label());
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->panelOrbit = (gcnew System::Windows::Forms::Panel());
+			this->buttonAddOrbit = (gcnew System::Windows::Forms::Button());
 			this->checkBoxAtmosphere = (gcnew System::Windows::Forms::CheckBox());
 			this->buttonScalePlus = (gcnew System::Windows::Forms::Button());
 			this->buttonScaleMinus = (gcnew System::Windows::Forms::Button());
@@ -146,30 +160,16 @@ namespace GLControl {
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->panelLabels = (gcnew System::Windows::Forms::Panel());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
-			this->buttonAddOrbit = (gcnew System::Windows::Forms::Button());
-			this->panelObitList = (gcnew System::Windows::Forms::Panel());
-			this->checkedListOrbit = (gcnew System::Windows::Forms::CheckedListBox());
-			this->label4 = (gcnew System::Windows::Forms::Label());
-			this->textLongitude = (gcnew System::Windows::Forms::TextBox());
-			this->textLatitude = (gcnew System::Windows::Forms::TextBox());
-			this->label7 = (gcnew System::Windows::Forms::Label());
-			this->buttonSearchOrbits = (gcnew System::Windows::Forms::Button());
-			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
-			this->radioButtonWest = (gcnew System::Windows::Forms::RadioButton());
-			this->radioButtonEast = (gcnew System::Windows::Forms::RadioButton());
-			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
-			this->radioButtonNorth = (gcnew System::Windows::Forms::RadioButton());
-			this->radioButtonSouth = (gcnew System::Windows::Forms::RadioButton());
 			this->panelControl->SuspendLayout();
+			this->panelObitList->SuspendLayout();
+			this->groupBox2->SuspendLayout();
+			this->groupBox1->SuspendLayout();
 			this->panelInfo->SuspendLayout();
 			this->panelOrbit->SuspendLayout();
 			this->panelOrbiMovie->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarOrbit))->BeginInit();
 			this->panelPalette->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
-			this->panelObitList->SuspendLayout();
-			this->groupBox1->SuspendLayout();
-			this->groupBox2->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// panelControl
@@ -183,6 +183,148 @@ namespace GLControl {
 			this->panelControl->Name = L"panelControl";
 			this->panelControl->Size = System::Drawing::Size(342, 492);
 			this->panelControl->TabIndex = 0;
+			// 
+			// panelObitList
+			// 
+			this->panelObitList->Controls->Add(this->groupBox2);
+			this->panelObitList->Controls->Add(this->groupBox1);
+			this->panelObitList->Controls->Add(this->buttonSearchOrbits);
+			this->panelObitList->Controls->Add(this->label7);
+			this->panelObitList->Controls->Add(this->textLatitude);
+			this->panelObitList->Controls->Add(this->textLongitude);
+			this->panelObitList->Controls->Add(this->label4);
+			this->panelObitList->Controls->Add(this->checkedListOrbit);
+			this->panelObitList->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->panelObitList->Location = System::Drawing::Point(0, 317);
+			this->panelObitList->Name = L"panelObitList";
+			this->panelObitList->Size = System::Drawing::Size(297, 175);
+			this->panelObitList->TabIndex = 3;
+			// 
+			// groupBox2
+			// 
+			this->groupBox2->Controls->Add(this->radioButtonSouth);
+			this->groupBox2->Controls->Add(this->radioButtonNorth);
+			this->groupBox2->Location = System::Drawing::Point(126, 54);
+			this->groupBox2->Name = L"groupBox2";
+			this->groupBox2->Size = System::Drawing::Size(59, 54);
+			this->groupBox2->TabIndex = 7;
+			this->groupBox2->TabStop = false;
+			// 
+			// radioButtonSouth
+			// 
+			this->radioButtonSouth->AutoSize = true;
+			this->radioButtonSouth->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->radioButtonSouth->Location = System::Drawing::Point(6, 33);
+			this->radioButtonSouth->Name = L"radioButtonSouth";
+			this->radioButtonSouth->Size = System::Drawing::Size(51, 17);
+			this->radioButtonSouth->TabIndex = 1;
+			this->radioButtonSouth->Text = L"south";
+			this->radioButtonSouth->UseVisualStyleBackColor = true;
+			// 
+			// radioButtonNorth
+			// 
+			this->radioButtonNorth->AutoSize = true;
+			this->radioButtonNorth->Checked = true;
+			this->radioButtonNorth->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->radioButtonNorth->Location = System::Drawing::Point(6, 10);
+			this->radioButtonNorth->Name = L"radioButtonNorth";
+			this->radioButtonNorth->Size = System::Drawing::Size(49, 17);
+			this->radioButtonNorth->TabIndex = 0;
+			this->radioButtonNorth->TabStop = true;
+			this->radioButtonNorth->Text = L"north";
+			this->radioButtonNorth->UseVisualStyleBackColor = true;
+			// 
+			// groupBox1
+			// 
+			this->groupBox1->Controls->Add(this->radioButtonEast);
+			this->groupBox1->Controls->Add(this->radioButtonWest);
+			this->groupBox1->Location = System::Drawing::Point(191, 54);
+			this->groupBox1->Name = L"groupBox1";
+			this->groupBox1->Size = System::Drawing::Size(59, 54);
+			this->groupBox1->TabIndex = 6;
+			this->groupBox1->TabStop = false;
+			// 
+			// radioButtonEast
+			// 
+			this->radioButtonEast->AutoSize = true;
+			this->radioButtonEast->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->radioButtonEast->Location = System::Drawing::Point(5, 33);
+			this->radioButtonEast->Name = L"radioButtonEast";
+			this->radioButtonEast->Size = System::Drawing::Size(45, 17);
+			this->radioButtonEast->TabIndex = 1;
+			this->radioButtonEast->Text = L"east";
+			this->radioButtonEast->UseVisualStyleBackColor = true;
+			// 
+			// radioButtonWest
+			// 
+			this->radioButtonWest->AutoSize = true;
+			this->radioButtonWest->Checked = true;
+			this->radioButtonWest->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->radioButtonWest->Location = System::Drawing::Point(5, 10);
+			this->radioButtonWest->Name = L"radioButtonWest";
+			this->radioButtonWest->Size = System::Drawing::Size(47, 17);
+			this->radioButtonWest->TabIndex = 0;
+			this->radioButtonWest->TabStop = true;
+			this->radioButtonWest->Text = L"west";
+			this->radioButtonWest->UseVisualStyleBackColor = true;
+			// 
+			// buttonSearchOrbits
+			// 
+			this->buttonSearchOrbits->Location = System::Drawing::Point(235, 28);
+			this->buttonSearchOrbits->Name = L"buttonSearchOrbits";
+			this->buttonSearchOrbits->Size = System::Drawing::Size(52, 20);
+			this->buttonSearchOrbits->TabIndex = 5;
+			this->buttonSearchOrbits->Text = L"Search";
+			this->buttonSearchOrbits->UseVisualStyleBackColor = true;
+			// 
+			// label7
+			// 
+			this->label7->AutoSize = true;
+			this->label7->Location = System::Drawing::Point(178, 28);
+			this->label7->Name = L"label7";
+			this->label7->Size = System::Drawing::Size(10, 13);
+			this->label7->TabIndex = 4;
+			this->label7->Text = L":";
+			// 
+			// textLatitude
+			// 
+			this->textLatitude->Location = System::Drawing::Point(191, 28);
+			this->textLatitude->Name = L"textLatitude";
+			this->textLatitude->Size = System::Drawing::Size(40, 20);
+			this->textLatitude->TabIndex = 3;
+			this->textLatitude->Text = L"0";
+			// 
+			// textLongitude
+			// 
+			this->textLongitude->Location = System::Drawing::Point(136, 28);
+			this->textLongitude->Name = L"textLongitude";
+			this->textLongitude->Size = System::Drawing::Size(40, 20);
+			this->textLongitude->TabIndex = 2;
+			this->textLongitude->Text = L"0";
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->Location = System::Drawing::Point(133, 12);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(134, 13);
+			this->label4->TabIndex = 1;
+			this->label4->Text = L"Coordinates on the surface";
+			// 
+			// checkedListOrbit
+			// 
+			this->checkedListOrbit->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left));
+			this->checkedListOrbit->CheckOnClick = true;
+			this->checkedListOrbit->FormattingEnabled = true;
+			this->checkedListOrbit->Location = System::Drawing::Point(16, 12);
+			this->checkedListOrbit->Name = L"checkedListOrbit";
+			this->checkedListOrbit->Size = System::Drawing::Size(104, 154);
+			this->checkedListOrbit->TabIndex = 0;
 			// 
 			// panelInfo
 			// 
@@ -274,6 +416,16 @@ namespace GLControl {
 			this->panelOrbit->Name = L"panelOrbit";
 			this->panelOrbit->Size = System::Drawing::Size(297, 243);
 			this->panelOrbit->TabIndex = 1;
+			// 
+			// buttonAddOrbit
+			// 
+			this->buttonAddOrbit->Location = System::Drawing::Point(130, 25);
+			this->buttonAddOrbit->Name = L"buttonAddOrbit";
+			this->buttonAddOrbit->Size = System::Drawing::Size(31, 20);
+			this->buttonAddOrbit->TabIndex = 14;
+			this->buttonAddOrbit->Text = L"+";
+			this->buttonAddOrbit->UseVisualStyleBackColor = true;
+			this->buttonAddOrbit->Click += gcnew System::EventHandler(this, &OpenGLControl::buttonAddOrbit_Click);
 			// 
 			// checkBoxAtmosphere
 			// 
@@ -501,156 +653,6 @@ namespace GLControl {
 			// 
 			this->timer1->Tick += gcnew System::EventHandler(this, &OpenGLControl::timer1_Tick);
 			// 
-			// buttonAddOrbit
-			// 
-			this->buttonAddOrbit->Location = System::Drawing::Point(130, 25);
-			this->buttonAddOrbit->Name = L"buttonAddOrbit";
-			this->buttonAddOrbit->Size = System::Drawing::Size(31, 20);
-			this->buttonAddOrbit->TabIndex = 14;
-			this->buttonAddOrbit->Text = L"+";
-			this->buttonAddOrbit->UseVisualStyleBackColor = true;
-			// 
-			// panelObitList
-			// 
-			this->panelObitList->Controls->Add(this->groupBox2);
-			this->panelObitList->Controls->Add(this->groupBox1);
-			this->panelObitList->Controls->Add(this->buttonSearchOrbits);
-			this->panelObitList->Controls->Add(this->label7);
-			this->panelObitList->Controls->Add(this->textLatitude);
-			this->panelObitList->Controls->Add(this->textLongitude);
-			this->panelObitList->Controls->Add(this->label4);
-			this->panelObitList->Controls->Add(this->checkedListOrbit);
-			this->panelObitList->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->panelObitList->Location = System::Drawing::Point(0, 317);
-			this->panelObitList->Name = L"panelObitList";
-			this->panelObitList->Size = System::Drawing::Size(297, 175);
-			this->panelObitList->TabIndex = 3;
-			// 
-			// checkedListOrbit
-			// 
-			this->checkedListOrbit->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
-				| System::Windows::Forms::AnchorStyles::Left));
-			this->checkedListOrbit->FormattingEnabled = true;
-			this->checkedListOrbit->Location = System::Drawing::Point(16, 12);
-			this->checkedListOrbit->Name = L"checkedListOrbit";
-			this->checkedListOrbit->Size = System::Drawing::Size(104, 154);
-			this->checkedListOrbit->TabIndex = 0;
-			// 
-			// label4
-			// 
-			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(133, 12);
-			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(134, 13);
-			this->label4->TabIndex = 1;
-			this->label4->Text = L"Coordinates on the surface";
-			// 
-			// textLongitude
-			// 
-			this->textLongitude->Location = System::Drawing::Point(136, 28);
-			this->textLongitude->Name = L"textLongitude";
-			this->textLongitude->Size = System::Drawing::Size(40, 20);
-			this->textLongitude->TabIndex = 2;
-			this->textLongitude->Text = L"0";
-			// 
-			// textLatitude
-			// 
-			this->textLatitude->Location = System::Drawing::Point(191, 28);
-			this->textLatitude->Name = L"textLatitude";
-			this->textLatitude->Size = System::Drawing::Size(40, 20);
-			this->textLatitude->TabIndex = 3;
-			this->textLatitude->Text = L"0";
-			// 
-			// label7
-			// 
-			this->label7->AutoSize = true;
-			this->label7->Location = System::Drawing::Point(178, 28);
-			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(10, 13);
-			this->label7->TabIndex = 4;
-			this->label7->Text = L":";
-			// 
-			// buttonSearchOrbits
-			// 
-			this->buttonSearchOrbits->Location = System::Drawing::Point(235, 28);
-			this->buttonSearchOrbits->Name = L"buttonSearchOrbits";
-			this->buttonSearchOrbits->Size = System::Drawing::Size(52, 20);
-			this->buttonSearchOrbits->TabIndex = 5;
-			this->buttonSearchOrbits->Text = L"Search";
-			this->buttonSearchOrbits->UseVisualStyleBackColor = true;
-			// 
-			// groupBox1
-			// 
-			this->groupBox1->Controls->Add(this->radioButtonEast);
-			this->groupBox1->Controls->Add(this->radioButtonWest);
-			this->groupBox1->Location = System::Drawing::Point(191, 54);
-			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(59, 54);
-			this->groupBox1->TabIndex = 6;
-			this->groupBox1->TabStop = false;
-			// 
-			// radioButtonWest
-			// 
-			this->radioButtonWest->AutoSize = true;
-			this->radioButtonWest->Checked = true;
-			this->radioButtonWest->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->radioButtonWest->Location = System::Drawing::Point(5, 10);
-			this->radioButtonWest->Name = L"radioButtonWest";
-			this->radioButtonWest->Size = System::Drawing::Size(47, 17);
-			this->radioButtonWest->TabIndex = 0;
-			this->radioButtonWest->TabStop = true;
-			this->radioButtonWest->Text = L"west";
-			this->radioButtonWest->UseVisualStyleBackColor = true;
-			// 
-			// radioButtonEast
-			// 
-			this->radioButtonEast->AutoSize = true;
-			this->radioButtonEast->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->radioButtonEast->Location = System::Drawing::Point(5, 33);
-			this->radioButtonEast->Name = L"radioButtonEast";
-			this->radioButtonEast->Size = System::Drawing::Size(45, 17);
-			this->radioButtonEast->TabIndex = 1;
-			this->radioButtonEast->Text = L"east";
-			this->radioButtonEast->UseVisualStyleBackColor = true;
-			// 
-			// groupBox2
-			// 
-			this->groupBox2->Controls->Add(this->radioButtonSouth);
-			this->groupBox2->Controls->Add(this->radioButtonNorth);
-			this->groupBox2->Location = System::Drawing::Point(126, 54);
-			this->groupBox2->Name = L"groupBox2";
-			this->groupBox2->Size = System::Drawing::Size(59, 54);
-			this->groupBox2->TabIndex = 7;
-			this->groupBox2->TabStop = false;
-			// 
-			// radioButtonNorth
-			// 
-			this->radioButtonNorth->AutoSize = true;
-			this->radioButtonNorth->Checked = true;
-			this->radioButtonNorth->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->radioButtonNorth->Location = System::Drawing::Point(6, 10);
-			this->radioButtonNorth->Name = L"radioButtonNorth";
-			this->radioButtonNorth->Size = System::Drawing::Size(49, 17);
-			this->radioButtonNorth->TabIndex = 0;
-			this->radioButtonNorth->TabStop = true;
-			this->radioButtonNorth->Text = L"north";
-			this->radioButtonNorth->UseVisualStyleBackColor = true;
-			// 
-			// radioButtonSouth
-			// 
-			this->radioButtonSouth->AutoSize = true;
-			this->radioButtonSouth->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->radioButtonSouth->Location = System::Drawing::Point(6, 33);
-			this->radioButtonSouth->Name = L"radioButtonSouth";
-			this->radioButtonSouth->Size = System::Drawing::Size(51, 17);
-			this->radioButtonSouth->TabIndex = 1;
-			this->radioButtonSouth->Text = L"south";
-			this->radioButtonSouth->UseVisualStyleBackColor = true;
-			// 
 			// OpenGLControl
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -665,6 +667,12 @@ namespace GLControl {
 			this->Resize += gcnew System::EventHandler(this, &OpenGLControl::OpenGLControl_Resize);
 			this->panelControl->ResumeLayout(false);
 			this->panelControl->PerformLayout();
+			this->panelObitList->ResumeLayout(false);
+			this->panelObitList->PerformLayout();
+			this->groupBox2->ResumeLayout(false);
+			this->groupBox2->PerformLayout();
+			this->groupBox1->ResumeLayout(false);
+			this->groupBox1->PerformLayout();
 			this->panelInfo->ResumeLayout(false);
 			this->panelInfo->PerformLayout();
 			this->panelOrbit->ResumeLayout(false);
@@ -673,12 +681,6 @@ namespace GLControl {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarOrbit))->EndInit();
 			this->panelPalette->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
-			this->panelObitList->ResumeLayout(false);
-			this->panelObitList->PerformLayout();
-			this->groupBox1->ResumeLayout(false);
-			this->groupBox1->PerformLayout();
-			this->groupBox2->ResumeLayout(false);
-			this->groupBox2->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
@@ -711,6 +713,8 @@ namespace GLControl {
 		System::Void buttonScalePlus_Click(System::Object^ sender, System::EventArgs^ e);
 
 		System::Void checkBoxAtmosphere_CheckedChanged(System::Object^ sender, System::EventArgs^ e);
+
+		System::Void buttonAddOrbit_Click(System::Object^ sender, System::EventArgs^ e);
 
 	private:
 		void init();

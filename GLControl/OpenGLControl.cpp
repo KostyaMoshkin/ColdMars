@@ -81,6 +81,10 @@ namespace GLControl {
 		this->textBoxLS->Text = gcnew System::String(std::to_string(m_pBridge->getLS()).c_str());
 		this->textBoxScale->Text = gcnew System::String(std::to_string(m_pBridge->getScale()).c_str());
 
+		this->checkedListOrbit->Items->Clear();
+		for (unsigned i = 0; i < m_nOrbitQuantity; ++i)
+			this->checkedListOrbit->Items->Add(gcnew System::String(m_pBridge->getOrbit_by_index(m_nOrbitCurrentIndex + i).c_str()), CheckState::Checked);
+
 		double fLS;
 		if (!String_to_double(this->textBoxLS->Text, fLS))
 			fLS = m_nLS;
@@ -142,6 +146,10 @@ namespace GLControl {
 					m_nOrbitQuantity = (nOrbitEndIndex <= m_nOrbitCurrentIndex) ? 1 : nOrbitEndIndex - m_nOrbitCurrentIndex;
 			}
 		}
+
+		this->checkedListOrbit->Items->Clear();
+		for (unsigned i = 0; i < m_nOrbitQuantity; ++i)
+			this->checkedListOrbit->Items->Add(gcnew System::String(m_pBridge->getOrbit_by_index(m_nOrbitCurrentIndex + i).c_str()), CheckState::Checked);
 
 		m_pBridge->setFileRange(m_nOrbitCurrentIndex, m_nOrbitCurrentIndex + m_nOrbitQuantity);
 
@@ -326,6 +334,14 @@ namespace GLControl {
 	System::Void OpenGLControl::checkBoxAtmosphere_CheckedChanged(System::Object^ sender, System::EventArgs^ e)
 	{
 		m_pBridge->setIncludeAtmosphere(this->checkBoxAtmosphere->Checked);
+
+		return System::Void();
+	}
+
+	System::Void OpenGLControl::buttonAddOrbit_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		if (this->checkedListOrbit->CheckedItems->Contains(this->textBoxOrbitStart->Text) == false)
+			this->checkedListOrbit->Items->Add(this->textBoxOrbitStart->Text, CheckState::Checked);
 
 		return System::Void();
 	}
