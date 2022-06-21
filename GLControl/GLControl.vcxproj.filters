@@ -135,6 +135,9 @@
     <ClInclude Include="..\Include\LOG\logger.h">
       <Filter>Lib</Filter>
     </ClInclude>
+    <ClInclude Include="OrbitBinWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -214,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="MegdrReader.cpp">
       <Filter>Reader</Filter>
+    </ClCompile>
+    <ClCompile Include="OrbitBinWriter.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
