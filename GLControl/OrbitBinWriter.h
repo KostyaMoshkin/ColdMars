@@ -50,8 +50,9 @@ namespace orbit
 		std::string m_sNptFile;
 
 	public:
-		static const char* OrbitFileName()	{ return "OrbitFile";	}
-		static const char* NptFileName()	{ return "NptFile";		}
+		static const char* OrbitFileName()	{ return "OrbitFile";		}
+		static const char* NptFileName()	{ return "NptFile";			}
+		static const char* LevelFileName()	{ return "LevelFile";		}
 
 	public:
 		OrbitBinWriter();

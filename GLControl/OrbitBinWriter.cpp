@@ -23,17 +23,17 @@ namespace orbit
 
     bool OrbitBinWriter::init()
     {
-        m_pOrbitTextReader = orbit::OrbitTextReader::Create();
-        m_pOrbitTextReader->setConfig(getConfig());
-
-        if (!m_pOrbitTextReader->init())
-            return false;
 
         //--------------------------------------------------------------------------------------------
 
         std::string sOrbitFile;
         //if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), OrbitFileName()), sOrbitFile))
             sOrbitFile = "E:\\Orbit.bin";
+
+        if (FILE* file = fopen(sOrbitFile.c_str(), "r")) {
+            fclose(file);
+            return true;
+        }
 
         FILE* pOrbitFile;
         if (fopen_s(&pOrbitFile, sOrbitFile.c_str(), "wb") != 0)
@@ -47,6 +47,24 @@ namespace orbit
 
         FILE* pNptFile;
         if (fopen_s(&pNptFile, sNptFile.c_str(), "wb") != 0)
+            return false;
+
+        //--------------------------------------------------------------------------------------------
+
+        std::string sLevelFile;
+        //if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), LevelFileName()), sLevelFile))
+            sLevelFile = "E:\\Level.bin";
+
+        FILE* pLevelFile;
+        if (fopen_s(&pLevelFile, sLevelFile.c_str(), "wb") != 0)
+            return false;
+
+        //--------------------------------------------------------------------------------------------
+
+        m_pOrbitTextReader = orbit::OrbitTextReader::Create();
+        m_pOrbitTextReader->setConfig(getConfig());
+
+        if (!m_pOrbitTextReader->init())
             return false;
 
         //--------------------------------------------------------------------------------------------
@@ -83,6 +101,8 @@ namespace orbit
                 if (fwrite(&nptFile, sizeof(NptFile), 1, pNptFile) != 1)
                     return false;
 
+                if (fwrite(&vNpt[j].vLevel[0], sizeof(vNpt[j].vLevel) * sizeof(SLevel), 1, pLevelFile) != 1)
+                    return false;
             }
 
             long nNptEndPosition = ftell(pNptFile);
@@ -96,6 +116,9 @@ namespace orbit
 
         }
 
+        fclose(pNptFile);
+        fclose(pOrbitFile);
+        fclose(pLevelFile);
 
         return true;
     }
