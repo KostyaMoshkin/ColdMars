@@ -27,7 +27,7 @@ namespace GL {
 		TextureBufferPtr m_pPaletteTexture = nullptr;
 
 		PalettePtr m_pPalette = nullptr;
-		orbit::OrbitTectReaderPtr m_pOrbitReader = nullptr;
+		orbit::OrbitTextReaderPtr m_pOrbitReader = nullptr;
 
 		lib::Matrix4 m_mRotate = lib::Matrix4(1.0f);
 		lib::Matrix4 m_mTransform = lib::Matrix4(1.0f);
@@ -77,7 +77,7 @@ namespace GL {
 	public:
 		void setFileRange(int nFirstFile_, int nLasetFile_);
 
-		const orbit::OrbitTectReaderPtr getReader();
+		const orbit::OrbitTextReaderPtr getReader();
 
 		void getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_);
 

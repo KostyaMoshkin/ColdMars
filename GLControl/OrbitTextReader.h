@@ -43,7 +43,7 @@ namespace orbit
 	};
 
 	class OrbitTextReader;
-	using OrbitTectReaderPtr = std::shared_ptr<OrbitTextReader>;
+	using OrbitTextReaderPtr = std::shared_ptr<OrbitTextReader>;
 
 	class OrbitTextReader : public lib::CConfig
 	{
@@ -70,7 +70,7 @@ namespace orbit
 		OrbitTextReader();
 		~OrbitTextReader();
 
-		static OrbitTectReaderPtr Create() { return std::make_shared<OrbitTextReader>(); }
+		static OrbitTextReaderPtr Create() { return std::make_shared<OrbitTextReader>(); }
 
 	public:
 		bool init();
