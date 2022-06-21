@@ -11,7 +11,29 @@ namespace orbit
 
 	struct NptFile : OrbitFile, Snpt
 	{
+		unsigned short nLevelSize;
 
+		NptFile& operator =(const Snpt& snpt_)
+		{
+			this->nSpectrumNumb = snpt_.nSpectrumNumb;
+			this->nInterferogramID = snpt_.nInterferogramID;
+			this->fJulianDate = snpt_.fJulianDate;
+			this->sUTC = snpt_.sUTC;
+			this->fDistancToSun = snpt_.fDistancToSun;
+			this->fLongitude = snpt_.fLongitude;
+			this->fLatitude = snpt_.fLatitude;
+			this->fLS = snpt_.fLS;
+			this->fLocalTime = snpt_.fLocalTime;
+			this->fSunZenit = snpt_.fSunZenit;
+			this->fObserverZenit = snpt_.fObserverZenit;
+			this->fSurfaceTemp = snpt_.fSurfaceTemp;
+			this->fDustOpticalDepth = snpt_.fDustOpticalDepth;
+			this->fIceOpticalDepth = snpt_.fIceOpticalDepth;
+			this->nLevelCount = snpt_.nLevelCount;
+			this->nLevelSize = snpt_.nLevelCount;
+
+			return *this;
+		}
 	};
 
 
@@ -24,11 +46,12 @@ namespace orbit
 
 		std::vector<orbit::SPairLevel> m_vLevelData;
 
-		std::map<int, OrbitFile> m_mOrbitFile;
-		std::map<int, NptFile> m_mNptFile;
-
 		std::string m_sOrbitFile;
 		std::string m_sNptFile;
+
+	public:
+		static const char* OrbitFileName()	{ return "OrbitFile";	}
+		static const char* NptFileName()	{ return "NptFile";		}
 
 	public:
 		OrbitBinWriter();

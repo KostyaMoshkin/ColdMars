@@ -1,8 +1,17 @@
 #include "pch.h"
+#include "SLevel.h"
 #include "OrbitBinWriter.h"
 
 namespace orbit
 {
+    static std::string file_to_orbit(const std::string& sFile_)
+    {
+        size_t nPointPos = sFile_.find(".");
+        size_t nNamePos = sFile_.find_last_of("\\") + 2;
+
+        return sFile_.substr(nNamePos, nPointPos - nNamePos);
+    }
+
 
     OrbitBinWriter::OrbitBinWriter()
     {
@@ -20,29 +29,61 @@ namespace orbit
         if (!m_pOrbitTextReader->init())
             return false;
 
+        //--------------------------------------------------------------------------------------------
+
+        std::string sOrbitFile;
+        //if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), OrbitFileName()), sOrbitFile))
+            sOrbitFile = "E:\\Orbit.bin";
+
         FILE* pOrbitFile;
-        if (fopen_s(&pOrbitFile, m_sOrbitFile.c_str(), "rb") != 0)
+        if (fopen_s(&pOrbitFile, sOrbitFile.c_str(), "wb") != 0)
             return false;
+
+        //--------------------------------------------------------------------------------------------
+
+        std::string sNptFile;
+        //if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), NptFileName()), sNptFile))
+            sNptFile = "E:\\Npt.bin";
 
         FILE* pNptFile;
-        if (fopen_s(&pNptFile, m_sNptFile.c_str(), "rb") != 0)
+        if (fopen_s(&pNptFile, sNptFile.c_str(), "wb") != 0)
             return false;
 
-        for (int i = 0; i < m_pOrbitTextReader->getFileCount(); ++i)
+        //--------------------------------------------------------------------------------------------
+
+        std::string sOrbitDir;
+        if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), OrbitTextReader::OrbitDir()), sOrbitDir))
         {
-            m_pOrbitTextReader->setFileIndex(i, i + 1, m_vLevelData);
-            unsigned nOrbit = m_pOrbitTextReader->getOrbit_by_number(i);
+            toLog("ERROR! Can't find orbit dir tag in config");
+            return false;
+        }
 
-            NptFile nptFile;
+        std::vector<std::string> vFileList = lib::create_file_list(sOrbitDir.c_str());
 
+        //--------------------------------------------------------------------------------------------
 
+        long nLevelStartPosition = 0;
 
-
-
+        for (int i = 0; i < vFileList.size(); ++i)
+        {
+            std::vector<Snpt> vNpt = m_pOrbitTextReader->getNpt(vFileList[i].c_str());
+            unsigned nOrbit = std::stoi(file_to_orbit(vFileList[i].c_str()));
 
             long nNptStartPosition = ftell(pNptFile);
 
+            for (int j = 0; j < vNpt.size(); ++j)
+            {
+                NptFile nptFile;
+                nptFile = vNpt[j];
+                nptFile.nBegin = nLevelStartPosition;
 
+                nLevelStartPosition += nptFile.nLevelCount * sizeof(SLevel);
+                nptFile.nEnd = nLevelStartPosition;
+
+                if (fwrite(&nptFile, sizeof(NptFile), 1, pNptFile) != 1)
+                    return false;
+
+            }
 
             long nNptEndPosition = ftell(pNptFile);
 
@@ -50,10 +91,13 @@ namespace orbit
             orbitFile.nBegin = nNptStartPosition;
             orbitFile.nEnd = nNptEndPosition;
 
+            if (fwrite(&orbitFile, sizeof(OrbitFile), 1, pOrbitFile) != 1)
+                return false;
+
         }
 
 
-        return false;
+        return true;
     }
 
     bool OrbitBinWriter::compile()

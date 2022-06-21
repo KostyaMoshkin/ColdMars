@@ -39,6 +39,7 @@ namespace orbit
 				break;
 
 			vNpt[i].vLevel.resize(vNpt[i].nLevelCount);
+
 			for (unsigned j = 0; j < vNpt[i].nLevelCount; ++j)
 				strFile >> vNpt[i].vLevel[j].fAltitude >> vNpt[i].vLevel[j].fPresure >> vNpt[i].vLevel[j].fTempereture;
 		}
@@ -192,6 +193,11 @@ namespace orbit
 		}
 	}
 
+	std::vector<Snpt> OrbitTextReader::getNpt(const char* sFileName_, bool bAllRecord_, bool bIncludeLevels_)
+	{
+		return readFile(sFileName_, true);
+	}
+
 	size_t OrbitTextReader::getRecCount(unsigned nIndex_)
 	{
 		return m_vvNpt[nIndex_].size();
@@ -215,7 +221,7 @@ namespace orbit
 
 		for (int i = 0; i < m_vFileList.size(); ++i)
 		{
-			std::vector<Snpt> vNpt = readFile(m_vFileList[i].c_str());
+			std::vector<Snpt> vNpt = readFile(m_vFileList[i].c_str(), true);
 			//vThread[i] = std::thread(threadWork, result, m_vFileList[i], fLatitude_, fLongitude_);
 
 			for (int j = 0; j < vNpt.size(); ++j)

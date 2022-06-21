@@ -77,6 +77,8 @@ namespace orbit
 
 		void setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_, bool bClearLevel_ = true);
 
+		std::vector<Snpt> getNpt(const char* sFileName_, bool bAllRecord_ = true, bool bIncludeLevels_ = true);
+
 		size_t getRecCount(unsigned nIndex_);
 
 		size_t getFileCount();

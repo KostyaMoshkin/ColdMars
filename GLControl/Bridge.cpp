@@ -3,6 +3,8 @@
 #include "ContextContainer.h"
 #include "Screen.h"
 
+#include "OrbitBinWriter.h"
+
 namespace GL
 {
 	Bridge::Bridge()
@@ -60,6 +62,15 @@ namespace GL
 
 		if (!bFirsfInit)
 			return true;
+
+		orbit::OrbitBinWriterPtr orbitBinWriter;
+
+		orbitBinWriter = orbit::OrbitBinWriter::Create();
+		orbitBinWriter->setConfig(m_pXMLconfig->getRoot());
+
+		if (!orbitBinWriter->init())
+			return false;
+
 
 		{
 			ContextSession contextSession(m_pControlContext, m_pScreen->ViewControl->Size.Width, m_pScreen->ViewControl->Size.Height);
