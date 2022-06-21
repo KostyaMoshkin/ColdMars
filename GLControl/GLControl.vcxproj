@@ -193,6 +193,7 @@
     <ClInclude Include="OpenGLControl.h">
       <FileType>CppControl</FileType>
     </ClInclude>
+    <ClInclude Include="OrbitBinReader.h" />
     <ClInclude Include="OrbitBinWriter.h" />
     <ClInclude Include="OrbitTextReader.h" />
     <ClInclude Include="Palette.h" />
@@ -225,6 +226,7 @@
     <ClCompile Include="lib.cpp" />
     <ClCompile Include="MegdrReader.cpp" />
     <ClCompile Include="OpenGLControl.cpp" />
+    <ClCompile Include="OrbitBinReader.cpp" />
     <ClCompile Include="OrbitBinWriter.cpp" />
     <ClCompile Include="OrbitTextReader.cpp" />
     <ClCompile Include="Palette.cpp" />

@@ -136,7 +136,10 @@
       <Filter>Lib</Filter>
     </ClInclude>
     <ClInclude Include="OrbitBinWriter.h">
-      <Filter>Header Files</Filter>
+      <Filter>Reader</Filter>
+    </ClInclude>
+    <ClInclude Include="OrbitBinReader.h">
+      <Filter>Reader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -218,8 +221,11 @@
     <ClCompile Include="MegdrReader.cpp">
       <Filter>Reader</Filter>
     </ClCompile>
+    <ClCompile Include="OrbitBinReader.cpp">
+      <Filter>Reader</Filter>
+    </ClCompile>
     <ClCompile Include="OrbitBinWriter.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Reader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
