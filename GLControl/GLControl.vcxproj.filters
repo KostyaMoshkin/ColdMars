@@ -114,7 +114,7 @@
     <ClInclude Include="Interpolator.h">
       <Filter>Reader</Filter>
     </ClInclude>
-    <ClInclude Include="OrbitReader.h">
+    <ClInclude Include="OrbitTextReader.h">
       <Filter>Reader</Filter>
     </ClInclude>
     <ClInclude Include="SLevel.h">
@@ -191,7 +191,7 @@
     <ClCompile Include="SceneRender.cpp">
       <Filter>Render</Filter>
     </ClCompile>
-    <ClCompile Include="OrbitReader.cpp">
+    <ClCompile Include="OrbitTextReader.cpp">
       <Filter>Reader</Filter>
     </ClCompile>
     <ClCompile Include="..\Include\XML\tinystr.cpp">

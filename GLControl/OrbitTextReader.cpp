@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "OrbitReader.h"
+#include "OrbitTextReader.h"
 #include "Interpolator.h"
 
 #include <thread>
@@ -68,15 +68,15 @@ namespace orbit
 
 	//-------------------------------------------------------------------------------
 
-	OrbitReader::OrbitReader()
+	OrbitTextReader::OrbitTextReader()
 	{
 	}
 
-	OrbitReader::~OrbitReader()
+	OrbitTextReader::~OrbitTextReader()
 	{
 	}
 
-	bool OrbitReader::init()
+	bool OrbitTextReader::init()
 	{
 		std::string sOrbitDir;
 		if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), OrbitDir()), sOrbitDir))
@@ -128,7 +128,7 @@ namespace orbit
 		return true;
 	}
 
-	void OrbitReader::setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_, bool bClearLevel_)
+	void OrbitTextReader::setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_, bool bClearLevel_)
 	{
 		if (bClearLevel_)
 			vLevelData_.clear();
@@ -192,22 +192,22 @@ namespace orbit
 		}
 	}
 
-	size_t OrbitReader::getRecCount(unsigned nIndex_)
+	size_t OrbitTextReader::getRecCount(unsigned nIndex_)
 	{
 		return m_vvNpt[nIndex_].size();
 	}
 
-	size_t OrbitReader::getFileCount()
+	size_t OrbitTextReader::getFileCount()
 	{
 		return m_vFileList.size();
 	}
 
-	size_t OrbitReader::getCount()
+	size_t OrbitTextReader::getCount()
 	{
 		return m_vvNpt.size();
 	}
 
-	std::vector<unsigned> OrbitReader::getOrbitListByCoord(float fLatitude_, float fLongitude_)
+	std::vector<unsigned> OrbitTextReader::getOrbitListByCoord(float fLatitude_, float fLongitude_)
 	{
 		std::vector<unsigned> result;
 
@@ -237,27 +237,27 @@ namespace orbit
 		return std::move(result);
 	}
 
-	unsigned OrbitReader::getSpectrumNumb()
+	unsigned OrbitTextReader::getSpectrumNumb()
 	{
 		return m_Snpt.nSpectrumNumb;
 	}
 
-	float OrbitReader::getLS()
+	float OrbitTextReader::getLS()
 	{
 		return m_Snpt.fLS;
 	}
 
-	float OrbitReader::getJulianDate()
+	float OrbitTextReader::getJulianDate()
 	{
 		return m_Snpt.fJulianDate;
 	}
 
-	float OrbitReader::getLocalTime()
+	float OrbitTextReader::getLocalTime()
 	{
 		return m_Snpt.fLocalTime;
 	}
 
-	unsigned OrbitReader::getOrbit_by_number(unsigned nNumber_)
+	unsigned OrbitTextReader::getOrbit_by_number(unsigned nNumber_)
 	{
 		if (m_mOrbit.find(nNumber_) != m_mOrbit.end())
 			return m_mOrbit[nNumber_];
@@ -269,7 +269,7 @@ namespace orbit
 		return UINT_MAX;
 	}
 
-	unsigned OrbitReader::getOrbit_by_LS(unsigned nNumber_)
+	unsigned OrbitTextReader::getOrbit_by_LS(unsigned nNumber_)
 	{
 		if (m_mLS.find(nNumber_) != m_mLS.end())
 			return m_mLS[nNumber_];
@@ -281,7 +281,7 @@ namespace orbit
 		return UINT_MAX;
 	}
 
-	std::string OrbitReader::getUTC()
+	std::string OrbitTextReader::getUTC()
 	{
 		return m_Snpt.sUTC;
 	}

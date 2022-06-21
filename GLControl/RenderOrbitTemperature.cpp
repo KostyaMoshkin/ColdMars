@@ -130,7 +130,7 @@ namespace GL {
 		setScale();
 
 		//  Координаты вершин
-		m_pOrbitReader = orbit::OrbitReader::Create();
+		m_pOrbitReader = orbit::OrbitTextReader::Create();
 		m_pOrbitReader->setConfig(getConfig());
 
 		if (!m_pOrbitReader->init())
@@ -217,7 +217,7 @@ namespace GL {
 		fillVertex();
 	}
 
-	const orbit::OrbitReaderPtr RenderOrbitTemperature::getReader()
+	const orbit::OrbitTectReaderPtr RenderOrbitTemperature::getReader()
 	{
 		return m_pOrbitReader;
 	}

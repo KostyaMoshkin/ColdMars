@@ -7,7 +7,7 @@
 #include "TextureBuffer.h"
 
 #include "MegdrReader.h"
-#include "OrbitReader.h"
+#include "OrbitTextReader.h"
 
 namespace GL {
 
@@ -33,7 +33,7 @@ namespace GL {
 		TextureBufferPtr m_pDigitsTexture = nullptr;
 
 		megdr::MegdrReaderPtr m_pMegdr = nullptr;
-		orbit::OrbitReaderPtr m_pOrbitReader = nullptr;
+		orbit::OrbitTectReaderPtr m_pOrbitReader = nullptr;
 
 		lib::Matrix4 m_mRotate = lib::Matrix4(1.0f);
 		lib::Matrix4 m_mTransform = lib::Matrix4(1.0f);

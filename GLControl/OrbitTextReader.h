@@ -42,10 +42,10 @@ namespace orbit
 		std::vector<SLevel> vLevel;
 	};
 
-	class OrbitReader;
-	using OrbitReaderPtr = std::shared_ptr<OrbitReader>;
+	class OrbitTextReader;
+	using OrbitTectReaderPtr = std::shared_ptr<OrbitTextReader>;
 
-	class OrbitReader : public lib::CConfig
+	class OrbitTextReader : public lib::CConfig
 	{
 		std::vector<std::string> m_vFileList;
 		std::map<int, int> m_mLS;
@@ -67,10 +67,10 @@ namespace orbit
 		static const char* TemperatureInterpolateCount()	{ return "TemperatureInterpolateCount"; }
 
 	public:
-		OrbitReader();
-		~OrbitReader();
+		OrbitTextReader();
+		~OrbitTextReader();
 
-		static OrbitReaderPtr Create() { return std::make_shared<OrbitReader>(); }
+		static OrbitTectReaderPtr Create() { return std::make_shared<OrbitTextReader>(); }
 
 	public:
 		bool init();
