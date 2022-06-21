@@ -198,6 +198,17 @@ namespace GL {
 		renderBounder.unbound();
 	}
 
+	void RenderOrbitTemperature::setFileArray(const std::vector<unsigned>& vOrbit_)
+	{
+		for (int i = 0; i < vOrbit_.size(); ++i)
+		{
+			m_nFirstFile = vOrbit_[i];
+			m_nLastFile = vOrbit_[i] + 1;
+
+			m_pOrbitReader->setFileIndex(m_nFirstFile, m_nLastFile, m_vLevelData, i == 0);
+		}
+	}
+
 	void RenderOrbitTemperature::setFileRange(int nFirstFile_, int nLasetFile_)
 	{
 		m_nFirstFile = (unsigned)nFirstFile_;

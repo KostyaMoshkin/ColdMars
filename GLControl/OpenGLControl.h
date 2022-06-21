@@ -280,6 +280,7 @@ namespace GLControl {
 			this->buttonSearchOrbits->TabIndex = 5;
 			this->buttonSearchOrbits->Text = L"Search";
 			this->buttonSearchOrbits->UseVisualStyleBackColor = true;
+			this->buttonSearchOrbits->Click += gcnew System::EventHandler(this, &OpenGLControl::buttonSearchOrbits_Click);
 			// 
 			// label7
 			// 
@@ -296,7 +297,7 @@ namespace GLControl {
 			this->textLatitude->Name = L"textLatitude";
 			this->textLatitude->Size = System::Drawing::Size(40, 20);
 			this->textLatitude->TabIndex = 3;
-			this->textLatitude->Text = L"0";
+			this->textLatitude->Text = L"64";
 			// 
 			// textLongitude
 			// 
@@ -304,7 +305,7 @@ namespace GLControl {
 			this->textLongitude->Name = L"textLongitude";
 			this->textLongitude->Size = System::Drawing::Size(40, 20);
 			this->textLongitude->TabIndex = 2;
-			this->textLongitude->Text = L"0";
+			this->textLongitude->Text = L"119";
 			// 
 			// label4
 			// 
@@ -715,6 +716,8 @@ namespace GLControl {
 		System::Void checkBoxAtmosphere_CheckedChanged(System::Object^ sender, System::EventArgs^ e);
 
 		System::Void buttonAddOrbit_Click(System::Object^ sender, System::EventArgs^ e);
+
+		System::Void buttonSearchOrbits_Click(System::Object^ sender, System::EventArgs^ e);
 
 	private:
 		void init();

@@ -63,6 +63,7 @@ namespace GL {
 		// Унаследовано через Render
 		bool init() override;
 		void draw() override;
+		void setFileArray(const std::vector<unsigned>& vOrbit_);
 		void setViewAngle(lib::Matrix4& mPerspective_) override;
 		void lookAt(lib::Matrix4& mView_) override;
 		void rotate(lib::Matrix4& mRotate_) override;

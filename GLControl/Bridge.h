@@ -81,6 +81,8 @@ namespace GL
 
 		int getFileCount();
 
+		void setFileArray(const std::vector<unsigned>& vOrbit_);
+
 		void setFileRange(int nFirstFile_, int nLasetFile_);
 
 		std::string getOrbit_by_index(unsigned nIndex_);
@@ -91,6 +93,8 @@ namespace GL
 		ContextInterface^ getScreen();
 
 		ControlContextPtr getContext();
+
+		std::vector<unsigned> getOrbitListByCoord(float fLatitude_, float fLongitude_) const;
 
 	public:
 		unsigned getSpectrumNumb();

@@ -75,13 +75,15 @@ namespace orbit
 	public:
 		bool init();
 
-		void setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_);
+		void setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_, bool bClearLevel_ = true);
 
 		size_t getRecCount(unsigned nIndex_);
 
 		size_t getFileCount();
 
 		size_t getCount();
+
+		std::vector<unsigned> getOrbitListByCoord(float fLatitude_, float fLongitude_);
 
 		unsigned getSpectrumNumb();
 		float getJulianDate();

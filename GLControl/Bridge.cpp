@@ -234,6 +234,13 @@ namespace GL
 		return (int)m_vFileList.size();
 	}
 
+	void Bridge::setFileArray(const std::vector<unsigned>& vOrbit_)
+	{
+		m_pRenderOrbitTemperature->setFileArray(vOrbit_);
+
+		draw();
+	}
+
 	void Bridge::setFileRange(int nFirstFile_, int nLasetFile_)
 	{
 		m_pRenderOrbitTemperature->setFileRange(nFirstFile_, nLasetFile_);
@@ -274,6 +281,11 @@ namespace GL
 	ControlContextPtr Bridge::getContext()
 	{
 		return m_pControlContext;
+	}
+
+	std::vector<unsigned> Bridge::getOrbitListByCoord(float fLatitude_, float fLongitude_) const
+	{
+		return m_pRenderOrbitTemperature->getReader()->getOrbitListByCoord(fLatitude_, fLongitude_);
 	}
 
 	unsigned Bridge::getSpectrumNumb()

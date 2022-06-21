@@ -346,6 +346,34 @@ namespace GLControl {
 		return System::Void();
 	}
 
+	System::Void OpenGLControl::buttonSearchOrbits_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		this->checkedListOrbit->Items->Clear();
+
+		double fLatitude;
+		double fLonditude;
+
+		if (!String_to_double(this->textLatitude->Text, fLatitude))
+			return System::Void();
+
+		if (!String_to_double(this->textLongitude->Text, fLonditude))
+			return System::Void();
+
+		std::vector<unsigned> vOrbit = m_pBridge->getOrbitListByCoord(fLatitude, fLonditude);
+		//std::vector<unsigned> vOrbit = {2252, 2308, 2335, 2374};
+
+		for(const auto nOrbit : vOrbit)
+			this->checkedListOrbit->Items->Add(gcnew System::String(std::to_string(nOrbit).c_str()), CheckState::Checked);
+
+		for (auto& nOrbit : vOrbit)
+			nOrbit = m_pBridge->getOrbit_by_number(nOrbit);
+
+		m_pBridge->setFileArray(vOrbit);
+
+
+		return System::Void();
+	}
+
 	void OpenGLControl::init()
 	{
 		if (m_bBridgeInit)

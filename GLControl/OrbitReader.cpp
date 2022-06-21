@@ -3,9 +3,20 @@
 #include "OrbitReader.h"
 #include "Interpolator.h"
 
+#include <thread>
+//#include <mutex>
+
 namespace orbit
 {
-	std::vector<Snpt> readFile(const char* sFileName_, bool bHoleFile_ = true)
+	static std::string file_to_orbit(const std::string& sFile_)
+	{
+		size_t nPointPos = sFile_.find(".");
+		size_t nNamePos = sFile_.find_last_of("\\") + 2;
+
+		return sFile_.substr(nNamePos, nPointPos - nNamePos);
+	}
+
+	static std::vector<Snpt> readFile(const char* sFileName_, bool bAllRecord_ = true)
 	{
 		std::ifstream strFile(sFileName_);
 		if (!strFile.is_open())
@@ -24,7 +35,7 @@ namespace orbit
 			strFile >> vNpt[i].fSurfaceTemp >> vNpt[i].fDustOpticalDepth >> vNpt[i].fIceOpticalDepth;
 			strFile >> vNpt[i].nLevelCount;
 
-			if (!bHoleFile_)
+			if (!bAllRecord_)
 				break;
 
 			vNpt[i].vLevel.resize(vNpt[i].nLevelCount);
@@ -35,6 +46,25 @@ namespace orbit
 		strFile.close();
 		return vNpt;
 	}
+
+	//static std::mutex  :mutex g_i_mutex;
+
+	static void threadWork(std::vector<unsigned>& result, const std::string& sFile_, float fLatitude_, float fLongitude_)
+	{
+		std::vector<Snpt> vNpt = readFile(sFile_.c_str());
+
+		for (int j = 0; j < vNpt.size(); ++j)
+		{
+			if (std::abs(vNpt[j].fLatitude - fLatitude_) < 1 && (std::abs(vNpt[j].fLongitude - fLongitude_) < 1))
+			{
+				//const std::lock_guard<std::mutex> lock(g_i_mutex);
+				result.push_back(std::stoi(file_to_orbit(sFile_)));
+				break;
+			}
+		}
+	}
+
+	//--------------------------------------------------------------------------
 
 	//-------------------------------------------------------------------------------
 
@@ -65,10 +95,7 @@ namespace orbit
 
 		for (int i = 0; i < m_vFileList.size(); ++i)
 		{
-			size_t nPointPos = m_vFileList[i].find(".");
-			size_t nNamePos = m_vFileList[i].find_last_of("\\") + 2;
-
-			std::string  sNumber = m_vFileList[i].substr(nNamePos, nPointPos - nNamePos);
+			std::string  sNumber = file_to_orbit(m_vFileList[i]);
 
 			try
 			{
@@ -101,9 +128,10 @@ namespace orbit
 		return true;
 	}
 
-	void OrbitReader::setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_)
+	void OrbitReader::setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_, bool bClearLevel_)
 	{
-		vLevelData_.clear();
+		if (bClearLevel_)
+			vLevelData_.clear();
 
 		for (unsigned f = nFirstIndex_; f < nLastIndex_ && f < m_vFileList.size(); ++f)
 		{
@@ -178,6 +206,37 @@ namespace orbit
 	{
 		return m_vvNpt.size();
 	}
+
+	std::vector<unsigned> OrbitReader::getOrbitListByCoord(float fLatitude_, float fLongitude_)
+	{
+		std::vector<unsigned> result;
+
+		//std::thread* vThread = new(std::nothrow) std::thread[m_vFileList.size()];
+
+		for (int i = 0; i < m_vFileList.size(); ++i)
+		{
+			std::vector<Snpt> vNpt = readFile(m_vFileList[i].c_str());
+			//vThread[i] = std::thread(threadWork, result, m_vFileList[i], fLatitude_, fLongitude_);
+
+			for (int j = 0; j < vNpt.size(); ++j)
+			{
+				if (std::abs(vNpt[j].fLatitude - fLatitude_) < 1 && (std::abs(vNpt[j].fLongitude - fLongitude_) < 1))
+				{
+					result.push_back(std::stoi(file_to_orbit(m_vFileList[i])));
+					break;
+				}
+			}
+
+		}
+
+		//for (unsigned i = 0; i < m_vFileList.size(); ++i)
+		//	vThread[i].join();
+
+		//delete[] vThread;
+
+		return std::move(result);
+	}
+
 	unsigned OrbitReader::getSpectrumNumb()
 	{
 		return m_Snpt.nSpectrumNumb;
