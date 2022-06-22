@@ -9,4 +9,93 @@ namespace orbit
 		float fTempereture;
 	};
 
+	struct OrbitFile
+	{
+		long nBegin;
+		long nEnd;
+
+		unsigned nOrbit;
+	};
+
+	struct Snpt
+	{
+		unsigned nSpectrumNumb;
+		unsigned nInterferogramID;
+		float fJulianDate;
+		std::string sUTC;
+		float fDistancToSun;
+		float fLongitude;
+		float fLatitude;
+		float fLS;
+		float fLocalTime;
+		float fSunZenit;
+		float fObserverZenit;
+		float fSurfaceTemp;
+		float fDustOpticalDepth;
+		float fIceOpticalDepth;
+		unsigned short nLevelCount;
+		std::vector<SLevel> vLevel;
+	};
+
+	struct NptFile
+	{
+		long nBegin;
+		long nEnd;
+
+		unsigned nSpectrumNumb;
+		unsigned nInterferogramID;
+		float fJulianDate;
+		//std::string sUTC;
+		float fDistancToSun;
+		float fLongitude;
+		float fLatitude;
+		float fLS;
+		float fLocalTime;
+		float fSunZenit;
+		float fObserverZenit;
+		float fSurfaceTemp;
+		float fDustOpticalDepth;
+		float fIceOpticalDepth;
+		unsigned short nLevelCount;
+
+		NptFile& operator =(const Snpt& snpt_)
+		{
+			this->nSpectrumNumb = snpt_.nSpectrumNumb;
+			this->nInterferogramID = snpt_.nInterferogramID;
+			this->fJulianDate = snpt_.fJulianDate;
+			//this->sUTC = snpt_.sUTC;
+			this->fDistancToSun = snpt_.fDistancToSun;
+			this->fLongitude = snpt_.fLongitude;
+			this->fLatitude = snpt_.fLatitude;
+			this->fLS = snpt_.fLS;
+			this->fLocalTime = snpt_.fLocalTime;
+			this->fSunZenit = snpt_.fSunZenit;
+			this->fObserverZenit = snpt_.fObserverZenit;
+			this->fSurfaceTemp = snpt_.fSurfaceTemp;
+			this->fDustOpticalDepth = snpt_.fDustOpticalDepth;
+			this->fIceOpticalDepth = snpt_.fIceOpticalDepth;
+			this->nLevelCount = snpt_.nLevelCount;
+
+			return *this;
+		}
+	};
+
+	struct SPairLevel
+	{
+		float fLatitude_begin;
+		float fLatitude_end;
+
+		float fLongitude_begin;
+		float fLongitude_end;
+
+		float fDistane_begin;
+		float fDistane_end;
+
+		float fAltitudeMinMax;
+
+		float fAltitudeStep;
+
+		std::vector<float> vTemperature;
+	};
+
 }

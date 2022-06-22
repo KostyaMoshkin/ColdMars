@@ -141,6 +141,9 @@
     <ClInclude Include="OrbitBinReader.h">
       <Filter>Reader</Filter>
     </ClInclude>
+    <ClInclude Include="OrbitReader.h">
+      <Filter>Reader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

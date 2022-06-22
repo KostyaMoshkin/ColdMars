@@ -195,6 +195,7 @@
     </ClInclude>
     <ClInclude Include="OrbitBinReader.h" />
     <ClInclude Include="OrbitBinWriter.h" />
+    <ClInclude Include="OrbitReader.h" />
     <ClInclude Include="OrbitTextReader.h" />
     <ClInclude Include="Palette.h" />
     <ClInclude Include="pch.h" />

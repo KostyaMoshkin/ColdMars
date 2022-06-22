@@ -28,11 +28,14 @@ namespace orbit
 
         std::string sOrbitFile;
         //if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), OrbitFileName()), sOrbitFile))
-            sOrbitFile = "E:\\Orbit.bin";
+        sOrbitFile = "E:\\Orbit.bin";
 
-        if (FILE* file = fopen(sOrbitFile.c_str(), "r")) {
-            fclose(file);
-            return true;
+        {
+            FILE* file;
+            if (fopen_s(&file, sOrbitFile.c_str(), "r") == 0) {
+                fclose(file);
+                return true;
+            }
         }
 
         FILE* pOrbitFile;
@@ -80,38 +83,47 @@ namespace orbit
 
         //--------------------------------------------------------------------------------------------
 
-        long nLevelStartPosition = 0;
+        long nNptPosition = 0;
+        long nLevelPosition = 0;
 
         for (int i = 0; i < vFileList.size(); ++i)
         {
             std::vector<Snpt> vNpt = m_pOrbitTextReader->getNpt(vFileList[i].c_str());
             unsigned nOrbit = std::stoi(file_to_orbit(vFileList[i].c_str()));
 
-            long nNptStartPosition = ftell(pNptFile);
+            OrbitFile orbitFile;
+            orbitFile.nOrbit = nOrbit;
+            orbitFile.nBegin = nNptPosition;
+
+            std::vector<NptFile> vNptFile;
+            std::vector<SLevel> vLevel;
 
             for (int j = 0; j < vNpt.size(); ++j)
             {
                 NptFile nptFile;
                 nptFile = vNpt[j];
-                nptFile.nBegin = nLevelStartPosition;
 
-                nLevelStartPosition += nptFile.nLevelCount * sizeof(SLevel);
-                nptFile.nEnd = nLevelStartPosition;
+                nptFile.nBegin = nLevelPosition;
+                nLevelPosition += nptFile.nLevelCount * sizeof(SLevel);
+                nptFile.nEnd = nLevelPosition;
 
-                if (fwrite(&nptFile, sizeof(NptFile), 1, pNptFile) != 1)
-                    return false;
+                vNptFile.push_back(nptFile);
 
-                if (fwrite(&vNpt[j].vLevel[0], sizeof(vNpt[j].vLevel) * sizeof(SLevel), 1, pLevelFile) != 1)
-                    return false;
+                nNptPosition += sizeof(NptFile);
+
+                for(const auto& level : vNpt[j].vLevel)
+                    vLevel.push_back(level);
             }
 
-            long nNptEndPosition = ftell(pNptFile);
-
-            OrbitFile orbitFile;
-            orbitFile.nBegin = nNptStartPosition;
-            orbitFile.nEnd = nNptEndPosition;
+            orbitFile.nEnd = nNptPosition;
 
             if (fwrite(&orbitFile, sizeof(OrbitFile), 1, pOrbitFile) != 1)
+                return false;
+
+            if (fwrite(vNptFile.data(), vNptFile.size() * sizeof(NptFile), 1, pNptFile) != 1)
+                return false;
+           
+            if (fwrite(vLevel.data(), vLevel.size() * sizeof(SLevel), 1, pLevelFile) != 1)
                 return false;
 
         }

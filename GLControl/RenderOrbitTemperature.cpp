@@ -70,6 +70,12 @@ namespace GL {
 
 	bool RenderOrbitTemperature::fillVertex()
 	{
+		toLog("fillVertex ");
+
+		if (!m_pOrbitReader)
+			toLog("!m_pOrbitReader ");
+
+
 		m_pOrbitReader->setFileIndex(m_nFirstFile, m_nLastFile, m_vLevelData);
 
 		return true;
@@ -130,7 +136,7 @@ namespace GL {
 		setScale();
 
 		//  Координаты вершин
-		m_pOrbitReader = orbit::OrbitTextReader::Create();
+		m_pOrbitReader = orbit::OrbitBinReader::Create();
 		m_pOrbitReader->setConfig(getConfig());
 
 		if (!m_pOrbitReader->init())
@@ -138,7 +144,6 @@ namespace GL {
 
 		if (!fillVertex())
 			return false;
-
 		//-------------------------------------------------------------------------------------------------
 
 		m_pPalette = GL::Palette::Create();
@@ -152,6 +157,7 @@ namespace GL {
 			return false;
 
 		//-------------------------------------------------------------------------------------------------
+		toLog("init6 ");
 
 		setVisible(true);
 		return true;
@@ -217,7 +223,7 @@ namespace GL {
 		fillVertex();
 	}
 
-	const orbit::OrbitTextReaderPtr RenderOrbitTemperature::getReader()
+	const orbit::OrbitReaderPtr RenderOrbitTemperature::getReader()
 	{
 		return m_pOrbitReader;
 	}

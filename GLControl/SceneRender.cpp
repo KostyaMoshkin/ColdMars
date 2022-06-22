@@ -59,6 +59,9 @@ namespace GL {
 
 	void SceneRender::setViewAngle(float fZoom_)
 	{
+		if (m_nScreenHeight == 0)
+			return;
+
 		lib::limit(m_fViewAngle, 1.0f, 150.0f);
 
 		lib::Matrix4 mPerspective = glm::perspective(glm::radians(m_fViewAngle + fZoom_), float(m_nScreenWidth) / m_nScreenHeight, 0.1f, 50.0f);

@@ -1,51 +1,12 @@
 #pragma once
-#include "CConfig.h"
-#include "SLevel.h"
+#include "OrbitReader.h"
 
 namespace orbit
 {
-	struct SPairLevel
-	{
-		float fLatitude_begin;
-		float fLatitude_end;
-
-		float fLongitude_begin;
-		float fLongitude_end;
-
-		float fDistane_begin;
-		float fDistane_end;
-
-		float fAltitudeMinMax;
-
-		float fAltitudeStep;
-
-		std::vector<float> vTemperature;
-	};
-
-	struct Snpt
-	{
-		unsigned nSpectrumNumb;
-		unsigned nInterferogramID;
-		float fJulianDate;
-		std::string sUTC;
-		float fDistancToSun;
-		float fLongitude;
-		float fLatitude;
-		float fLS;
-		float fLocalTime;
-		float fSunZenit;
-		float fObserverZenit;
-		float fSurfaceTemp;
-		float fDustOpticalDepth;
-		float fIceOpticalDepth;
-		unsigned short nLevelCount;
-		std::vector<SLevel> vLevel;
-	};
-
 	class OrbitTextReader;
 	using OrbitTextReaderPtr = std::shared_ptr<OrbitTextReader>;
 
-	class OrbitTextReader : public lib::CConfig
+	class OrbitTextReader : public OrbitReader
 	{
 		std::vector<std::string> m_vFileList;
 		std::map<int, int> m_mLS;
@@ -62,40 +23,27 @@ namespace orbit
 		const float m_fAngleContinues = 5.0f;    //  ≈сли в последовательных измерени€х угол больше значени€, то разрыв в рисовании
 
 	public:
-		static const char* OrbitDir()						{ return "OrbitDir";					}
-		static const char* TemperartureAltitudeMax()		{ return "TemperartureAltitudeMax";		}
-		static const char* TemperatureInterpolateCount()	{ return "TemperatureInterpolateCount"; }
-
-	public:
 		OrbitTextReader();
 		~OrbitTextReader();
 
 		static OrbitTextReaderPtr Create() { return std::make_shared<OrbitTextReader>(); }
 
 	public:
-		bool init();
+		virtual bool init() override;
+		virtual void setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_, bool bClearLevel_ = false) override;
+		virtual std::vector<Snpt> getNpt(const char* sFileName_, bool bAllRecord_ = true, bool bIncludeLevels_ = true) override;
+		virtual size_t getRecCount(unsigned nIndex_) override;
+		virtual size_t getFileCount() override;
+		virtual size_t getCount() override;
+		virtual std::vector<unsigned> getOrbitListByCoord(float fLatitude_, float fLongitude_) override;
+		virtual unsigned getSpectrumNumb() override;
+		virtual float getJulianDate() override;
+		virtual float getLocalTime() override;
+		virtual float getLS() override;
+		virtual std::string getUTC() override;
+		virtual unsigned getOrbit_by_number(unsigned nNumber_) override;
 
-		void setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_, bool bClearLevel_ = true);
-
-		std::vector<Snpt> getNpt(const char* sFileName_, bool bAllRecord_ = true, bool bIncludeLevels_ = true);
-
-		size_t getRecCount(unsigned nIndex_);
-
-		size_t getFileCount();
-
-		size_t getCount();
-
-		std::vector<unsigned> getOrbitListByCoord(float fLatitude_, float fLongitude_);
-
-		unsigned getSpectrumNumb();
-		float getJulianDate();
-		float getLocalTime();
-		float getLS();
-		std::string getUTC();
-
-		unsigned getOrbit_by_number(unsigned nNumber_);
-
-		unsigned getOrbit_by_LS(unsigned nNumber_);
-
+		// ”наследовано через OrbitReader
+		virtual unsigned getOrbit_by_LS(unsigned nNumber_) override;
 	};
 }
