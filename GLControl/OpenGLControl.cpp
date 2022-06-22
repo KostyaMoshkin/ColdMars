@@ -359,7 +359,7 @@ namespace GLControl {
 		if (!String_to_double(this->textLongitude->Text, fLonditude))
 			return System::Void();
 
-		std::vector<unsigned> vOrbit = m_pBridge->getOrbitListByCoord(fLatitude, fLonditude);
+		std::vector<unsigned> vOrbit = m_pBridge->getOrbitListByCoord((float)fLatitude, (float)fLonditude);
 		//std::vector<unsigned> vOrbit = {2252, 2308, 2335, 2374};
 
 		for(const auto nOrbit : vOrbit)
