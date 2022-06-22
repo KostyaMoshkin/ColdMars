@@ -33,6 +33,9 @@ namespace orbit
 
 		static OrbitBinReaderPtr Create() { return std::make_shared<OrbitBinReader>(); }
 
+	private:
+		std::vector<Snpt> get_vNpt(const OrbitFile& orbit_, bool bAllRecord_);
+
 	public:
 		virtual bool init() override;
 		virtual void setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_, bool bClearLevel_ = false) override;
@@ -47,8 +50,6 @@ namespace orbit
 		virtual float getLS() override;
 		virtual std::string getUTC() override;
 		virtual unsigned getOrbit_by_number(unsigned nNumber_) override;
-
-		// Унаследовано через OrbitReader
 		virtual unsigned getOrbit_by_LS(unsigned nNumber_) override;
 	};
 }

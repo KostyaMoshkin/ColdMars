@@ -16,12 +16,12 @@ namespace orbit
 	{
 
 	public:
-		static const char* OrbitFileName() { return "OrbitFile"; }
-		static const char* NptFileName() { return "NptFile"; }
-		static const char* LevelFileName() { return "LevelFile"; }
-		static const char* OrbitDir() { return "OrbitDir"; }
-		static const char* TemperartureAltitudeMax() { return "TemperartureAltitudeMax"; }
-		static const char* TemperatureInterpolateCount() { return "TemperatureInterpolateCount"; }
+		static const char* OrbitFileName()					{ return "OrbitFile"; }
+		static const char* NptFileName()					{ return "NptFile"; }
+		static const char* LevelFileName()					{ return "LevelFile"; }
+		static const char* OrbitDir()						{ return "OrbitDir"; }
+		static const char* TemperartureAltitudeMax()		{ return "TemperartureAltitudeMax"; }
+		static const char* TemperatureInterpolateCount()	{ return "TemperatureInterpolateCount"; }
 
 	public:
 		//static OrbitReaderPtr Create() { return std::make_shared<OrbitReader>(); }

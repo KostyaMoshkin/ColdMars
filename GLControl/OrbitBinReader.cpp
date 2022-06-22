@@ -12,53 +12,6 @@ namespace orbit
         return sFile_.substr(nNamePos, nPointPos - nNamePos);
     }
 
-    static std::vector<Snpt> get_vNpt(const OrbitFile& orbit_, const std::vector<NptFile>& vNpt_, FILE* pLevelFile_ = nullptr, bool bAllRecord_ = true)
-    {
-        std::vector<Snpt> vNpt;
-
-        unsigned nBegin = orbit_.nBegin / sizeof(NptFile);
-        unsigned nEnd = orbit_.nEnd / sizeof(NptFile);
-
-
-                vNpt.resize(nEnd - nBegin - 1);
-                for (int i = 0; i < vNpt.size(); ++i)
-                {
-                    vNpt[i].nSpectrumNumb = vNpt_[i + nBegin].nSpectrumNumb;
-                    vNpt[i].nInterferogramID = vNpt_[i + nBegin].nInterferogramID;
-                    vNpt[i].fJulianDate = vNpt_[i + nBegin].fJulianDate;
-                    //vNpt[i].sUTC = vNpt_[i + orbit.nBegin].sUTC;
-                    vNpt[i].fDistancToSun = vNpt_[i + nBegin].fDistancToSun;
-                    vNpt[i].fLongitude = vNpt_[i + nBegin].fLongitude;
-                    vNpt[i].fLatitude = vNpt_[i + nBegin].fLatitude;
-                    vNpt[i].fLS = vNpt_[i + nBegin].fLS;
-                    vNpt[i].fLocalTime = vNpt_[i + nBegin].fLocalTime;
-                    vNpt[i].fSunZenit = vNpt_[i + nBegin].fSunZenit;
-                    vNpt[i].fObserverZenit = vNpt_[i + nBegin].fObserverZenit;
-                    vNpt[i].fSurfaceTemp = vNpt_[i + nBegin].fSurfaceTemp;
-                    vNpt[i].fDustOpticalDepth = vNpt_[i + nBegin].fDustOpticalDepth;
-                    vNpt[i].fIceOpticalDepth = vNpt_[i + nBegin].fIceOpticalDepth;
-                    vNpt[i].nLevelCount = vNpt_[i + nBegin].nLevelCount;
-
-                    if (!bAllRecord_)
-                        break;
-
-                    toLog("nLevelCount: " + std::to_string(vNpt[i].nLevelCount));
-
-
-                    vNpt[i].vLevel.resize(vNpt[i].nLevelCount);
-
-                    _fseeki64(pLevelFile_, vNpt_[i + nBegin].nBegin, SEEK_SET);
-
-                    if (fread(vNpt[i].vLevel.data(), vNpt[i].nLevelCount * sizeof(SLevel), 1, pLevelFile_) != 1)
-                    {
-                        toLog("break: ");
-                        break;
-                    }
-                }
-
-        return std::vector<Snpt>(vNpt);
-    }
-
     //--------------------------------------------------------------------------------------------
     
     OrbitBinReader::OrbitBinReader()
@@ -72,8 +25,8 @@ namespace orbit
 	bool OrbitBinReader::init()
 	{
         std::string sLevelFile;
-        //if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), LevelFileName()), sLevelFile))
-        sLevelFile = "E:\\Level.bin";
+        if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), LevelFileName()), sLevelFile))
+            sLevelFile = ".\\Level.bin";
 
         if (fopen_s(&m_pLevelFile, sLevelFile.c_str(), "rb") != 0)
             return false;
@@ -81,8 +34,8 @@ namespace orbit
        //--------------------------------------------------------------------------------------------
 
         std::string sOrbitFile;
-        //if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), OrbitFileName()), sOrbitFile))
-        sOrbitFile = "E:\\Orbit.bin";
+        if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), OrbitFileName()), sOrbitFile))
+            sOrbitFile = ".\\Orbit.bin";
 
         FILE* pOrbitFile;
         if (fopen_s(&pOrbitFile, sOrbitFile.c_str(), "rb") != 0)
@@ -102,8 +55,8 @@ namespace orbit
         //--------------------------------------------------------------------------------------------
 
         std::string sNptFile;
-        //if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), NptFileName()), sNptFile))
-        sNptFile = "E:\\Npt.bin";
+        if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), NptFileName()), sNptFile))
+            sNptFile = ".\\Npt.bin";
 
         FILE* pNptFile;
         if (fopen_s(&pNptFile, sNptFile.c_str(), "rb") != 0)
@@ -117,10 +70,6 @@ namespace orbit
 
         if (fread(&m_vNpt[0], nONptFileSize, 1, pNptFile) != 1)
             return false;
-
-        toLog("fread(m_vNpt.data() ");
-        toLog("sizeof(NptFile): " + std::to_string(sizeof(NptFile)));
-
 
         fclose(pNptFile);
 
@@ -149,7 +98,7 @@ namespace orbit
 
             //-----------------------------------------------
 
-            std::vector<Snpt> vNpt = get_vNpt(m_vOrbit[i], m_vNpt, m_pLevelFile, false);
+            std::vector<Snpt> vNpt = get_vNpt(m_vOrbit[i], false);
 
             if (!vNpt.empty())
                 m_mLS[int(vNpt[0].fLS * 100)] = i;
@@ -167,6 +116,53 @@ namespace orbit
         return true;
 	}
 
+    std::vector<Snpt> OrbitBinReader::get_vNpt(const OrbitFile& orbit_, bool bAllRecord_ = true)
+    {
+        std::vector<Snpt> vNpt;
+
+        unsigned nBegin = orbit_.nBegin / sizeof(NptFile);
+        unsigned nEnd = orbit_.nEnd / sizeof(NptFile);
+
+
+        vNpt.resize(nEnd - nBegin - 1);
+        for (int i = 0; i < vNpt.size(); ++i)
+        {
+            vNpt[i].nSpectrumNumb = m_vNpt[i + nBegin].nSpectrumNumb;
+            vNpt[i].nInterferogramID = m_vNpt[i + nBegin].nInterferogramID;
+            vNpt[i].fJulianDate = m_vNpt[i + nBegin].fJulianDate;
+            //vNpt[i].sUTC = m_vNpt[i + orbit.nBegin].sUTC;
+            vNpt[i].fDistancToSun = m_vNpt[i + nBegin].fDistancToSun;
+            vNpt[i].fLongitude = m_vNpt[i + nBegin].fLongitude;
+            vNpt[i].fLatitude = m_vNpt[i + nBegin].fLatitude;
+            vNpt[i].fLS = m_vNpt[i + nBegin].fLS;
+            vNpt[i].fLocalTime = m_vNpt[i + nBegin].fLocalTime;
+            vNpt[i].fSunZenit = m_vNpt[i + nBegin].fSunZenit;
+            vNpt[i].fObserverZenit = m_vNpt[i + nBegin].fObserverZenit;
+            vNpt[i].fSurfaceTemp = m_vNpt[i + nBegin].fSurfaceTemp;
+            vNpt[i].fDustOpticalDepth = m_vNpt[i + nBegin].fDustOpticalDepth;
+            vNpt[i].fIceOpticalDepth = m_vNpt[i + nBegin].fIceOpticalDepth;
+            vNpt[i].nLevelCount = m_vNpt[i + nBegin].nLevelCount;
+
+            if (!bAllRecord_)
+                break;
+
+            toLog("nLevelCount: " + std::to_string(vNpt[i].nLevelCount));
+
+
+            vNpt[i].vLevel.resize(vNpt[i].nLevelCount);
+
+            _fseeki64(m_pLevelFile, m_vNpt[i + nBegin].nBegin, SEEK_SET);
+
+            if (fread(vNpt[i].vLevel.data(), vNpt[i].nLevelCount * sizeof(SLevel), 1, m_pLevelFile) != 1)
+            {
+                toLog("break: ");
+                break;
+            }
+        }
+
+        return std::vector<Snpt>(vNpt);
+    }
+
     void OrbitBinReader::setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_, bool bClearLevel_)
     {
         if (bClearLevel_)
@@ -174,7 +170,7 @@ namespace orbit
 
         for (unsigned f = nFirstIndex_; f < nLastIndex_ && f < m_vFileList.size(); ++f)
         {
-            std::vector<Snpt> vNpt = get_vNpt(m_vOrbit[f], m_vNpt, m_pLevelFile);
+            std::vector<Snpt> vNpt = get_vNpt(m_vOrbit[f]);
 
             if (f == nFirstIndex_)
                 m_Snpt = vNpt[0];
@@ -203,15 +199,6 @@ namespace orbit
                 vertex.fLongitude_begin = glm::radians(vNpt[i + 0].fLongitude);
                 vertex.fLongitude_end = glm::radians(vNpt[i + 1].fLongitude);
                 vertex.fDistane_begin = vNpt[i + 0].vLevel[0].fAltitude * 1000;
-
-                auto a = vNpt[i + 1];
-                toLog("7a ");
-                auto b = vNpt[i + 1].vLevel[0];
-                toLog("7b ");
-                auto c = vNpt[i + 1].vLevel[0].fAltitude;
-                toLog("7c " + std::to_string(c));
-                auto d = vertex.fDistane_end;
-                toLog("7d " + std::to_string(d));
 
                 vertex.fDistane_end = vNpt[i + 1].vLevel[0].fAltitude * 1000;
 
@@ -243,7 +230,7 @@ namespace orbit
 
     std::vector<Snpt> OrbitBinReader::getNpt(const char* sFileName_, bool bAllRecord_, bool bIncludeLevels_)
     {
-        return get_vNpt(m_vOrbit[std::stoi(file_to_orbit(sFileName_))], m_vNpt, m_pLevelFile);
+        return get_vNpt(m_vOrbit[std::stoi(file_to_orbit(sFileName_))]);
     }
 
     size_t OrbitBinReader::getRecCount(unsigned nIndex_)
@@ -268,7 +255,7 @@ namespace orbit
 
         for (int i = 0; i < m_vOrbit.size(); ++i)
         {
-            std::vector<Snpt> vNpt = get_vNpt(m_vOrbit[i], m_vNpt, m_pLevelFile);
+            std::vector<Snpt> vNpt = get_vNpt(m_vOrbit[i]);
             //vThread[i] = std::thread(threadWork, result, m_vFileList[i], fLatitude_, fLongitude_);
 
             for (int j = 0; j < vNpt.size(); ++j)
