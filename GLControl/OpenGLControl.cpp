@@ -91,6 +91,8 @@ namespace GLControl {
 
 		unsigned nLS = unsigned(fLS * 100);
 		m_nLS = nLS;
+
+		m_nOrbitEndIndex = m_nOrbitCurrentIndex + m_nOrbitQuantity;
 	}
 
 	System::Void OpenGLControl::buttonSetOrbit_Click(System::Object^ sender, System::EventArgs^ e)
@@ -132,6 +134,7 @@ namespace GLControl {
 		}
 		else
 		{
+			//  Здесь проверяется какой номер изменился и менять ли количество отображаемых обит
 			int nOrbitStartNumber = System::Int32::Parse(this->textBoxOrbitStart->Text);
 			int nOrbitEndNumber = System::Int32::Parse(this->textBoxOrbitEnd->Text);
 
@@ -139,11 +142,23 @@ namespace GLControl {
 
 			if (nOrbitCurrentIndex != UINT_MAX)
 			{
+				bool bCurrentIndexChanged = m_nOrbitCurrentIndex != nOrbitCurrentIndex;
+
 				m_nOrbitCurrentIndex = nOrbitCurrentIndex;
 
 				unsigned nOrbitEndIndex = m_pBridge->getOrbit_by_number(nOrbitEndNumber);
 				if (nOrbitEndIndex != UINT_MAX)
-					m_nOrbitQuantity = (nOrbitEndIndex <= m_nOrbitCurrentIndex) ? 1 : nOrbitEndIndex - m_nOrbitCurrentIndex;
+				{
+					bool bOrbitEndNumberChanged = m_nOrbitEndIndex != nOrbitEndIndex;
+
+					if (bOrbitEndNumberChanged)
+						m_nOrbitQuantity = nOrbitEndIndex - m_nOrbitCurrentIndex;
+
+					unsigned nOrbitQuantity = m_nOrbitQuantity;
+					m_nOrbitQuantity = std::min<unsigned>(nOrbitQuantity, m_pBridge->getFileCount() - m_nOrbitCurrentIndex - 1);
+
+
+				}
 			}
 		}
 

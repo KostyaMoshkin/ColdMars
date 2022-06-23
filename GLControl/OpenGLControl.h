@@ -24,6 +24,8 @@ namespace GLControl {
 		unsigned m_nOrbitQuantity = 2;
 		unsigned m_nLS = 0;
 
+		int m_nOrbitEndIndex;
+
 		unsigned m_nScale = 500;
 
 		int m_nTimerSpeed = 0;
