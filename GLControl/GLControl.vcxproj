@@ -167,7 +167,7 @@
       <Command>copy ..\x64\Release\*.dll E:\Dropbox\Mars\*.*</Command>
     </PostBuildEvent>
     <PreLinkEvent>
-      <Command>copy  ..\ColdMars\*.config ..\x64\Release\*.* &amp; copy  ..\ColdMars\*.bmp ..\x64\Release\*.*</Command>
+      <Command>copy  ..\ColdMars\*.config ..\x64\Release\*.* &amp; copy  ..\ColdMars\*.bmp ..\x64\Release\*.* &amp; copy  ..\ColdMars\*.config E:\Dropbox\Mars\*.*</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
