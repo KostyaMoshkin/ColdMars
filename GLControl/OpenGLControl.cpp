@@ -5,8 +5,15 @@ namespace GLControl {
 
 	static bool String_to_double(System::String^ str_, double& value_)
 	{
-		if (!System::Double::TryParse(str_, System::Globalization::NumberStyles::AllowDecimalPoint, System::Globalization::CultureInfo::CurrentCulture, value_) &&
-			!System::Double::TryParse(str_, System::Globalization::NumberStyles::AllowDecimalPoint, System::Globalization::CultureInfo::InvariantCulture, value_)
+		auto style = System::Globalization::NumberStyles::AllowParentheses |
+			System::Globalization::NumberStyles::AllowLeadingWhite |
+			System::Globalization::NumberStyles::AllowTrailingWhite |
+			System::Globalization::NumberStyles::AllowThousands |
+			System::Globalization::NumberStyles::AllowDecimalPoint |
+			System::Globalization::NumberStyles::AllowLeadingSign;
+
+		if (!System::Double::TryParse(str_, style, System::Globalization::CultureInfo::CurrentCulture, value_) &&
+			!System::Double::TryParse(str_, style, System::Globalization::CultureInfo::InvariantCulture, value_)
 			)
 			return false;
 

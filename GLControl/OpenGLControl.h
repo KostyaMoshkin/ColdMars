@@ -217,7 +217,7 @@ namespace GLControl {
 			this->textLatitude->Name = L"textLatitude";
 			this->textLatitude->Size = System::Drawing::Size(40, 20);
 			this->textLatitude->TabIndex = 3;
-			this->textLatitude->Text = L"70";
+			this->textLatitude->Text = L"20";
 			// 
 			// textLongitude
 			// 
@@ -225,7 +225,7 @@ namespace GLControl {
 			this->textLongitude->Name = L"textLongitude";
 			this->textLongitude->Size = System::Drawing::Size(40, 20);
 			this->textLongitude->TabIndex = 2;
-			this->textLongitude->Text = L"119";
+			this->textLongitude->Text = L"-132";
 			// 
 			// label4
 			// 
