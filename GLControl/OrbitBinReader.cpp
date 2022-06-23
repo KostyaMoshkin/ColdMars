@@ -2,6 +2,8 @@
 #include "OrbitBinReader.h"
 #include "Interpolator.h"
 
+#pragma managed(push, off)
+
 namespace orbit
 {
     OrbitBinReader::OrbitBinReader()
@@ -292,3 +294,5 @@ namespace orbit
         return UINT_MAX;
     }
 }
+
+#pragma managed(pop)

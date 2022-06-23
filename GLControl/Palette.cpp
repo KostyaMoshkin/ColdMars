@@ -2,6 +2,8 @@
 
 #include "Palette.h"
 
+#pragma managed(push, off)
+
 namespace GL {
 	Palette::Palette()
 	{
@@ -177,3 +179,5 @@ namespace GL {
 	}
 
 }
+
+#pragma managed(pop)

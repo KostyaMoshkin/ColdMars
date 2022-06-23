@@ -3,6 +3,8 @@
 #include "RenderOrbitTemperature.h"
 #include "BufferBounder.h"
 
+#pragma managed(push, off)
+
 namespace GL {
 	RenderOrbitTemperature::RenderOrbitTemperature()
 	{
@@ -268,3 +270,5 @@ namespace GL {
 		setScale();
 	}
 }
+
+#pragma managed(pop)

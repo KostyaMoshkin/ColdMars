@@ -2,6 +2,8 @@
 
 #include "Interpolator.h"
 
+#pragma managed(push, off)
+
 namespace orbit
 {
 	Interpolator::Interpolator(SLevel* pData_, unsigned nCount_)
@@ -64,3 +66,5 @@ namespace orbit
 	}
 
 }
+
+#pragma managed(pop)

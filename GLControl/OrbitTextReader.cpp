@@ -3,6 +3,8 @@
 #include "OrbitTextReader.h"
 #include "Interpolator.h"
 
+#pragma managed(push, off)
+
 #include <thread>
 //#include <mutex>
 
@@ -18,9 +20,15 @@ namespace orbit
 
 	static std::vector<Snpt> readFile(const char* sFileName_, bool bAllRecord_ = true)
 	{
+		std::vector<char> tempBuffer(3 * 1024 * 1024);
+
 		std::ifstream strFile(sFileName_);
+
 		if (!strFile.is_open())
 			return std::vector<Snpt>();
+
+		strFile.rdbuf()->pubsetbuf(tempBuffer.data(), tempBuffer.size());
+		unsigned nOrbit = std::stoi(file_to_orbit(sFileName_));
 
 		unsigned nRecCount;
 		strFile >> nRecCount;
@@ -29,6 +37,7 @@ namespace orbit
 
 		for (unsigned i = 0; i < nRecCount; ++i)
 		{
+			vNpt[i].nOrbit = nOrbit;
 			strFile >> vNpt[i].nSpectrumNumb >> vNpt[i].nInterferogramID;
 			strFile >> vNpt[i].fJulianDate >> vNpt[i].sUTC;
 			strFile >> vNpt[i].fDistancToSun >> vNpt[i].fLongitude >> vNpt[i].fLatitude >> vNpt[i].fLS >> vNpt[i].fLocalTime >> vNpt[i].fSunZenit >> vNpt[i].fObserverZenit;
@@ -45,7 +54,7 @@ namespace orbit
 		}
 
 		strFile.close();
-		return vNpt;
+		return std::move(vNpt);
 	}
 
 	//static std::mutex  :mutex g_i_mutex;
@@ -195,7 +204,7 @@ namespace orbit
 
 	std::vector<Snpt> OrbitTextReader::getNpt(const char* sFileName_, bool bAllRecord_, bool bIncludeLevels_)
 	{
-		return readFile(sFileName_, true);
+		return std::move(readFile(sFileName_, true));
 	}
 
 	size_t OrbitTextReader::getRecCount(unsigned nIndex_)
@@ -292,3 +301,5 @@ namespace orbit
 		return m_Snpt.sUTC;
 	}
 }
+
+#pragma managed(pop)

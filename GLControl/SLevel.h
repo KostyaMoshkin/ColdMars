@@ -19,6 +19,7 @@ namespace orbit
 
 	struct Snpt
 	{
+		unsigned nOrbit;
 		unsigned nSpectrumNumb;
 		unsigned nInterferogramID;
 		float fJulianDate;

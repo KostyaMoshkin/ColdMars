@@ -3,6 +3,8 @@
 #include "SceneRender.h"
 #include "ControlContext.h"
 
+#pragma managed(push, off)
+
 namespace GL {
 
 	SceneRender::SceneRender()
@@ -115,3 +117,5 @@ namespace GL {
 		return result;
 	}
 }
+
+#pragma managed(pop)

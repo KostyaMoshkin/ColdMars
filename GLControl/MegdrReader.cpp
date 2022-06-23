@@ -4,6 +4,8 @@
 
 #include <windows.h>
 
+#pragma managed(push, off)
+
 namespace megdr
 {
 	struct SMegdrFile
@@ -457,3 +459,5 @@ namespace megdr
 	}
 
 }
+
+#pragma managed(pop)

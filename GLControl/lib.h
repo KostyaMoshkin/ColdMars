@@ -84,4 +84,9 @@ namespace lib
 		value = std::min<T>(std::max<T>(value, min), max);
 	}
 
+	inline unsigned getCoreCount()
+	{
+		return std::thread::hardware_concurrency();
+	}
+
 }

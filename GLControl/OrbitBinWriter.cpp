@@ -2,6 +2,8 @@
 #include "SLevel.h"
 #include "OrbitBinWriter.h"
 
+#pragma managed(push, off)
+
 namespace orbit
 {
     static std::string file_to_orbit(const std::string& sFile_)
@@ -89,10 +91,8 @@ namespace orbit
         for (int i = 0; i < vFileList.size(); ++i)
         {
             std::vector<Snpt> vNpt = m_pOrbitTextReader->getNpt(vFileList[i].c_str());
-            unsigned nOrbit = std::stoi(file_to_orbit(vFileList[i].c_str()));
 
             OrbitFile orbitFile;
-            orbitFile.nOrbit = nOrbit;
             orbitFile.nBegin = nNptPosition;
 
             std::vector<NptFile> vNptFile;
@@ -115,6 +115,7 @@ namespace orbit
                 nNptPosition += sizeof(NptFile);
             }
 
+            orbitFile.nOrbit = vNpt[0].nOrbit;
             orbitFile.nEnd = nNptPosition;
 
             if (fwrite(&orbitFile, sizeof(OrbitFile), 1, pOrbitFile) != 1)
@@ -140,3 +141,5 @@ namespace orbit
         return false;
     }
 }
+
+#pragma managed(pop)
