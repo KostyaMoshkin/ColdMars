@@ -45,7 +45,7 @@ vec2 getDigitCoord()
 	return vec2(-1.0, -1.0);
 }
 
-bool isNet()
+bool isNet(int nStep_)
 {
 	int nLongitude = int(vAlbedoCoords.x * 360.0 * 10.0);
 	int nLatitude = int(vAlbedoCoords.y * 180.0 * 10.0);
@@ -56,10 +56,10 @@ bool isNet()
 	if ((nLatitude < 903) && (nLatitude > 897))
 		return true;
 
-	if ((nLongitude % 300) < 1)
+	if ((nLongitude % (nStep_ * 10)) < 1)
 		return true;
 
-	if ((nLatitude % 300) < 1)
+	if ((nLatitude % (nStep_ * 10)) < 1)
 		return true;
 
 	return false;
@@ -119,10 +119,17 @@ float getDigitBrightness(vec2 textDigit_)
 
 void main()
 {
-	if (isNet())
+	if (isNet(30))
 	{
 		gl_FragColor = vec4(m_vNetColor, 1.0);
 		return;
+	}
+	else {
+		if (isNet(5))
+		{
+			gl_FragColor = vec4(m_vNetColor / 2, 1.0);
+			return;
+		}
 	}
 
 	vec2 vAlbedo = vec2(vAlbedoCoords.x + 0.5 > 1.0 ? vAlbedoCoords.x - 0.5 : vAlbedoCoords.x + 0.5, vAlbedoCoords.y);
