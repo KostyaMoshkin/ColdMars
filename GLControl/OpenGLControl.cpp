@@ -47,6 +47,7 @@ namespace GLControl {
 	{
 		init();
 	}
+
 	System::Void OpenGLControl::OpenGLControl_Resize(System::Object^ sender, System::EventArgs^ e)
 	{
 		this->pictureBox1->Refresh();
@@ -355,10 +356,32 @@ namespace GLControl {
 
 	System::Void OpenGLControl::buttonAddOrbit_Click(System::Object^ sender, System::EventArgs^ e)
 	{
-		if (this->checkedListOrbit->CheckedItems->Contains(this->textBoxOrbitStart->Text) == false)
-			this->checkedListOrbit->Items->Add(this->textBoxOrbitStart->Text, CheckState::Checked);
+		
+		unsigned nOrbitIndex = m_pBridge->getOrbit_by_number(System::Int32::Parse(this->textBoxOrbitStart->Text));
+		System::String^ sOrbit = gcnew System::String(m_pBridge->getOrbit_by_index(nOrbitIndex).c_str());
+
+		if (this->checkedListOrbit->CheckedItems->Contains(sOrbit) == false)
+			this->checkedListOrbit->Items->Add(sOrbit, CheckState::Checked);
 
 		return System::Void();
+	}
+
+	System::Void OpenGLControl::checkedListOrbit_CheckedChanged(System::Object^ sender, System::Windows::Forms::ItemCheckEventArgs^ e)
+	{
+		std::vector<unsigned> vOrbit;
+
+		for (int i = 0; i <= (this->checkedListOrbit->Items->Count - 1); ++i)
+		{
+			bool bCkecked = this->checkedListOrbit->GetItemChecked(i);
+
+			if (i == e->Index)
+				bCkecked = e->NewValue == CheckState::Checked;
+
+			if (bCkecked)
+				vOrbit.push_back(m_pBridge->getOrbit_by_number(System::Int32::Parse(this->checkedListOrbit->Items[i]->ToString())));
+		}
+
+		m_pBridge->setFileArray(vOrbit);
 	}
 
 	System::Void OpenGLControl::buttonSearchOrbits_Click(System::Object^ sender, System::EventArgs^ e)
@@ -375,7 +398,6 @@ namespace GLControl {
 			return System::Void();
 
 		std::vector<unsigned> vOrbit = m_pBridge->getOrbitListByCoord((float)fLatitude, (float)fLonditude);
-		//std::vector<unsigned> vOrbit = {2252, 2308, 2335, 2374};
 
 		for(const auto nOrbit : vOrbit)
 			this->checkedListOrbit->Items->Add(gcnew System::String(std::to_string(nOrbit).c_str()), CheckState::Checked);

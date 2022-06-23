@@ -217,7 +217,7 @@ namespace GLControl {
 			this->textLatitude->Name = L"textLatitude";
 			this->textLatitude->Size = System::Drawing::Size(40, 20);
 			this->textLatitude->TabIndex = 3;
-			this->textLatitude->Text = L"64";
+			this->textLatitude->Text = L"70";
 			// 
 			// textLongitude
 			// 
@@ -246,6 +246,7 @@ namespace GLControl {
 			this->checkedListOrbit->Name = L"checkedListOrbit";
 			this->checkedListOrbit->Size = System::Drawing::Size(104, 154);
 			this->checkedListOrbit->TabIndex = 0;
+			this->checkedListOrbit->ItemCheck += gcnew System::Windows::Forms::ItemCheckEventHandler(this, &OpenGLControl::checkedListOrbit_CheckedChanged);
 			// 
 			// panelInfo
 			// 
@@ -634,6 +635,8 @@ namespace GLControl {
 		System::Void buttonAddOrbit_Click(System::Object^ sender, System::EventArgs^ e);
 
 		System::Void buttonSearchOrbits_Click(System::Object^ sender, System::EventArgs^ e);
+
+		System::Void checkedListOrbit_CheckedChanged(System::Object^ sender, System::Windows::Forms::ItemCheckEventArgs^ e);
 
 	private:
 		void init();

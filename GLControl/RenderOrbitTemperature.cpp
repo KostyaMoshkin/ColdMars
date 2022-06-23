@@ -208,6 +208,9 @@ namespace GL {
 
 	void RenderOrbitTemperature::setFileArray(const std::vector<unsigned>& vOrbit_)
 	{
+		if (vOrbit_.empty())
+			m_vLevelData.clear();
+
 		for (int i = 0; i < vOrbit_.size(); ++i)
 		{
 			m_nFirstFile = vOrbit_[i];
