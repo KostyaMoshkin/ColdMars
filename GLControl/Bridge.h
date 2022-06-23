@@ -79,7 +79,7 @@ namespace GL
 
 		bool isInit();
 
-		int getFileCount();
+		unsigned getFileCount();
 
 		void setFileArray(const std::vector<unsigned>& vOrbit_);
 

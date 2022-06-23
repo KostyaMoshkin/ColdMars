@@ -109,10 +109,10 @@ namespace orbit
 
                 vNptFile.push_back(nptFile);
 
-                nNptPosition += sizeof(NptFile);
-
                 for(const auto& level : vNpt[j].vLevel)
                     vLevel.push_back(level);
+
+                nNptPosition += sizeof(NptFile);
             }
 
             orbitFile.nEnd = nNptPosition;

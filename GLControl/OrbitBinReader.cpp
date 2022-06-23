@@ -4,16 +4,6 @@
 
 namespace orbit
 {
-    static std::string file_to_orbit(const std::string& sFile_)
-    {
-        size_t nPointPos = sFile_.find(".");
-        size_t nNamePos = sFile_.find_last_of("\\") + 2;
-
-        return sFile_.substr(nNamePos, nPointPos - nNamePos);
-    }
-
-    //--------------------------------------------------------------------------------------------
-    
     OrbitBinReader::OrbitBinReader()
 	{
 	}
@@ -75,23 +65,6 @@ namespace orbit
 
         //--------------------------------------------------------------------------------------------
 
-        std::string sOrbitDir;
-        if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), OrbitDir()), sOrbitDir))
-        {
-            toLog("ERROR! Can't find orbit dir tag in config");
-            return false;
-        }
-
-        if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), TemperartureAltitudeMax()), m_nAltitudeMAX))
-            m_nAltitudeMAX = 60;
-
-        if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), TemperatureInterpolateCount()), m_nInterpolateCount))
-            m_nInterpolateCount = 30;
-
-        //--------------------------------------------------------------------------------------------
-
-        m_vFileList = lib::create_file_list(sOrbitDir.c_str());
-
         for (int i = 0; i < m_vOrbit.size(); ++i)
         {
             m_mOrbit[m_vOrbit[i].nOrbit] = i;
@@ -104,10 +77,8 @@ namespace orbit
                 m_mLS[int(vNpt[0].fLS * 100)] = i;
             else
             {
-                toLog("ERROR! Can't open npt file: " + m_vFileList[i]);
-                m_vFileList.erase(m_vFileList.begin() + i);
-                --i;
-                continue;
+                toLog("bin files cracked. ");
+                return false;
             }
         }
 
@@ -168,7 +139,7 @@ namespace orbit
         if (bClearLevel_)
             vLevelData_.clear();
 
-        for (unsigned f = nFirstIndex_; f < nLastIndex_ && f < m_vFileList.size(); ++f)
+        for (unsigned f = nFirstIndex_; f < nLastIndex_ && f < m_vOrbit.size(); ++f)
         {
             std::vector<Snpt> vNpt = get_vNpt(m_vOrbit[f]);
 
@@ -230,7 +201,7 @@ namespace orbit
 
     std::vector<Snpt> OrbitBinReader::getNpt(const char* sFileName_, bool bAllRecord_, bool bIncludeLevels_)
     {
-        return get_vNpt(m_vOrbit[std::stoi(file_to_orbit(sFileName_))]);
+        return std::vector<Snpt>();
     }
 
     size_t OrbitBinReader::getRecCount(unsigned nIndex_)
@@ -240,7 +211,7 @@ namespace orbit
 
     size_t OrbitBinReader::getFileCount()
     {
-        return m_vFileList.size();
+        return m_vOrbit.size();
     }
 
     size_t OrbitBinReader::getCount()
@@ -251,25 +222,20 @@ namespace orbit
     {
         std::vector<unsigned> result;
 
-        //std::thread* vThread = new(std::nothrow) std::thread[m_vFileList.size()];
-
         for (int i = 0; i < m_vOrbit.size(); ++i)
         {
             std::vector<Snpt> vNpt = get_vNpt(m_vOrbit[i]);
-            //vThread[i] = std::thread(threadWork, result, m_vFileList[i], fLatitude_, fLongitude_);
+            //vThread[i] = std::thread(threadWork, result, m_vOrbit[i], fLatitude_, fLongitude_);
 
             for (int j = 0; j < vNpt.size(); ++j)
-            {
                 if (std::abs(vNpt[j].fLatitude - fLatitude_) < 1 && (std::abs(vNpt[j].fLongitude - fLongitude_) < 1))
                 {
-                    result.push_back(std::stoi(file_to_orbit(m_vFileList[i])));
+                    result.push_back(m_vOrbit[i].nOrbit);
                     break;
                 }
-            }
-
         }
 
-        //for (unsigned i = 0; i < m_vFileList.size(); ++i)
+        //for (unsigned i = 0; i < m_vOrbit.size(); ++i)
         //	vThread[i].join();
 
         //delete[] vThread;

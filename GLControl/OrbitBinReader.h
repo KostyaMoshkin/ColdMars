@@ -10,7 +10,6 @@ namespace orbit
 	{
 		FILE* m_pLevelFile;
 
-		std::vector<std::string> m_vFileList;
 		std::map<int, int> m_mLS;
 		std::map<int, int> m_mOrbit;
 

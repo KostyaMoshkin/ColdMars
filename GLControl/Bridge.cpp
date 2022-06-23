@@ -240,9 +240,9 @@ namespace GL
 		return m_bInit;
 	}
 
-	int Bridge::getFileCount()
+	unsigned Bridge::getFileCount()
 	{
-		return (int)m_vFileList.size();
+		return (unsigned)m_vFileList.size();
 	}
 
 	void Bridge::setFileArray(const std::vector<unsigned>& vOrbit_)
