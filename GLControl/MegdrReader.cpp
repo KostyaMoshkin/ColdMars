@@ -71,10 +71,10 @@ namespace megdr
 		unsigned nFistLine_ = 0, unsigned nFirstSample_ = 0, unsigned nRowCount_ = 1)
 	{
 		unsigned nLines = 0;
-		lib::XMLreader::getInt(lib::XMLreader::getNode(xmlActiveMegdr_, MegdrReader::nLines()), nLines);
+		lib::XMLreader::getInt(lib::XMLreader::getNode(xmlActiveMegdr_, Key::nLines()), nLines);
 
 		unsigned nLineSamples = 0;
-		lib::XMLreader::getInt(lib::XMLreader::getNode(xmlActiveMegdr_, MegdrReader::nLineSamples()), nLineSamples);
+		lib::XMLreader::getInt(lib::XMLreader::getNode(xmlActiveMegdr_, Key::nLineSamples()), nLineSamples);
 		
 		unsigned nPointsInRaw = nRowCount_ * nLineSamples;
 		unsigned nArraySegment = nPointsInRaw * nLines * nFistLine_ * (nRowCount_ - 1) + nFirstSample_ * nLineSamples;
@@ -111,7 +111,7 @@ namespace megdr
 
 	bool MegdrReader::init()
 	{
-		lib::XMLnodePtr xmlPaletteDefault = lib::XMLreader::getNode(getConfig(), nMegdrDefault());
+		lib::XMLnodePtr xmlPaletteDefault = lib::XMLreader::getNode(getConfig(), Key::nMegdrDefault());
 
 		if (!!xmlPaletteDefault && !lib::XMLreader::getInt(xmlPaletteDefault, m_nActiveID))
 			m_nActiveID = 1;
@@ -120,11 +120,11 @@ namespace megdr
 
 		m_vMegdrNode.clear();
 
-		lib::XMLnodePtr xmlMegdr = lib::XMLreader::getNode(getConfig(), sMegdr());
+		lib::XMLnodePtr xmlMegdr = lib::XMLreader::getNode(getConfig(), Key::sMegdr());
 		while (!!xmlMegdr)
 		{
 			int nId = -1;
-			if (!lib::XMLreader::getInt(xmlMegdr, id(), nId))
+			if (!lib::XMLreader::getInt(xmlMegdr, Key::id(), nId))
 			{
 				toLog("Config should contain id attribut for: Megdr id=\"1\"");
 				nId = -1;
@@ -132,7 +132,7 @@ namespace megdr
 
 			m_vMegdrNode[nId] = xmlMegdr;
 
-			xmlMegdr = xmlMegdr->NextSibling(sMegdr());
+			xmlMegdr = xmlMegdr->NextSibling(Key::sMegdr());
 		}
 
 		if (m_vMegdrNode.empty())
@@ -156,7 +156,7 @@ namespace megdr
 		if (m_vMegdrNode.find(nId_) != m_vMegdrNode.end())
 			xmlActiveMegdr = m_vMegdrNode[nId_];
 		else
-			xmlActiveMegdr = lib::XMLreader::getNode(getConfig(), sMegdr());
+			xmlActiveMegdr = lib::XMLreader::getNode(getConfig(), Key::sMegdr());
 
 		if (m_mvIndeces.find(nId_) != m_mvIndeces.end())
 			return true;
@@ -165,9 +165,9 @@ namespace megdr
 
 		bool bXMLmistake = false;
 
-		bXMLmistake |= !lib::XMLreader::getInt(lib::XMLreader::getNode(xmlActiveMegdr, nLines()), m_mnLines[nId_]);
+		bXMLmistake |= !lib::XMLreader::getInt(lib::XMLreader::getNode(xmlActiveMegdr, Key::nLines()), m_mnLines[nId_]);
 
-		bXMLmistake |= !lib::XMLreader::getInt(lib::XMLreader::getNode(xmlActiveMegdr, nLineSamples()), m_mnLineSamples[nId_]);
+		bXMLmistake |= !lib::XMLreader::getInt(lib::XMLreader::getNode(xmlActiveMegdr, Key::nLineSamples()), m_mnLineSamples[nId_]);
 
 		if (bXMLmistake)
 		{
@@ -178,7 +178,7 @@ namespace megdr
 		//--------------------------------------------------------------------------------------
 
 		unsigned nDataFileCount = 0;
-		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(xmlActiveMegdr, sCount()), nDataFileCount))
+		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(xmlActiveMegdr, Key::sCount()), nDataFileCount))
 			nDataFileCount = 0;
 
 		bool bReadFileSuiccess = true;
@@ -241,10 +241,10 @@ namespace megdr
 
 		bool bXMLmistake = false;
 
-		bXMLmistake |= !lib::XMLreader::getSting(lib::XMLreader::getNode(xmlActiveMegdr_, MegdrReader::sRadiusFile()), sRadiusPath);
+		bXMLmistake |= !lib::XMLreader::getSting(lib::XMLreader::getNode(xmlActiveMegdr_, Key::sRadiusFile()), sRadiusPath);
 
 		std::string sTopographyPath;
-		bXMLmistake |= !lib::XMLreader::getSting(lib::XMLreader::getNode(xmlActiveMegdr_, MegdrReader::sTopographyFile()), sTopographyPath);
+		bXMLmistake |= !lib::XMLreader::getSting(lib::XMLreader::getNode(xmlActiveMegdr_, Key::sTopographyFile()), sTopographyPath);
 
 		if (bXMLmistake)
 		{
@@ -262,7 +262,7 @@ namespace megdr
 	bool MegdrReader::readMultyFileData(unsigned nId_, lib::XMLnodePtr xmlActiveMegdr_)
 	{
 		unsigned nDataFileCount = 1;
-		bool bMultyData = lib::XMLreader::getInt(lib::XMLreader::getNode(xmlActiveMegdr_, sCount()), nDataFileCount);
+		bool bMultyData = lib::XMLreader::getInt(lib::XMLreader::getNode(xmlActiveMegdr_, Key::sCount()), nDataFileCount);
 
 		unsigned nDataFileCountRaw = 1;
 
@@ -297,8 +297,8 @@ namespace megdr
 		{
 			std::string sNodeName = xmlMegdrFile->Value();
 
-			bool bFileRadius = sNodeName.compare(MegdrReader::sRadiusFile()) == 0;
-			bool bFileTopography = sNodeName.compare(MegdrReader::sTopographyFile()) == 0;
+			bool bFileRadius = sNodeName.compare(Key::sRadiusFile()) == 0;
+			bool bFileTopography = sNodeName.compare(Key::sTopographyFile()) == 0;
 
 			if (!bFileRadius && !bFileTopography)
 			{
@@ -307,11 +307,11 @@ namespace megdr
 			}
 
 			unsigned nLine = -1;
-			if (!lib::XMLreader::getInt(xmlMegdrFile, MegdrReader::line(), nLine))
+			if (!lib::XMLreader::getInt(xmlMegdrFile, Key::line(), nLine))
 				return false;
 
 			unsigned nSample = -1;
-			if (!lib::XMLreader::getInt(xmlMegdrFile, MegdrReader::sample(), nSample))
+			if (!lib::XMLreader::getInt(xmlMegdrFile, Key::sample(), nSample))
 				return false;
 
 			std::string sPath;

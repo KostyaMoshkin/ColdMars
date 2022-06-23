@@ -15,18 +15,18 @@ namespace GL {
 
 	bool Palette::init()
 	{
-		lib::XMLnodePtr xmlPaletteDefault = lib::XMLreader::getNode(getConfig(), sPaletteDefault());
+		lib::XMLnodePtr xmlPaletteDefault = lib::XMLreader::getNode(getConfig(), Key::sPaletteDefault());
 
 		if (!!xmlPaletteDefault && !lib::XMLreader::getInt(xmlPaletteDefault, m_nActivePaletteID))
 			m_nActivePaletteID = 1;
 
 		//---------------------------------------------------------------------------------------
 
-		lib::XMLnodePtr xmlPalette = lib::XMLreader::getNode(getConfig(), sPalette());
+		lib::XMLnodePtr xmlPalette = lib::XMLreader::getNode(getConfig(), Key::sPalette());
 		while (!!xmlPalette)
 		{
 			int nId = -1;
-			if (!lib::XMLreader::getInt(xmlPalette, sId(), nId))
+			if (!lib::XMLreader::getInt(xmlPalette, Key::sId(), nId))
 			{
 				toLog("Config should contain id attribut for: <Palette id=\"2\" interpolate=\"1600\">");
 				return false;
@@ -34,7 +34,7 @@ namespace GL {
 
 			m_vPaletteMap[nId] = xmlPalette;
 
-			xmlPalette = xmlPalette->NextSibling(sPalette());
+			xmlPalette = xmlPalette->NextSibling(Key::sPalette());
 		}
 
 		//---------------------------------------------------------------------------------------
@@ -54,21 +54,21 @@ namespace GL {
 		if (m_vPaletteMap.find(nPaletteID_) != m_vPaletteMap.end())
 			xmlActivePalette = m_vPaletteMap[nPaletteID_];
 		else
-			xmlActivePalette = lib::XMLreader::getNode(getConfig(), sPalette());
+			xmlActivePalette = lib::XMLreader::getNode(getConfig(), Key::sPalette());
 
-		lib::XMLnodePtr xmlColor = lib::XMLreader::getNode(xmlActivePalette, sColor());
+		lib::XMLnodePtr xmlColor = lib::XMLreader::getNode(xmlActivePalette, Key::sColor());
 		while (!!xmlColor)
 		{
 			unsigned nColor = 0;
 			int nTemperature = 0;
 
-			if (lib::XMLreader::getInt(xmlColor, nColor) && lib::XMLreader::getInt(xmlColor, sTemperature(), nTemperature))
+			if (lib::XMLreader::getInt(xmlColor, nColor) && lib::XMLreader::getInt(xmlColor, Key::sTemperature(), nTemperature))
 				add(nTemperature, { nColor >> 16, (nColor & 0x00FF00) >> 8, nColor & 0x0000FF });
 
-			xmlColor = xmlColor->NextSibling(sColor());
+			xmlColor = xmlColor->NextSibling(Key::sColor());
 		}
 
-		if (!lib::XMLreader::getInt(xmlActivePalette, sInterpolate(), m_nPaletteInterpolate))
+		if (!lib::XMLreader::getInt(xmlActivePalette, Key::sInterpolate(), m_nPaletteInterpolate))
 		{
 			toLog("Config should contain interpolate attribut for: <Palette id=\"2\" interpolate=\"1600\">");
 			m_nPaletteInterpolate = 2;

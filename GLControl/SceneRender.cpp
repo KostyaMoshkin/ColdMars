@@ -19,7 +19,7 @@ namespace GL {
 	bool SceneRender::init()
 	{
 		unsigned nViewAngle = 45;
-		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), ViewAngle()), nViewAngle))
+		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), Key::ViewAngle()), nViewAngle))
 			nViewAngle = 45;
 
 		m_fViewAngle = float(nViewAngle);

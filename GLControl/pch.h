@@ -19,6 +19,7 @@
 
 #include <GLEW/glew.h>
 
+#include "Vocabulary.h"
 #include "XML\XMLreader.h"
 #include "lib.h"
 #include "LOG\logger.h"

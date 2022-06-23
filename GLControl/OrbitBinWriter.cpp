@@ -29,8 +29,8 @@ namespace orbit
         //--------------------------------------------------------------------------------------------
 
         std::string sOrbitFile;
-        //if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), OrbitFileName()), sOrbitFile))
-        sOrbitFile = "E:\\Orbit.bin";
+        if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), Key::OrbitFileName()), sOrbitFile))
+            sOrbitFile = ".\\Orbit.bin";
 
         {
             FILE* file;
@@ -47,8 +47,8 @@ namespace orbit
         //--------------------------------------------------------------------------------------------
 
         std::string sNptFile;
-        //if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), NptFileName()), sNptFile))
-            sNptFile = "E:\\Npt.bin";
+        if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), Key::NptFileName()), sNptFile))
+            sNptFile = ".\\Npt.bin";
 
         FILE* pNptFile;
         if (fopen_s(&pNptFile, sNptFile.c_str(), "wb") != 0)
@@ -57,8 +57,8 @@ namespace orbit
         //--------------------------------------------------------------------------------------------
 
         std::string sLevelFile;
-        //if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), LevelFileName()), sLevelFile))
-            sLevelFile = "E:\\Level.bin";
+        if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), Key::LevelFileName()), sLevelFile))
+            sLevelFile = ".\\Level.bin";
 
         FILE* pLevelFile;
         if (fopen_s(&pLevelFile, sLevelFile.c_str(), "wb") != 0)
@@ -75,7 +75,7 @@ namespace orbit
         //--------------------------------------------------------------------------------------------
 
         std::string sOrbitDir;
-        if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), OrbitTextReader::OrbitDir()), sOrbitDir))
+        if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), Key::OrbitDir()), sOrbitDir))
         {
             toLog("ERROR! Can't find orbit dir tag in config");
             return false;
@@ -134,11 +134,6 @@ namespace orbit
         fclose(pLevelFile);
 
         return true;
-    }
-
-    bool OrbitBinWriter::compile()
-    {
-        return false;
     }
 }
 

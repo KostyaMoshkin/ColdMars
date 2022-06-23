@@ -19,19 +19,6 @@ namespace megdr
 
 	class MegdrReader : public lib::CConfig
 	{
-	public:
-		static const char* nMegdrDefault()		{ return "MegdrDefault";	}
-		static const char* sMegdr()				{ return "Megdr";			}
-		static const char* sRadiusFile()		{ return "RadiusFile";		}
-		static const char* sTopographyFile()	{ return "TopographyFile";	}
-		static const char* nLines()				{ return "Lines";			}
-		static const char* nLineSamples()		{ return "LineSamples";		}
-		static const char* id()					{ return "id";				}
-		static const char* sCount()				{ return "Count";			}
-		static const char* line()				{ return "line";			}
-		static const char* sample()				{ return "sample";			}
-
-	private:
 		std::map<unsigned, lib::XMLnodePtr> m_vMegdrNode;
 
 		std::map<unsigned, std::vector<MSB_INTEGER>> m_mvRadius;

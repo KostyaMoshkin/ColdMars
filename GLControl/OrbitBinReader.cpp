@@ -17,7 +17,7 @@ namespace orbit
 	bool OrbitBinReader::init()
 	{
         std::string sLevelFile;
-        if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), LevelFileName()), sLevelFile))
+        if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), Key::LevelFileName()), sLevelFile))
             sLevelFile = ".\\Level.bin";
 
         if (fopen_s(&m_pLevelFile, sLevelFile.c_str(), "rb") != 0)
@@ -26,7 +26,7 @@ namespace orbit
        //--------------------------------------------------------------------------------------------
 
         std::string sOrbitFile;
-        if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), OrbitFileName()), sOrbitFile))
+        if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), Key::OrbitFileName()), sOrbitFile))
             sOrbitFile = ".\\Orbit.bin";
 
         FILE* pOrbitFile;
@@ -47,7 +47,7 @@ namespace orbit
         //--------------------------------------------------------------------------------------------
 
         std::string sNptFile;
-        if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), NptFileName()), sNptFile))
+        if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), Key::NptFileName()), sNptFile))
             sNptFile = ".\\Npt.bin";
 
         FILE* pNptFile;
@@ -201,25 +201,11 @@ namespace orbit
         }
     }
 
-    std::vector<Snpt> OrbitBinReader::getNpt(const char* sFileName_, bool bAllRecord_, bool bIncludeLevels_)
-    {
-        return std::vector<Snpt>();
-    }
-
-    size_t OrbitBinReader::getRecCount(unsigned nIndex_)
-    {
-        return m_vvNpt[nIndex_].size();
-    }
-
-    size_t OrbitBinReader::getFileCount()
+    size_t OrbitBinReader::getOrbitCount()
     {
         return m_vOrbit.size();
     }
 
-    size_t OrbitBinReader::getCount()
-    {
-        return m_vvNpt.size();
-    }
     std::vector<unsigned> OrbitBinReader::getOrbitListByCoord(float fLatitude_, float fLongitude_)
     {
         std::vector<unsigned> result;
@@ -227,7 +213,6 @@ namespace orbit
         for (int i = 0; i < m_vOrbit.size(); ++i)
         {
             std::vector<Snpt> vNpt = get_vNpt(m_vOrbit[i]);
-            //vThread[i] = std::thread(threadWork, result, m_vOrbit[i], fLatitude_, fLongitude_);
 
             for (int j = 0; j < vNpt.size(); ++j)
                 if (std::abs(vNpt[j].fLatitude - fLatitude_) < 1 && (std::abs(vNpt[j].fLongitude - fLongitude_) < 1))
@@ -237,37 +222,12 @@ namespace orbit
                 }
         }
 
-        //for (unsigned i = 0; i < m_vOrbit.size(); ++i)
-        //	vThread[i].join();
-
-        //delete[] vThread;
-
         return std::move(result);
     }
 
-    unsigned OrbitBinReader::getSpectrumNumb()
+    Snpt OrbitBinReader::getNpt()
     {
-        return m_Snpt.nSpectrumNumb;
-    }
-
-    float OrbitBinReader::getJulianDate()
-    {
-        return m_Snpt.fJulianDate;
-    }
-
-    float OrbitBinReader::getLocalTime()
-    {
-        return m_Snpt.fLocalTime;
-    }
-
-    float OrbitBinReader::getLS()
-    {
-        return m_Snpt.fLS;
-    }
-
-    std::string OrbitBinReader::getUTC()
-    {
-        return std::string();
+        return m_Snpt;
     }
 
     unsigned OrbitBinReader::getOrbit_by_number(unsigned nNumber_)

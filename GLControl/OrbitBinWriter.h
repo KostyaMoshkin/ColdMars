@@ -23,7 +23,5 @@ namespace orbit
 
 	public:
 		bool init();
-
-		bool compile();
 	};
 }

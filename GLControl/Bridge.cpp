@@ -126,7 +126,7 @@ namespace GL
 		}
 
 		std::string sOrbitDir;
-		if (!lib::XMLreader::getSting(lib::XMLreader::getNode(m_pXMLconfig->getRoot(), OrbitDir()), sOrbitDir))
+		if (!lib::XMLreader::getSting(lib::XMLreader::getNode(m_pXMLconfig->getRoot(), Key::OrbitDir()), sOrbitDir))
 			return false;
 
 		m_vFileList = lib::create_file_list(sOrbitDir.c_str());
@@ -240,7 +240,7 @@ namespace GL
 		return m_bInit;
 	}
 
-	unsigned Bridge::getFileCount()
+	unsigned Bridge::getOrbitCount()
 	{
 		return (unsigned)m_vFileList.size();
 	}
@@ -301,27 +301,27 @@ namespace GL
 
 	unsigned Bridge::getSpectrumNumb()
 	{
-		return m_pRenderOrbitTemperature->getReader()->getSpectrumNumb();
+		return m_pRenderOrbitTemperature->getReader()->getNpt().nSpectrumNumb;
 	}
 
 	float Bridge::getLS()
 	{
-		return m_pRenderOrbitTemperature->getReader()->getLS();
+		return m_pRenderOrbitTemperature->getReader()->getNpt().fLS;
 	}
 
 	float Bridge::getJulianDate()
 	{
-		return m_pRenderOrbitTemperature->getReader()->getJulianDate();
+		return m_pRenderOrbitTemperature->getReader()->getNpt().fJulianDate;
 	}
 
 	float Bridge::getLocalTime()
 	{
-		return m_pRenderOrbitTemperature->getReader()->getLocalTime();
+		return m_pRenderOrbitTemperature->getReader()->getNpt().fLocalTime;
 	}
 
 	std::string Bridge::getUTC()
 	{
-		return m_pRenderOrbitTemperature->getReader()->getUTC();
+		return m_pRenderOrbitTemperature->getReader()->getNpt().sUTC;
 	}
 
 	void Bridge::getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_)

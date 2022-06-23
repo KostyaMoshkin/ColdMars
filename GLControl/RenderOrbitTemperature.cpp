@@ -124,7 +124,7 @@ namespace GL {
 		//-------------------------------------------------------------------------------------------------
 
 		int nBaseHeight;
-		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), BaseHeight()), nBaseHeight))
+		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), Key::BaseHeight()), nBaseHeight))
 			nBaseHeight = 3396000;
 
 		m_pOrbitTemperatureProgram->setUniform1i("m_nBaseHeight", &nBaseHeight);

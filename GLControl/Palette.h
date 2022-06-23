@@ -8,15 +8,6 @@ namespace GL {
 
 	class Palette : public lib::CConfig
 	{
-	public:
-		static const char* sPalette()			{ return "Palette";			}
-		static const char* sPaletteDefault()	{ return "PaletteDefault";	}
-		static const char* sId()				{ return "id";				}
-		static const char* sTemperature()		{ return "Temperature";		}
-		static const char* sColor()				{ return "Color";			}
-		static const char* sInterpolate()		{ return "interpolate";		}
-
-	private:
 		std::vector<std::pair<int, lib::iPoint3D>> m_vPalette;
 
 		int m_nMinValue = 0;

@@ -113,7 +113,7 @@ namespace GLControl {
 
 		if (m_nOrbitQuantity != nOrbitQuantity)
 		{
-			m_nOrbitQuantity = std::min<unsigned>(nOrbitQuantity, m_pBridge->getFileCount() - m_nOrbitCurrentIndex - 1);
+			m_nOrbitQuantity = std::min<unsigned>(nOrbitQuantity, m_pBridge->getOrbitCount() - m_nOrbitCurrentIndex - 1);
 
 		}
 		else if (m_nLS != nLS)
@@ -155,7 +155,7 @@ namespace GLControl {
 						m_nOrbitQuantity = nOrbitEndIndex - m_nOrbitCurrentIndex;
 
 					unsigned nOrbitQuantity = m_nOrbitQuantity;
-					m_nOrbitQuantity = std::min<unsigned>(nOrbitQuantity, m_pBridge->getFileCount() - m_nOrbitCurrentIndex - 1);
+					m_nOrbitQuantity = std::min<unsigned>(nOrbitQuantity, m_pBridge->getOrbitCount() - m_nOrbitCurrentIndex - 1);
 
 
 				}
@@ -170,7 +170,7 @@ namespace GLControl {
 
 		updateOrbitInfo();
 
-		this->trackBarOrbit->Maximum = m_pBridge->getFileCount() - m_nOrbitQuantity - 1;
+		this->trackBarOrbit->Maximum = m_pBridge->getOrbitCount() - m_nOrbitQuantity - 1;
 		this->trackBarOrbit->Value = m_nOrbitCurrentIndex;
 
 		return System::Void();
@@ -256,7 +256,7 @@ namespace GLControl {
 
 	bool OpenGLControl::moveForward()
 	{
-		if (m_nOrbitCurrentIndex < m_pBridge->getFileCount() - m_nOrbitQuantity - 1)
+		if (m_nOrbitCurrentIndex < m_pBridge->getOrbitCount() - m_nOrbitQuantity - 1)
 			++m_nOrbitCurrentIndex;
 		else
 			return false;
@@ -394,7 +394,7 @@ namespace GLControl {
 		if (m_bBridgeInit)
 			return;
 
-		this->trackBarOrbit->Maximum = m_pBridge->getFileCount() - m_nOrbitQuantity - 1;
+		this->trackBarOrbit->Maximum = m_pBridge->getOrbitCount() - m_nOrbitQuantity - 1;
 
 		updateOrbitInfo();
 

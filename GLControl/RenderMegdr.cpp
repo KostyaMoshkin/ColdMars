@@ -98,7 +98,7 @@ namespace GL {
 		//-------------------------------------------------------------------------------------------------
 
 		unsigned nNetColor;
-		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), NetColor()), nNetColor))
+		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), Key::NetColor()), nNetColor))
 			nNetColor = 0xFFFFFFFF;
 
 		lib::fPoint3D vNetColor;
@@ -130,11 +130,11 @@ namespace GL {
 		//-------------------------------------------------------------------------------------------------
 
 		std::string sAlbedoFile;
-		if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), Albedo()), sAlbedoFile))
+		if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), Key::Albedo()), sAlbedoFile))
 			return false;
 
 		unsigned nMarsTone;
-		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), MarsTone()), nMarsTone))
+		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), Key::MarsTone()), nMarsTone))
 			nMarsTone = 0x00c36b15;
 
 		if ( !fillAlbedo(sAlbedoFile.c_str(), nMarsTone) )
@@ -143,11 +143,11 @@ namespace GL {
 		//-------------------------------------------------------------------------------------------------
 
 		std::string sDigitFile;
-		if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), Digits()), sDigitFile))
+		if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), Key::Digits()), sDigitFile))
 			return false;
 
 		unsigned nDigitsColor;
-		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), DigitsColor()), nDigitsColor))
+		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), Key::DigitsColor()), nDigitsColor))
 			nMarsTone = 0x00c36b15;
 
 		if ( !fillDigit(sDigitFile.c_str(), nDigitsColor) )
@@ -264,7 +264,7 @@ namespace GL {
 		m_pMegdrProgram->setUniform1i("m_nLineSamples", &nLineSamples);
 
 		int nBaseHeight;
-		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), BaseHeight()), nBaseHeight))
+		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), Key::BaseHeight()), nBaseHeight))
 			nBaseHeight = 3396000;
 
 		m_pMegdrProgram->setUniform1i("m_nBaseHeight", &nBaseHeight);

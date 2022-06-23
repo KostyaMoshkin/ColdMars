@@ -9,8 +9,6 @@ namespace GL {
 
 	class SceneRender : public lib::CConfig
 	{
-		static const char* ViewAngle() { return "ViewAngle"; }
-
 		float m_fViewAngle = 45.0f;
 
 		std::vector<GL::RenderPtr> m_vElementRendr;

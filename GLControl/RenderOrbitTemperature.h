@@ -18,9 +18,6 @@ namespace GL {
 
 	class RenderOrbitTemperature : public Render
 	{
-		static const char* ViewAngle()	{ return "ViewAngle";	}
-		static const char* BaseHeight() { return "BaseHeight"; }
-
 		ShaderProgramPtr m_pOrbitTemperatureProgram = nullptr;
 		VertexBufferPtr m_pTemperatureVertex = nullptr;
 		IndexBufferPtr m_pIndex = nullptr;

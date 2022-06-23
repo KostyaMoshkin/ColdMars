@@ -21,8 +21,6 @@ namespace GL
 
 	class Bridge : public DataContextEngine
 	{
-		static const char* OrbitDir() { return "OrbitDir"; }
-
 		gcroot<ContextContainer^> m_pContextContainer;
 		gcroot<ContextInterface^> m_pScreen;
 
@@ -79,7 +77,7 @@ namespace GL
 
 		bool isInit();
 
-		unsigned getFileCount();
+		unsigned getOrbitCount();
 
 		void setFileArray(const std::vector<unsigned>& vOrbit_);
 
