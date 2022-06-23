@@ -81,20 +81,8 @@ namespace megdr
 
 		bool bError = false;
 
-		//std::future<bool> syncRadius = std::async(std::launch::async, loadArray, sRadiusPath_, vRadius_, nPointsInRaw, nArraySegment, nLines, nLineSamples);
-		//std::future<bool> syncTopography = std::async(std::launch::async, loadArray, sTopographyPath_, vTopography_, nPointsInRaw, nArraySegment, nLines, nLineSamples);
-
 		bError |= loadArray(sRadiusPath_, vRadius_, nPointsInRaw, nArraySegment, nLines, nLineSamples);
 		bError |= loadArray(sTopographyPath_, vTopography_, nPointsInRaw, nArraySegment, nLines, nLineSamples);
-
-		//if (syncRadius.valid() && syncTopography.valid())
-		//{
-		//	bError |= !syncRadius.get();
-		//	bError |= !syncTopography.get();
-		//}
-
-		//if (bError)
-		//	return false;
 
 		return true;
 	}
@@ -339,15 +327,6 @@ namespace megdr
 
 		bool bReadMistake = false;
 
-		//std::vector<std::future<bool>> vFutureRead(vMegdrSrs.size());
-
-		//for (auto& megdrFile : vMegdrSrs)
-		//	if (!megdrFile.first.sFileName.empty())
-		//		vFutureRead.push_back(std::async(std::launch::async, readSectorData, m_mvRadius[nId_].data(), m_mvTopography[nId_].data(),
-		//			megdrFile.first.sFileName.c_str(), megdrFile.second.sFileName.c_str(),
-		//			xmlActiveMegdr_,
-		//			megdrFile.first.nLine, megdrFile.first.nSample, nDataFileCountRaw));
-
 		for (auto& megdrFile : vMegdrSrs)
 			if (!megdrFile.first.sFileName.empty())
 				bReadMistake |= readSectorData(m_mvRadius[nId_].data(), m_mvTopography[nId_].data(),
@@ -356,10 +335,6 @@ namespace megdr
 					megdrFile.first.nLine, megdrFile.first.nSample, nDataFileCountRaw);
 
 		//--------------------------------------------------------------------------------------------
-
-		//for (auto& fut : vFutureRead)
-		//	if (fut.valid())
-		//		bReadMistake |= !fut.get();
 
 		return !bReadMistake;
 	}
