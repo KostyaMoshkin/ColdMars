@@ -154,7 +154,6 @@ namespace megdr
 		bool bXMLmistake = false;
 
 		bXMLmistake |= !lib::XMLreader::getInt(lib::XMLreader::getNode(xmlActiveMegdr, Key::nLines()), m_mnLines[nId_]);
-
 		bXMLmistake |= !lib::XMLreader::getInt(lib::XMLreader::getNode(xmlActiveMegdr, Key::nLineSamples()), m_mnLineSamples[nId_]);
 
 		if (bXMLmistake)
