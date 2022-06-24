@@ -35,7 +35,8 @@ namespace orbit
 
 		virtual std::vector<unsigned> getOrbitListByCoord(float fLatitude_, float fLongitude_) { return std::vector<unsigned>(); }
 
-		virtual unsigned getOrbit_by_number(unsigned nNumber_) { return 0; }
+		virtual unsigned getOrbitIndex_by_OrbitNumber(unsigned nNumber_) { return 0; }
+		virtual unsigned getOrbitNumber_by_OrbitIndex(unsigned nNumber_) { return 0; }
 
 		virtual unsigned getOrbit_by_LS(unsigned nNumber_) { return 0; }
 

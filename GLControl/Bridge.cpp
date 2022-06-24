@@ -125,12 +125,6 @@ namespace GL
 			resetView();
 		}
 
-		std::string sOrbitDir;
-		if (!lib::XMLreader::getSting(lib::XMLreader::getNode(m_pXMLconfig->getRoot(), Key::OrbitDir()), sOrbitDir))
-			return false;
-
-		m_vFileList = lib::create_file_list(sOrbitDir.c_str());
-
 		//--------------------------------------------------------------------------
 
 		return true;
@@ -242,7 +236,7 @@ namespace GL
 
 	unsigned Bridge::getOrbitCount()
 	{
-		return (unsigned)m_vFileList.size();
+		return (unsigned)m_pRenderOrbitTemperature->getReader()->getOrbitCount();
 	}
 
 	void Bridge::setFileArray(const std::vector<unsigned>& vOrbit_)
@@ -261,17 +255,7 @@ namespace GL
 
 	std::string Bridge::getOrbit_by_index(unsigned nIndex_)
 	{
-		if (nIndex_ >= m_vFileList.size())
-			return std::string();
-
-		std::string sFileName = m_vFileList[nIndex_].c_str();
-
-		size_t nPointPos = sFileName.find(".");
-		size_t nNamePos = sFileName.find_last_of("\\") + 2;
-
-		std::string  sNumber = sFileName.substr(nNamePos, nPointPos - nNamePos);
-
-		return sNumber;
+		return std::to_string(m_pRenderOrbitTemperature->getReader()->getOrbitNumber_by_OrbitIndex(nIndex_));
 	}
 
 	unsigned Bridge::getOrbit_by_LS(unsigned nIndex_)
@@ -279,9 +263,9 @@ namespace GL
 		return m_pRenderOrbitTemperature->getOrbit_by_LS(nIndex_);
 	}
 
-	unsigned Bridge::getOrbit_by_number(unsigned nIndex_)
+	unsigned Bridge::getOrbitIndex_by_OrbitNumber(unsigned nIndex_)
 	{
-		return m_pRenderOrbitTemperature->getOrbit_by_number(nIndex_);
+		return m_pRenderOrbitTemperature->getOrbitIndex_by_OrbitNumber(nIndex_);
 	}
 
 	ContextInterface^ Bridge::getScreen()

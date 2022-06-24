@@ -48,8 +48,6 @@ namespace GL
 		lib::Vector3 m_vCamPosition3D;
 		lib::Vector3 m_vCamRight3D;
 
-		std::vector<std::string> m_vFileList;
-
 	public:
 		Bridge();
 		~Bridge();
@@ -85,7 +83,7 @@ namespace GL
 
 		std::string getOrbit_by_index(unsigned nIndex_);
 		unsigned getOrbit_by_LS(unsigned nIndex_);
-		unsigned getOrbit_by_number(unsigned nIndex_);
+		unsigned getOrbitIndex_by_OrbitNumber(unsigned nIndex_);
 
 	public:
 		ContextInterface^ getScreen();

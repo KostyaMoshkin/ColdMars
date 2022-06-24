@@ -6,12 +6,20 @@ namespace lib
 	{
 		std::vector<std::string> vsFileList;
 
-		for (const auto& folder : std::filesystem::directory_iterator(sPath_))
-			if (folder.is_directory())
-				for (const auto& pedrFile : std::filesystem::directory_iterator(folder))
-					vsFileList.push_back(folder.path().string() + "\\" + pedrFile.path().filename().string());
-			else
-				vsFileList.push_back(folder.path().string());
+		try
+		{
+			for (const auto& folder : std::filesystem::directory_iterator(sPath_))
+				if (folder.is_directory())
+					for (const auto& pedrFile : std::filesystem::directory_iterator(folder))
+						vsFileList.push_back(folder.path().string() + "\\" + pedrFile.path().filename().string());
+				else
+					vsFileList.push_back(folder.path().string());
+
+		}
+		catch (const std::exception&)
+		{
+			toLog("ERROR cant list directory: " + std::string(sPath_));
+		}
 
 		return vsFileList;
 	}

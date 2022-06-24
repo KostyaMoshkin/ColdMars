@@ -227,7 +227,19 @@ namespace orbit
         return m_Snpt;
     }
 
-    unsigned OrbitBinReader::getOrbit_by_number(unsigned nNumber_)
+    unsigned OrbitBinReader::getOrbitNumber_by_OrbitIndex(unsigned nIndex_)
+    {
+        //if (m_mOrbit.find(nIndex_) != m_mOrbit.end())
+        //    return m_mOrbit[nIndex_];
+
+        for (auto const& [key, value] : m_mOrbit)
+            if (value >= (int)nIndex_)
+                return key;
+
+        return UINT_MAX;
+    }
+
+    unsigned OrbitBinReader::getOrbitIndex_by_OrbitNumber(unsigned nNumber_)
     {
         if (m_mOrbit.find(nNumber_) != m_mOrbit.end())
             return m_mOrbit[nNumber_];

@@ -80,7 +80,7 @@ namespace GL {
 
 		void getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_);
 
-		unsigned getOrbit_by_number(unsigned nNumber_);
+		unsigned getOrbitIndex_by_OrbitNumber(unsigned nNumber_);
 
 		unsigned getOrbit_by_LS(unsigned nNumber_);
 

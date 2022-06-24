@@ -146,7 +146,7 @@ namespace GLControl {
 			int nOrbitStartNumber = System::Int32::Parse(this->textBoxOrbitStart->Text);
 			int nOrbitEndNumber = System::Int32::Parse(this->textBoxOrbitEnd->Text);
 
-			unsigned nOrbitCurrentIndex = m_pBridge->getOrbit_by_number(nOrbitStartNumber);
+			unsigned nOrbitCurrentIndex = m_pBridge->getOrbitIndex_by_OrbitNumber(nOrbitStartNumber);
 
 			if (nOrbitCurrentIndex != UINT_MAX)
 			{
@@ -154,7 +154,7 @@ namespace GLControl {
 
 				m_nOrbitCurrentIndex = nOrbitCurrentIndex;
 
-				unsigned nOrbitEndIndex = m_pBridge->getOrbit_by_number(nOrbitEndNumber);
+				unsigned nOrbitEndIndex = m_pBridge->getOrbitIndex_by_OrbitNumber(nOrbitEndNumber);
 				if (nOrbitEndIndex != UINT_MAX)
 				{
 					bool bOrbitEndNumberChanged = m_nOrbitEndIndex != nOrbitEndIndex;
@@ -364,7 +364,7 @@ namespace GLControl {
 	System::Void OpenGLControl::buttonAddOrbit_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		
-		unsigned nOrbitIndex = m_pBridge->getOrbit_by_number(System::Int32::Parse(this->textBoxOrbitStart->Text));
+		unsigned nOrbitIndex = m_pBridge->getOrbitIndex_by_OrbitNumber(System::Int32::Parse(this->textBoxOrbitStart->Text));
 		System::String^ sOrbit = gcnew System::String(m_pBridge->getOrbit_by_index(nOrbitIndex).c_str());
 
 		if (this->checkedListOrbit->CheckedItems->Contains(sOrbit) == false)
@@ -385,7 +385,7 @@ namespace GLControl {
 				bCkecked = e->NewValue == CheckState::Checked;
 
 			if (bCkecked)
-				vOrbit.push_back(m_pBridge->getOrbit_by_number(System::Int32::Parse(this->checkedListOrbit->Items[i]->ToString())));
+				vOrbit.push_back(m_pBridge->getOrbitIndex_by_OrbitNumber(System::Int32::Parse(this->checkedListOrbit->Items[i]->ToString())));
 		}
 
 		m_pBridge->setFileArray(vOrbit);
@@ -410,7 +410,7 @@ namespace GLControl {
 			this->checkedListOrbit->Items->Add(gcnew System::String(std::to_string(nOrbit).c_str()), CheckState::Checked);
 
 		for (auto& nOrbit : vOrbit)
-			nOrbit = m_pBridge->getOrbit_by_number(nOrbit);
+			nOrbit = m_pBridge->getOrbitIndex_by_OrbitNumber(nOrbit);
 
 		m_pBridge->setFileArray(vOrbit);
 

@@ -234,9 +234,9 @@ namespace GL {
 		m_pPalette->getPalette(vPalette_, nPaletteMin_, nPaletteMax_);
 	}
 
-	unsigned RenderOrbitTemperature::getOrbit_by_number(unsigned nNumber_)
+	unsigned RenderOrbitTemperature::getOrbitIndex_by_OrbitNumber(unsigned nNumber_)
 	{
-		return m_pOrbitReader->getOrbit_by_number(nNumber_);
+		return m_pOrbitReader->getOrbitIndex_by_OrbitNumber(nNumber_);
 	}
 
 	unsigned RenderOrbitTemperature::getOrbit_by_LS(unsigned nNumber_)

@@ -42,8 +42,10 @@ namespace orbit
 		virtual std::vector<unsigned> getOrbitListByCoord(float fLatitude_, float fLongitude_) override;
 		Snpt getNpt() override;
 
+
 	public:
-		unsigned getOrbit_by_number(unsigned nNumber_) override;
+		unsigned getOrbitNumber_by_OrbitIndex(unsigned nNumber_) override;
+		unsigned getOrbitIndex_by_OrbitNumber(unsigned nNumber_) override;
 		unsigned getOrbit_by_LS(unsigned nNumber_) override;
 	};
 }
