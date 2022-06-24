@@ -72,8 +72,6 @@ namespace GL {
 
 	bool RenderOrbitTemperature::fillVertex()
 	{
-		toLog("fillVertex ");
-
 		if (!m_pOrbitReader)
 			toLog("!m_pOrbitReader ");
 
