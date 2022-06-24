@@ -1,6 +1,6 @@
 #pragma once
-#include "OrbitTextReader.h"
 #include "SLevel.h"
+#include "CConfig.h"
 
 namespace orbit
 {
@@ -10,11 +10,6 @@ namespace orbit
 
 	class OrbitBinWriter : public lib::CConfig
 	{
-		OrbitTextReaderPtr m_pOrbitTextReader;
-
-		std::string m_sOrbitFile;
-		std::string m_sNptFile;
-
 	public:
 		OrbitBinWriter();
 		~OrbitBinWriter();

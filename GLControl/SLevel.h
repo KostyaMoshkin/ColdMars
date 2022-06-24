@@ -6,7 +6,7 @@ namespace orbit
 	{
 		float fAltitude;
 		float fPresure;
-		float fTempereture;
+		float fTemperature;
 	};
 
 	struct OrbitFile

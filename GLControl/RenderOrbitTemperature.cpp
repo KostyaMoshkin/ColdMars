@@ -224,7 +224,7 @@ namespace GL {
 		fillVertex();
 	}
 
-	const orbit::OrbitReaderPtr RenderOrbitTemperature::getReader()
+	const orbit::OrbitBinReaderPtr RenderOrbitTemperature::getReader()
 	{
 		return m_pOrbitReader;
 	}

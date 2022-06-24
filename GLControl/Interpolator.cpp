@@ -33,7 +33,7 @@ namespace orbit
 		vTemperature_.resize(m_nInterpolateCount + 1);
 		m_fAltitudeStep = (m_interpolateMax - m_interpolateMin) / m_nInterpolateCount;
 
-		vTemperature_[0] = m_pData[0].fTempereture;
+		vTemperature_[0] = m_pData[0].fTemperature;
 
 		for (unsigned i = 0; i < m_nInterpolateCount; ++i)
 			vTemperature_[i + 1] = getTemperature(m_interpolateMin + m_fAltitudeStep * i);
@@ -42,14 +42,14 @@ namespace orbit
 	float Interpolator::getTemperature(float fAltitude_)
 	{
 		if (fAltitude_ <= m_pData[0].fAltitude)
-			return m_pData[0].fTempereture;
+			return m_pData[0].fTemperature;
 		else if (fAltitude_ >= m_pData[m_nCount - 1].fAltitude)
-			return m_pData[m_nCount - 1].fTempereture;
+			return m_pData[m_nCount - 1].fTemperature;
 
 		for (unsigned i = 0; i < m_nCount - 1; ++i)
 		{
 			if (fAltitude_ >= m_pData[i].fAltitude && fAltitude_ <= m_pData[i + 1].fAltitude)
-				return m_pData[i].fTempereture + (m_pData[i + 1].fTempereture - m_pData[i].fTempereture) / (m_pData[i + 1].fAltitude - m_pData[i].fAltitude) * (m_pData[i].fAltitude - fAltitude_);
+				return m_pData[i].fTemperature + (m_pData[i + 1].fTemperature - m_pData[i].fTemperature) / (m_pData[i + 1].fAltitude - m_pData[i].fAltitude) * (m_pData[i].fAltitude - fAltitude_);
 		}
 
 		return 0.0f;

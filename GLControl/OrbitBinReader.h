@@ -1,12 +1,14 @@
 #pragma once
-#include "OrbitReader.h"
+
+#include "SLevel.h"
+#include "CConfig.h"
 
 namespace orbit
 {
 	class OrbitBinReader;
 	using OrbitBinReaderPtr = std::shared_ptr<OrbitBinReader>;
 
-	class OrbitBinReader : public OrbitReader
+	class OrbitBinReader : public lib::CConfig
 	{
 		FILE* m_pLevelFile;
 
@@ -36,17 +38,16 @@ namespace orbit
 		std::vector<Snpt> get_vNpt(const OrbitFile& orbit_, bool bAllRecord_);
 
 	public:
-		virtual bool init() override;
-		virtual void setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_, bool bClearLevel_ = false) override;
-		virtual size_t getOrbitCount() override;
-		virtual std::vector<unsigned> getOrbitListByCoord(float fLatitude_, float fLongitude_) override;
-		Snpt getNpt() override;
-
+		bool init();
+		void setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_, bool bClearLevel_ = false);
+		size_t getOrbitCount();
+		std::vector<unsigned> getOrbitListByCoord(float fLatitude_, float fLongitude_);
+		Snpt getNpt();
 
 	public:
-		unsigned getOrbitNumber_by_OrbitIndex(unsigned nNumber_) override;
-		unsigned getOrbitIndex_by_OrbitNumber(unsigned nNumber_) override;
-		unsigned getOrbit_by_LS(unsigned nNumber_) override;
+		unsigned getOrbitNumber_by_OrbitIndex(unsigned nNumber_);
+		unsigned getOrbitIndex_by_OrbitNumber(unsigned nNumber_);
+		unsigned getOrbit_by_LS(unsigned nNumber_);
 	};
 }
 

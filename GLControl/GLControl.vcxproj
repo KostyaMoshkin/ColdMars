@@ -195,8 +195,6 @@
     </ClInclude>
     <ClInclude Include="OrbitBinReader.h" />
     <ClInclude Include="OrbitBinWriter.h" />
-    <ClInclude Include="OrbitReader.h" />
-    <ClInclude Include="OrbitTextReader.h" />
     <ClInclude Include="Palette.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Bridge.h" />
@@ -230,7 +228,6 @@
     <ClCompile Include="OpenGLControl.cpp" />
     <ClCompile Include="OrbitBinReader.cpp" />
     <ClCompile Include="OrbitBinWriter.cpp" />
-    <ClCompile Include="OrbitTextReader.cpp" />
     <ClCompile Include="Palette.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

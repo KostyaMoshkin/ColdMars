@@ -8,7 +8,6 @@
 #include "Palette.h"
 
 #include "MegdrReader.h"
-#include "OrbitTextReader.h"
 #include "OrbitBinReader.h"
 
 namespace GL {
@@ -26,7 +25,7 @@ namespace GL {
 
 		PalettePtr m_pPalette = nullptr;
 		//orbit::OrbitTextReaderPtr m_pOrbitReader = nullptr;
-		orbit::OrbitReaderPtr m_pOrbitReader = nullptr;
+		orbit::OrbitBinReaderPtr m_pOrbitReader = nullptr;
 
 		lib::Matrix4 m_mRotate = lib::Matrix4(1.0f);
 		lib::Matrix4 m_mTransform = lib::Matrix4(1.0f);
@@ -76,7 +75,7 @@ namespace GL {
 	public:
 		void setFileRange(int nFirstFile_, int nLasetFile_);
 
-		const orbit::OrbitReaderPtr getReader();
+		const orbit::OrbitBinReaderPtr getReader();
 
 		void getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_);
 

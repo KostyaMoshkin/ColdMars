@@ -229,9 +229,6 @@ namespace orbit
 
     unsigned OrbitBinReader::getOrbitNumber_by_OrbitIndex(unsigned nIndex_)
     {
-        //if (m_mOrbit.find(nIndex_) != m_mOrbit.end())
-        //    return m_mOrbit[nIndex_];
-
         for (auto const& [key, value] : m_mOrbit)
             if (value >= (int)nIndex_)
                 return key;

@@ -114,9 +114,6 @@
     <ClInclude Include="Interpolator.h">
       <Filter>Reader</Filter>
     </ClInclude>
-    <ClInclude Include="OrbitTextReader.h">
-      <Filter>Reader</Filter>
-    </ClInclude>
     <ClInclude Include="SLevel.h">
       <Filter>Reader</Filter>
     </ClInclude>
@@ -139,9 +136,6 @@
       <Filter>Reader</Filter>
     </ClInclude>
     <ClInclude Include="OrbitBinReader.h">
-      <Filter>Reader</Filter>
-    </ClInclude>
-    <ClInclude Include="OrbitReader.h">
       <Filter>Reader</Filter>
     </ClInclude>
     <ClInclude Include="Vocabulary.h">
@@ -202,9 +196,6 @@
     </ClCompile>
     <ClCompile Include="SceneRender.cpp">
       <Filter>Render</Filter>
-    </ClCompile>
-    <ClCompile Include="OrbitTextReader.cpp">
-      <Filter>Reader</Filter>
     </ClCompile>
     <ClCompile Include="..\Include\XML\tinystr.cpp">
       <Filter>Lib\XML</Filter>
