@@ -18,7 +18,7 @@ namespace orbit
 	{
         std::string sLevelFile;
         if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), Key::LevelFileName()), sLevelFile))
-            sLevelFile = ".\\Level.bin";
+            sLevelFile = "Level.bin";
 
         if (fopen_s(&m_pLevelFile, sLevelFile.c_str(), "rb") != 0)
             return false;
@@ -27,7 +27,7 @@ namespace orbit
 
         std::string sOrbitFile;
         if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), Key::OrbitFileName()), sOrbitFile))
-            sOrbitFile = ".\\Orbit.bin";
+            sOrbitFile = "Orbit.bin";
 
         FILE* pOrbitFile;
         if (fopen_s(&pOrbitFile, sOrbitFile.c_str(), "rb") != 0)
@@ -48,7 +48,7 @@ namespace orbit
 
         std::string sNptFile;
         if (!lib::XMLreader::getSting(lib::XMLreader::getNode(getConfig(), Key::NptFileName()), sNptFile))
-            sNptFile = ".\\Npt.bin";
+            sNptFile = "Npt.bin";
 
         FILE* pNptFile;
         if (fopen_s(&pNptFile, sNptFile.c_str(), "rb") != 0)
@@ -103,7 +103,7 @@ namespace orbit
             vNpt[i].nSpectrumNumb = m_vNpt[i + nBegin].nSpectrumNumb;
             vNpt[i].nInterferogramID = m_vNpt[i + nBegin].nInterferogramID;
             vNpt[i].fJulianDate = m_vNpt[i + nBegin].fJulianDate;
-            //vNpt[i].sUTC = m_vNpt[i + orbit.nBegin].sUTC;
+            vNpt[i].sUTC = std::string(m_vNpt[i + nBegin].sUTC);
             vNpt[i].fDistancToSun = m_vNpt[i + nBegin].fDistancToSun;
             vNpt[i].fLongitude = m_vNpt[i + nBegin].fLongitude;
             vNpt[i].fLatitude = m_vNpt[i + nBegin].fLatitude;

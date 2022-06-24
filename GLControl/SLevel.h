@@ -46,7 +46,7 @@ namespace orbit
 		unsigned nSpectrumNumb;
 		unsigned nInterferogramID;
 		float fJulianDate;
-		//std::string sUTC;
+		char  sUTC[24];
 		float fDistancToSun;
 		float fLongitude;
 		float fLatitude;
@@ -64,7 +64,7 @@ namespace orbit
 			this->nSpectrumNumb = snpt_.nSpectrumNumb;
 			this->nInterferogramID = snpt_.nInterferogramID;
 			this->fJulianDate = snpt_.fJulianDate;
-			//this->sUTC = snpt_.sUTC;
+			memcpy(&this->sUTC, snpt_.sUTC.data(), 23); this->sUTC[23] = 0;
 			this->fDistancToSun = snpt_.fDistancToSun;
 			this->fLongitude = snpt_.fLongitude;
 			this->fLatitude = snpt_.fLatitude;
