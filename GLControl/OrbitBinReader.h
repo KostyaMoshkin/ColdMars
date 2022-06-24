@@ -39,7 +39,7 @@ namespace orbit
 
 	public:
 		bool init();
-		void setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_, bool bClearLevel_ = false);
+		void setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_, bool bClearLevel_ = true);
 		size_t getOrbitCount();
 		std::vector<unsigned> getOrbitListByCoord(float fLatitude_, float fLongitude_);
 		Snpt getNpt();
