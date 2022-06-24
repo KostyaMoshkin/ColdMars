@@ -77,7 +77,6 @@ namespace GL {
 		if (!m_pOrbitReader)
 			toLog("!m_pOrbitReader ");
 
-
 		m_pOrbitReader->setFileIndex(m_nFirstFile, m_nLastFile, m_vLevelData);
 
 		return true;
@@ -159,7 +158,6 @@ namespace GL {
 			return false;
 
 		//-------------------------------------------------------------------------------------------------
-		toLog("init6 ");
 
 		setVisible(true);
 		return true;

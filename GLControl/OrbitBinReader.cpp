@@ -119,9 +119,6 @@ namespace orbit
             if (!bAllRecord_)
                 break;
 
-            toLog("nLevelCount: " + std::to_string(vNpt[i].nLevelCount));
-
-
             vNpt[i].vLevel.resize(vNpt[i].nLevelCount);
 
             _fseeki64(m_pLevelFile, m_vNpt[i + nBegin].nBegin, SEEK_SET);
