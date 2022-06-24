@@ -383,10 +383,7 @@ namespace GLControl {
 
 		for (int i = 0; i <= (this->checkedListOrbit->Items->Count - 1); ++i)
 		{
-			bool bCkecked = this->checkedListOrbit->GetItemChecked(i);
-
-			if (i == e->Index)
-				bCkecked = e->NewValue == CheckState::Checked;
+			bool bCkecked = (i == e->Index) ? bCkecked = e->NewValue == CheckState::Checked : this->checkedListOrbit->GetItemChecked(i);
 
 			if (bCkecked)
 				vOrbit.push_back(m_pBridge->getOrbitIndex_by_OrbitNumber(System::Int32::Parse(this->checkedListOrbit->Items[i]->ToString())));
