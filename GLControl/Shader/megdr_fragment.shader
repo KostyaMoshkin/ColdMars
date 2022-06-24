@@ -22,8 +22,8 @@ vec2 getDigitCoord()
 	int nAcuracy = 30;
 	int nAngleStep = 30;
 
-	float offsetLong = 1.0 * nAcuracy;
-	float offsetLat  = 1.0 * nAcuracy;
+	float offsetLong = 0.6 * nAcuracy;
+	float offsetLat  = 0.6 * nAcuracy;
 
 	float sizeLong = 6.0 * nAcuracy;
 	float sizeLat  = 1.5 * nAcuracy;
