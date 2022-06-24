@@ -91,7 +91,11 @@ namespace GLControl {
 
 		this->checkedListOrbit->Items->Clear();
 		for (unsigned i = 0; i < m_nOrbitQuantity; ++i)
+		{
+			this->checkedListOrbit->ItemCheck -= gcnew System::Windows::Forms::ItemCheckEventHandler(this, &OpenGLControl::checkedListOrbit_CheckedChanged);
 			this->checkedListOrbit->Items->Add(gcnew System::String(m_pBridge->getOrbit_by_index(m_nOrbitCurrentIndex + i).c_str()), CheckState::Checked);
+			this->checkedListOrbit->ItemCheck += gcnew System::Windows::Forms::ItemCheckEventHandler(this, &OpenGLControl::checkedListOrbit_CheckedChanged);
+		}
 
 		double fLS;
 		if (!String_to_double(this->textBoxLS->Text, fLS))
