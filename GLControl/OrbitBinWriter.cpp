@@ -110,7 +110,7 @@ namespace orbit
         long nNptPosition = 0;
         long nLevelPosition = 0;
 
-        int nThread = std::thread::hardware_concurrency() / 2;
+        int nThread = std::min<int>((int)std::thread::hardware_concurrency() / 2, (int)vFileList.size());
 
         for (int i = 0; i < vFileList.size();)
         {

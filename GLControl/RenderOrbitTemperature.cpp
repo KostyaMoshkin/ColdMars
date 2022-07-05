@@ -177,11 +177,11 @@ namespace GL {
 
 		for (const orbit::SPairLevel& levelData : m_vLevelData)
 		{
-				if (!m_pTemperatureVertex->fillBuffer(levelData.vTemperature.size() * sizeof(float), levelData.vTemperature.data()))
-				{
-					toLog("Error m_pTemperatureVertex->fillBuffer()");
-					return;
-				}
+			if (!m_pTemperatureVertex->fillBuffer(levelData.vTemperature.size() * sizeof(float), levelData.vTemperature.data()))
+			{
+				toLog("Error m_pTemperatureVertex->fillBuffer()");
+				return;
+			}
 
 			m_pOrbitTemperatureProgram->setUniform1f("m_fAltitudeMinMax", &levelData.fAltitudeMinMax);
 			m_pOrbitTemperatureProgram->setUniform1f("m_fAltitudeStep", &levelData.fAltitudeStep);
@@ -195,7 +195,7 @@ namespace GL {
 			if(m_bIncludeAtmosphere)
 				glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)levelData.vTemperature.size());
 
-			glLineWidth(m_bIncludeAtmosphere ? 3 : 9);
+			glLineWidth(m_bIncludeAtmosphere ? 3.0f : 9.0f);
 
 			glDrawArrays(GL_LINES, 0, 2);
 		}

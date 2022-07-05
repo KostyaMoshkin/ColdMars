@@ -52,8 +52,13 @@ namespace orbit
 
 		for (unsigned i = 0; i < m_nCount - 1; ++i)
 		{
-			if (fAltitude_ >= m_pData[i].fAltitude && fAltitude_ <= m_pData[i + 1].fAltitude)
-				return m_pData[i].fTemperature + (m_pData[i + 1].fTemperature - m_pData[i].fTemperature) / (m_pData[i + 1].fAltitude - m_pData[i].fAltitude) * (m_pData[i].fAltitude - fAltitude_);
+			float t1 = m_pData[i + 0].fTemperature;
+			float t2 = m_pData[i + 1].fTemperature;
+			float a1 = m_pData[i + 0].fAltitude;
+			float a2 = m_pData[i + 1].fAltitude;
+
+			if (fAltitude_ >= a1 && fAltitude_ <= a2)
+				return t1 + (t2 - t1) / (a2 - a1) * (fAltitude_ - a1);
 		}
 
 		return 0.0f;
