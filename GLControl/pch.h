@@ -14,6 +14,7 @@
 #include <map>
 #include <fstream>
 #include <algorithm>
+#include <omp.h>
 
 #include <Windows.h>
 

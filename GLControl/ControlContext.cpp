@@ -30,8 +30,6 @@ namespace GL
 
         glEnable(GL_DEPTH_TEST);
 
-        glLineWidth(3);
-
         return true;
     }
 

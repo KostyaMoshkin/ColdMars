@@ -110,44 +110,52 @@ namespace orbit
         long nNptPosition = 0;
         long nLevelPosition = 0;
 
-        for (int i = 0; i < vFileList.size(); ++i)
+        int nThread = std::thread::hardware_concurrency() / 2;
+
+        for (int i = 0; i < vFileList.size();)
         {
-            std::vector<Snpt> vNpt = readFile(vFileList[i].c_str());
+            int nFileRead = std::min<int>((int)vFileList.size() - i, nThread);
 
-            OrbitFile orbitFile;
-            orbitFile.nBegin = nNptPosition;
+            std::vector<std::vector<Snpt>> vvNpt(nThread);
 
-            std::vector<NptFile> vNptFile;
-            std::vector<SLevel> vLevel;
-
-            for (int j = 0; j < vNpt.size(); ++j)
+#pragma omp parallel num_threads(nFileRead)
             {
-                NptFile nptFile;
-                nptFile = vNpt[j];
-
-                nptFile.nBegin = nLevelPosition;
-                nLevelPosition += nptFile.nLevelCount * sizeof(SLevel);
-                nptFile.nEnd = nLevelPosition;
-
-                vNptFile.push_back(nptFile);
-
-                for(const auto& level : vNpt[j].vLevel)
-                    vLevel.push_back(level);
-
-                nNptPosition += sizeof(NptFile);
+#pragma omp for
+                    for(int t = 0; t < nFileRead; ++t)
+                        vvNpt[t] = readFile(vFileList[i + t].c_str());
             }
 
-            orbitFile.nOrbit = vNpt[0].nOrbit;
-            orbitFile.nEnd = nNptPosition;
+            for (int t = 0; t < nFileRead; ++t)
+            {
+                OrbitFile orbitFile;
 
-            if (fwrite(&orbitFile, sizeof(OrbitFile), 1, pOrbitFile) != 1)
-                return false;
+                orbitFile.nBegin = nNptPosition;
+                nNptPosition += sizeof(NptFile) * (unsigned)vvNpt[t].size();
+                orbitFile.nEnd = nNptPosition;
 
-            if (fwrite(vNptFile.data(), vNptFile.size() * sizeof(NptFile), 1, pNptFile) != 1)
-                return false;
-           
-            if (fwrite(vLevel.data(), vLevel.size() * sizeof(SLevel), 1, pLevelFile) != 1)
-                return false;
+                orbitFile.nOrbit = vvNpt[t][0].nOrbit;
+
+                if (fwrite(&orbitFile, sizeof(OrbitFile), 1, pOrbitFile) != 1)
+                    return false;
+
+                for (int npt = 0; npt < vvNpt[t].size(); ++npt)
+                {
+                    NptFile nptFile;
+                    nptFile = vvNpt[t][npt];
+
+                    nptFile.nBegin = nLevelPosition;
+                    nLevelPosition += nptFile.nLevelCount * sizeof(SLevel);
+                    nptFile.nEnd = nLevelPosition;
+
+                    if (fwrite(vvNpt[t][npt].vLevel.data(), vvNpt[t][npt].vLevel.size() * sizeof(SLevel), 1, pLevelFile) != 1)
+                        return false;
+
+                    if (fwrite(&nptFile, sizeof(NptFile), 1, pNptFile) != 1)
+                        return false;
+                }
+            }
+
+            i += nFileRead;
         }
 
         fclose(pNptFile);

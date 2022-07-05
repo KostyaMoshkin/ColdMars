@@ -86,6 +86,13 @@ namespace orbit
 
         //--------------------------------------------------------------------------------------------
 
+        lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), Key::TemperatureInterpolateCount()), m_nInterpolateCount);
+
+        if (m_nInterpolateCount == 0)
+            m_nInterpolateCount = 1;
+
+        //--------------------------------------------------------------------------------------------
+
         return true;
 	}
 
@@ -125,7 +132,7 @@ namespace orbit
 
             if (fread(vNpt[i].vLevel.data(), vNpt[i].nLevelCount * sizeof(SLevel), 1, m_pLevelFile) != 1)
             {
-                toLog("break: ");
+                toLog("ERROR get_vNpt fread ");
                 break;
             }
         }
@@ -133,12 +140,14 @@ namespace orbit
         return std::vector<Snpt>(vNpt);
     }
 
-    void OrbitBinReader::setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_, bool bClearLevel_)
+    void OrbitBinReader::setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_, bool bIncludeAtmosphere_, bool bClearLevel_)
     {
         if (bClearLevel_)
             vLevelData_.clear();
 
-        for (unsigned f = nFirstIndex_; f < nLastIndex_ && f < m_vOrbit.size(); ++f)
+        unsigned nLastIndex = std::min<unsigned>(nLastIndex_, (unsigned)m_vOrbit.size());
+
+        for (unsigned f = nFirstIndex_; f < nLastIndex; ++f)
         {
             std::vector<Snpt> vNpt = get_vNpt(m_vOrbit[f]);
 
@@ -180,8 +189,8 @@ namespace orbit
                 std::vector<float> vTemperature1;
                 std::vector<float> vTemperature2;
 
-                interpolator1.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, m_nInterpolateCount, vTemperature1);
-                interpolator2.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, m_nInterpolateCount, vTemperature2);
+                interpolator1.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, bIncludeAtmosphere_ ? m_nInterpolateCount : 0, vTemperature1);
+                interpolator2.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, bIncludeAtmosphere_ ? m_nInterpolateCount : 0, vTemperature2);
 
                 vertex.vTemperature.resize(vTemperature1.size() + vTemperature2.size());
 

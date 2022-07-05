@@ -31,7 +31,11 @@ namespace orbit
 		m_nInterpolateCount = nInterpolateCount_;
 
 		vTemperature_.resize(m_nInterpolateCount + 1);
-		m_fAltitudeStep = (m_interpolateMax - m_interpolateMin) / m_nInterpolateCount;
+
+		if (m_nInterpolateCount > 2)
+			m_fAltitudeStep = (m_interpolateMax - m_interpolateMin) / (m_nInterpolateCount - 1);
+		else
+			m_fAltitudeStep = m_interpolateMax - m_interpolateMin;
 
 		vTemperature_[0] = m_pData[0].fTemperature;
 

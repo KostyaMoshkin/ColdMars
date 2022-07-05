@@ -45,20 +45,17 @@ namespace GL {
       if ( size_ == m_nBufferSize )
         return true;
 
-      if ( m_nBufferSize > 0 )
-      {
-        glDeleteBuffers(1, &m_nBufferId);
-        glGenBuffers(1, &m_nBufferId);
-      }
-
-      glBindBuffer(m_nBufferTarget, m_nBufferId);
-      glBufferData(m_nBufferTarget, size_, NULL, m_nBufferUsage);
       m_nBufferSize = size_;
+      glBufferData(m_nBufferTarget, m_nBufferSize, NULL, m_nBufferUsage);
+
       int size = 0;
       glGetBufferParameteriv(m_nBufferTarget, GL_BUFFER_SIZE, &size);
+
       if ( size_ != size )
       {
         glDeleteBuffers(1, &m_nBufferId);
+
+        m_bInit = false;
 
         return false;
       }

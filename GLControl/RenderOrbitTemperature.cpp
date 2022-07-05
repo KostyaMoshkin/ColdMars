@@ -75,7 +75,7 @@ namespace GL {
 		if (!m_pOrbitReader)
 			toLog("!m_pOrbitReader ");
 
-		m_pOrbitReader->setFileIndex(m_nFirstFile, m_nLastFile, m_vLevelData);
+		m_pOrbitReader->setFileIndex(m_nFirstFile, m_nLastFile, m_vLevelData, m_bIncludeAtmosphere);
 
 		return true;
 	}
@@ -177,11 +177,11 @@ namespace GL {
 
 		for (const orbit::SPairLevel& levelData : m_vLevelData)
 		{
-			if (!m_pTemperatureVertex->fillBuffer(levelData.vTemperature.size() * sizeof(float), levelData.vTemperature.data()))
-			{
-				toLog("Error m_pTemperatureVertex->fillBuffer()");
-				return;
-			}
+				if (!m_pTemperatureVertex->fillBuffer(levelData.vTemperature.size() * sizeof(float), levelData.vTemperature.data()))
+				{
+					toLog("Error m_pTemperatureVertex->fillBuffer()");
+					return;
+				}
 
 			m_pOrbitTemperatureProgram->setUniform1f("m_fAltitudeMinMax", &levelData.fAltitudeMinMax);
 			m_pOrbitTemperatureProgram->setUniform1f("m_fAltitudeStep", &levelData.fAltitudeStep);
@@ -195,8 +195,9 @@ namespace GL {
 			if(m_bIncludeAtmosphere)
 				glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)levelData.vTemperature.size());
 
-			glDrawArrays(GL_LINES, 0, 2);
+			glLineWidth(m_bIncludeAtmosphere ? 3 : 9);
 
+			glDrawArrays(GL_LINES, 0, 2);
 		}
 
 		renderBounder.unbound();
@@ -212,7 +213,7 @@ namespace GL {
 			m_nFirstFile = vOrbit_[i];
 			m_nLastFile = vOrbit_[i] + 1;
 
-			m_pOrbitReader->setFileIndex(m_nFirstFile, m_nLastFile, m_vLevelData, i == 0);
+			m_pOrbitReader->setFileIndex(m_nFirstFile, m_nLastFile, m_vLevelData, m_bIncludeAtmosphere, i == 0);
 		}
 	}
 
