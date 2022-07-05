@@ -167,7 +167,7 @@ namespace GL {
         glUniform4fv(nUniformLocation, 1, vec4_);
     }
 
-    void ShaderProgram::setUniformVeci(const char* name_, const GLint* ivec3_)
+    void ShaderProgram::setUniformVec3i(const char* name_, const GLint* ivec3_)
     {
         int nUniformLocation = 0;
         if (!getUniformLocation(name_, nUniformLocation))
@@ -176,13 +176,22 @@ namespace GL {
         glUniform3iv(nUniformLocation, 1, ivec3_);
     }
 
-    void ShaderProgram::setUniformIVec2(const char* name_, const GLint* ivec2_)
+    void ShaderProgram::setUniformVec2i(const char* name_, const GLint* ivec2_)
     {
         int nUniformLocation = 0;
         if (!getUniformLocation(name_, nUniformLocation))
             return;
 
         glUniform2iv(nUniformLocation, 1, ivec2_);
+    }
+
+    void ShaderProgram::setUniformVec2f(const char* name_, const GLfloat* fvec2_)
+    {
+        int nUniformLocation = 0;
+        if (!getUniformLocation(name_, nUniformLocation))
+            return;
+
+        glUniform2fv(nUniformLocation, 1, fvec2_);
     }
 
     void ShaderProgram::setUniform1f(const char* name_, const GLfloat* fVal_)

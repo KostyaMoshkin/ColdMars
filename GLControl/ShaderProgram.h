@@ -46,8 +46,9 @@ namespace GL {
         void setUniformMat4f(const char* name_, const GLfloat* mat4_);
         void setUniformVecf(const char* name_, const GLfloat* vec3_);
         void setUniformVec4f(const char* name_, const GLfloat* vec4_);
-        void setUniformVeci(const char* name_, const GLint* ivec3_);
-        void setUniformIVec2(const char* name_, const GLint* ivec2_);
+        void setUniformVec3i(const char* name_, const GLint* ivec3_);
+        void setUniformVec2i(const char* name_, const GLint* ivec2_);
+        void setUniformVec2f(const char* name_, const GLfloat* fvec2_);
         void setUniform1f(const char* name_, const GLfloat* fVal_);
         void setUniform1i(const char* name_, const GLint* nVal_);
         void setUniform1b(const char* name_, const bool* bVal_);
