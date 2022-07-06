@@ -209,6 +209,7 @@
     <ClInclude Include="Screen.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="ShaderProgram.h" />
+    <ClInclude Include="ShaderStorageBuffer.h" />
     <ClInclude Include="SLevel.h" />
     <ClInclude Include="TextureBuffer.h" />
     <ClInclude Include="Utils.h" />
@@ -246,6 +247,7 @@
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="ShaderStorageBuffer.cpp" />
     <ClCompile Include="TextureBuffer.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
   </ItemGroup>
