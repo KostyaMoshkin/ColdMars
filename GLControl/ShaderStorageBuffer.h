@@ -14,6 +14,8 @@ namespace GL {
       public:
         ShaderStorageBuffer(int);
 
+        static ShaderStorageBufferPtr Create(int index_) { return std::make_shared<ShaderStorageBuffer>(index_); }
+
       public:
 
         void bound() const override;

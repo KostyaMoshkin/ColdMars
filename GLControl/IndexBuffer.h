@@ -12,7 +12,6 @@ namespace GL {
         IndexBuffer();
         IndexBuffer(int size_);
 
-
         static IndexBufferPtr Create() { return std::make_shared<IndexBuffer>(); }
       };
 }

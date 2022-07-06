@@ -5,6 +5,7 @@
 #include "IndexBuffer.h"
 #include "IndirectBuffer.h"
 #include "TextureBuffer.h"
+#include "ShaderStorageBuffer.h"
 
 #include "MegdrReader.h"
 
@@ -23,6 +24,7 @@ namespace GL {
 		TextureBufferPtr m_pPaletteTexture = nullptr;
 		TextureBufferPtr m_pAlbedoTexture = nullptr;
 		TextureBufferPtr m_pDigitsTexture = nullptr;
+		ShaderStorageBufferPtr m_pSSBO = nullptr;
 
 		megdr::MegdrReaderPtr m_pMegdr = nullptr;
 

@@ -52,6 +52,7 @@ namespace GL {
 	{
 		m_pIndex = GL::IndexBuffer::Create();
 		m_pIndirect = GL::IndirectBuffer::Create();
+		m_pSSBO = GL::ShaderStorageBuffer::Create(0);
 
 		ShaderProgramPtr pMegdrProgram = ShaderProgram::Create();
 
