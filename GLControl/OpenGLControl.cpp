@@ -57,8 +57,16 @@ namespace GLControl {
 		{
 			lib::fPoint2D clickCoords = m_pBridge->on_mouse_click(e->X, e->Y);
 
-			this->textLongitude->Text = gcnew System::String(std::to_string(clickCoords.x).c_str());
-			this->textLatitude->Text  = gcnew System::String(std::to_string(clickCoords.y).c_str());
+			if (clickCoords.x > 1000)
+				return System::Void();
+
+			std::string sCoordX = std::to_string(clickCoords.x);
+			sCoordX = sCoordX.substr(0, sCoordX.find(".") + 3);
+			this->textLongitude->Text = gcnew System::String(sCoordX.c_str());
+
+			std::string sCoordY = std::to_string(clickCoords.y);
+			sCoordY = sCoordY.substr(0, sCoordY.find(".") + 3);
+			this->textLatitude->Text  = gcnew System::String(sCoordY.c_str());
 		}
 
 		return System::Void();
