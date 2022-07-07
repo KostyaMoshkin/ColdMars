@@ -196,9 +196,9 @@ namespace GLControl {
 			// 
 			// buttonSearchOrbits
 			// 
-			this->buttonSearchOrbits->Location = System::Drawing::Point(235, 28);
+			this->buttonSearchOrbits->Location = System::Drawing::Point(136, 54);
 			this->buttonSearchOrbits->Name = L"buttonSearchOrbits";
-			this->buttonSearchOrbits->Size = System::Drawing::Size(52, 20);
+			this->buttonSearchOrbits->Size = System::Drawing::Size(124, 20);
 			this->buttonSearchOrbits->TabIndex = 5;
 			this->buttonSearchOrbits->Text = L"Search";
 			this->buttonSearchOrbits->UseVisualStyleBackColor = true;
@@ -207,7 +207,7 @@ namespace GLControl {
 			// label7
 			// 
 			this->label7->AutoSize = true;
-			this->label7->Location = System::Drawing::Point(178, 28);
+			this->label7->Location = System::Drawing::Point(194, 28);
 			this->label7->Name = L"label7";
 			this->label7->Size = System::Drawing::Size(10, 13);
 			this->label7->TabIndex = 4;
@@ -215,9 +215,9 @@ namespace GLControl {
 			// 
 			// textLatitude
 			// 
-			this->textLatitude->Location = System::Drawing::Point(191, 28);
+			this->textLatitude->Location = System::Drawing::Point(205, 28);
 			this->textLatitude->Name = L"textLatitude";
-			this->textLatitude->Size = System::Drawing::Size(40, 20);
+			this->textLatitude->Size = System::Drawing::Size(55, 20);
 			this->textLatitude->TabIndex = 3;
 			this->textLatitude->Text = L"20";
 			// 
@@ -225,7 +225,7 @@ namespace GLControl {
 			// 
 			this->textLongitude->Location = System::Drawing::Point(136, 28);
 			this->textLongitude->Name = L"textLongitude";
-			this->textLongitude->Size = System::Drawing::Size(40, 20);
+			this->textLongitude->Size = System::Drawing::Size(55, 20);
 			this->textLongitude->TabIndex = 2;
 			this->textLongitude->Text = L"-132";
 			// 
