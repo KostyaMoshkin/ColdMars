@@ -229,6 +229,19 @@ namespace GL
 		}
 	}
 
+	lib::fPoint2D Bridge::on_mouse_click(int nPosX_, int nPosY_)
+	{
+		{
+			ContextSession contextSession(m_pControlContext);
+			m_pRenderMegdr->on_mouse_click(nPosX_, nPosY_);
+			m_pSceneRender->draw();
+
+			lib::fPoint2D clickCoords = m_pRenderMegdr->getClickCoords();
+
+			return clickCoords;
+		}
+	}
+
 	bool Bridge::isInit()
 	{
 		return m_bInit;

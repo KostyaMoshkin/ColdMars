@@ -64,6 +64,8 @@
           void setVersionGl(int nVersionFull_) { m_nVersionFull = nVersionFull_; }
           int getVersionGl() { return m_nVersionFull; }
 
+          virtual void sizeChanged(int nWidth_, int nHeight_) {; }
+
       };
 
 }

@@ -30,6 +30,8 @@ namespace GLControl {
 
 		int m_nTimerSpeed = 0;
 
+		bool m_bMouseMove = false;
+
 		static  cli::array<System::Windows::Forms::Label^>^ m_vLabel = gcnew cli::array<System::Windows::Forms::Label^>(10);
 
 	private: System::Windows::Forms::Button^ buttonSetOrbit;
@@ -637,6 +639,10 @@ namespace GLControl {
 		System::Void buttonSearchOrbits_Click(System::Object^ sender, System::EventArgs^ e);
 
 		System::Void checkedListOrbit_CheckedChanged(System::Object^ sender, System::Windows::Forms::ItemCheckEventArgs^ e);
+
+		System::Void OpenGLControl::ScreenMouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+		System::Void OpenGLControl::ScreenMouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+		System::Void OpenGLControl::ScreenMouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 
 	private:
 		void init();

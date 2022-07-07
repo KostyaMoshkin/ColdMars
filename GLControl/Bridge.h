@@ -72,6 +72,7 @@ namespace GL
 		void on_mouse_left_btn_move(int nMoveX_, int nMoveY_) override;
 		void on_mouse_right_btn_move(int nMoveX_, int nMoveY_) override;
 		void on_mouse_double_click() override;
+		lib::fPoint2D on_mouse_click(int nPosX_, int nPosY_) override;
 
 		bool isInit();
 

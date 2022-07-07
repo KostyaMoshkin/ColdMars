@@ -33,6 +33,8 @@ namespace GL {
 
 		lib::fPoint2D m_fCamPosition;
 
+		int m_nWindowHeight;
+
 		GLuint m_nVAO = 0;
 
 	public:
@@ -60,6 +62,14 @@ namespace GL {
 
 		float getScale() override;
 		void setScale(float fScale_) override;
+
+		void sizeChanged(int nWidth_, int nHeight_) override;
+
+	public:
+		void on_mouse_click(int nPosX_, int nPosY_);
+
+		lib::fPoint2D getClickCoords();
+
 	};
 }
 

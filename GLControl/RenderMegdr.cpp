@@ -52,7 +52,6 @@ namespace GL {
 	{
 		m_pIndex = GL::IndexBuffer::Create();
 		m_pIndirect = GL::IndirectBuffer::Create();
-		m_pSSBO = GL::ShaderStorageBuffer::Create(0);
 
 		ShaderProgramPtr pMegdrProgram = ShaderProgram::Create();
 
@@ -77,6 +76,21 @@ namespace GL {
 
 		int nPalette = 1;
 		m_pMegdrProgram->setUniform1i("m_tAlbedo", &nPalette);
+
+		//-------------------------------------------------------------------------------------------------
+
+		m_pSSBO = GL::ShaderStorageBuffer::Create(0);
+		BufferBounder<ShaderStorageBuffer> ssboBounder(m_pSSBO);
+
+		if (!m_pSSBO->bookSpace(sizeof(lib::fPoint3D)))
+		{
+			toLog("ERROR m_pSSBO->bookSpace");
+			return false;
+		}
+
+		lib::fPoint3D surfaceCoord = lib::fPoint3D(9999, 9999, 9999);
+		if (!m_pSSBO->fillBuffer(sizeof(lib::fPoint3D), &surfaceCoord.x))
+			return false;
 
 		//-------------------------------------------------------------------------------------------------
 
@@ -110,6 +124,8 @@ namespace GL {
 		//-------------------------------------------------------------------------------------------------
 
 		setScale();
+
+		sizeChanged(2048, 2048);
 
 		//-------------------------------------------------------------------------------------------------
 
@@ -173,6 +189,7 @@ namespace GL {
 		BufferBounder<TextureBuffer> digitTextureBounder(m_pDigitsTexture);
 		BufferBounder<IndexBuffer> indexBounder(m_pIndex);
 		BufferBounder<IndirectBuffer> indirectBounder(m_pIndirect);
+		BufferBounder<ShaderStorageBuffer> ssboBounder(m_pSSBO);
 
 		if (getVersionGl() >= 43)
 			glMultiDrawElementsIndirect(GL_TRIANGLE_STRIP, GL_UNSIGNED_INT, nullptr, (GLsizei)m_pMegdr->getLinesCount() - 1, 0);
@@ -334,6 +351,37 @@ namespace GL {
 	{
 		m_fScale = fScale_;
 		setScale();
+	}
+
+	void RenderMegdr::sizeChanged(int nWidth_, int nHeight_)
+	{
+		m_nWindowHeight = nHeight_;
+	}
+
+	void RenderMegdr::on_mouse_click(int nPosX_, int nPosY_)
+	{
+		BufferBounder<RenderMegdr> renderBounder(this);
+		BufferBounder<ShaderStorageBuffer> ssboBounder(m_pSSBO);
+		BufferBounder<ShaderProgram> programBounder(m_pMegdrProgram);
+
+		lib::fPoint2D vWindowClick = lib::fPoint2D((float)nPosX_, (float)m_nWindowHeight - nPosY_);
+		m_pMegdrProgram->setUniformVec2f("m_vWindowClick", &vWindowClick.x);
+	}
+
+	lib::fPoint2D RenderMegdr::getClickCoords()
+	{
+		BufferBounder<RenderMegdr> renderBounder(this);
+		BufferBounder<ShaderStorageBuffer> ssboBounder(m_pSSBO);
+		BufferBounder<ShaderProgram> programBounder(m_pMegdrProgram);
+
+		lib::fPoint2D clickCoord = lib::fPoint2D(0, 0);
+		glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(lib::fPoint2D), &clickCoord.x);
+
+		lib::fPoint3D surfaceCoord = lib::fPoint3D(9999, 9999, 9999);
+		if (!m_pSSBO->fillBuffer(sizeof(lib::fPoint3D), &surfaceCoord.x))
+			return lib::fPoint2D(9999, 9999);
+		
+		return clickCoord;
 	}
 
 }

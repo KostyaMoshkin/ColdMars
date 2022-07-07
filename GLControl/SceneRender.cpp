@@ -41,6 +41,8 @@ namespace GL {
 	void SceneRender::addElement(RenderPtr pRender_)
 	{
 		m_vElementRendr.emplace_back(pRender_);
+
+		pRender_->sizeChanged(m_nScreenWidth, m_nScreenHeight);
 	}
 
 	void SceneRender::draw()
@@ -57,6 +59,9 @@ namespace GL {
 		m_nScreenHeight = nHeight_;
 
 		setViewAngle(0);
+
+		for (RenderPtr pElement : m_vElementRendr)
+			pElement->sizeChanged(nWidth_, nHeight_);
 	}
 
 	void SceneRender::setViewAngle(float fZoom_)

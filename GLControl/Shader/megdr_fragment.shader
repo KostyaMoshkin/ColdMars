@@ -1,4 +1,6 @@
-#version 330 core
+#version 430 core
+
+layout(std430, binding = 0) buffer BufferCoord { vec3 m_vScreen[]; };
 
 uniform sampler2D m_tAlbedo;
 uniform sampler2D m_tDigit;
@@ -7,7 +9,10 @@ uniform vec3 m_vMarsTone;
 uniform vec3 m_vDigitColor;
 uniform vec3 m_vNetColor;
 
+uniform vec2 m_vWindowClick;
+
 smooth in vec2 vAlbedoCoords;
+smooth in vec3 vSurfaceCoords;
 
 ivec2 getNetCoord()
 {
@@ -119,6 +124,10 @@ float getDigitBrightness(vec2 textDigit_)
 
 void main()
 {
+	if ((length(gl_FragCoord.xy - m_vWindowClick) < 1.6))
+		if (vSurfaceCoords.z < m_vScreen[0].z)
+			m_vScreen[0] = vSurfaceCoords;
+
 	if (isNet(30))
 	{
 		gl_FragColor = vec4(m_vNetColor, 1.0);

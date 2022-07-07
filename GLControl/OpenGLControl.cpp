@@ -31,6 +31,10 @@ namespace GLControl {
 		m_pBridge->getScreen()->ViewControl->Dock = System::Windows::Forms::DockStyle::Fill;
 		this->panelGL->Controls->Add(m_pBridge->getScreen()->ViewControl);
 
+		m_pBridge->getScreen()->ViewControl->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &OpenGLControl::ScreenMouseDown);
+		m_pBridge->getScreen()->ViewControl->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &OpenGLControl::ScreenMouseMove);
+		m_pBridge->getScreen()->ViewControl->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &OpenGLControl::ScreenMouseUp);
+
 		this->textBoxOrbitQuantity->Text = gcnew System::String(std::to_string(m_nOrbitQuantity).c_str());
 
 		for (int i = 0; i < 10; ++i)
@@ -38,6 +42,33 @@ namespace GLControl {
 			m_vLabel[i] = (gcnew System::Windows::Forms::Label());
 			this->panelLabels->Controls->Add(m_vLabel[i]);
 		}
+	}
+
+	System::Void OpenGLControl::ScreenMouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+	{
+		m_bMouseMove = false;
+
+		return System::Void();
+	}
+
+	System::Void OpenGLControl::ScreenMouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+	{
+		if (!m_bMouseMove)
+		{
+			lib::fPoint2D clickCoords = m_pBridge->on_mouse_click(e->X, e->Y);
+
+			this->textLongitude->Text = gcnew System::String(std::to_string(clickCoords.x).c_str());
+			this->textLatitude->Text  = gcnew System::String(std::to_string(clickCoords.y).c_str());
+		}
+
+		return System::Void();
+	}
+
+	System::Void OpenGLControl::ScreenMouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+	{
+		m_bMouseMove = true;
+
+		return System::Void();
 	}
 
 	OpenGLControl::~OpenGLControl()
