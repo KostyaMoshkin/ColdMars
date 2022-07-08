@@ -83,6 +83,8 @@ namespace orbit
 
 	struct SPairLevel
 	{
+		unsigned nOrbit;
+
 		float fLatitude_begin;
 		float fLatitude_end;
 

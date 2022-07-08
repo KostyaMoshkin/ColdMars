@@ -170,12 +170,12 @@ namespace GL {
 		BufferBounder<RenderOrbitTemperature> renderBounder(this);
 		BufferBounder<TextureBuffer> paletteTextureBounder(m_pPaletteTexture);
 
-		for (int i = 0; i < m_vLevelData.size(); ++i)
+		for (int i = 0; i < m_pvTemperatureVertex.size(); ++i)
 		{
-			orbit::SPairLevel levelData = m_vLevelData[i];
+			orbit::SPairLevel& levelData = m_pvTemperatureVertex[i].second;
 
-			BufferBounder<VertexBuffer> temperatureBounder(m_pvTemperatureVertex[i]);
-			m_pvTemperatureVertex[i]->attribPointer(0, 1, GL_FLOAT, GL_FALSE, 0, 0);
+			BufferBounder<VertexBuffer> temperatureBounder(m_pvTemperatureVertex[i].first);
+			m_pvTemperatureVertex[i].first->attribPointer(0, 1, GL_FLOAT, GL_FALSE, 0, 0);
 
 			m_pOrbitTemperatureProgram->setUniform1f("m_fAltitudeMinMax", &levelData.fAltitudeMinMax);
 			m_pOrbitTemperatureProgram->setUniform1f("m_fAltitudeStep", &levelData.fAltitudeStep);
@@ -206,15 +206,17 @@ namespace GL {
 
 		for (int i = 0; i < m_vLevelData.size(); ++i)
 		{
-			m_pvTemperatureVertex[i] = GL::VertexBuffer::Create();
-			m_pvTemperatureVertex[i]->setUsage(GL_STATIC_DRAW);
+			m_pvTemperatureVertex[i].first = GL::VertexBuffer::Create();
+			m_pvTemperatureVertex[i].first->setUsage(GL_STATIC_DRAW);
 
-			BufferBounder<VertexBuffer> temperatureBounder(m_pvTemperatureVertex[i]);
+			BufferBounder<VertexBuffer> temperatureBounder(m_pvTemperatureVertex[i].first);
 
-			orbit::SPairLevel levelData = m_vLevelData[i];
-			if (!m_pvTemperatureVertex[i]->fillBuffer(levelData.vTemperature.size() * sizeof(float), levelData.vTemperature.data()))
+			orbit::SPairLevel& levelData = m_vLevelData[i];
+			m_pvTemperatureVertex[i].second = levelData;
+
+			if (!m_pvTemperatureVertex[i].first->fillBuffer(levelData.vTemperature.size() * sizeof(float), levelData.vTemperature.data()))
 			{
-				toLog("Error m_pvTemperatureVertex[i]->fillBuffer()");
+				toLog("Error m_pvTemperatureVertex[i].first->fillBuffer");
 				return false;
 			}
 		}

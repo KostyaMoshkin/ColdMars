@@ -25,8 +25,9 @@ namespace GL {
 		PalettePtr m_pPalette = nullptr;
 		orbit::OrbitBinReaderPtr m_pOrbitReader = nullptr;
 
+
 		bool m_bNeedFillLevelBufer = true;
-		std::vector<VertexBufferPtr> m_pvTemperatureVertex;
+		std::vector<std::pair<VertexBufferPtr, orbit::SPairLevel>> m_pvTemperatureVertex;
 
 		lib::Matrix4 m_mRotate = lib::Matrix4(1.0f);
 		lib::Matrix4 m_mTransform = lib::Matrix4(1.0f);

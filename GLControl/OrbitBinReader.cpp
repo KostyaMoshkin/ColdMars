@@ -173,6 +173,7 @@ namespace orbit
                 float fAltitudeStep = (fAltitudeMaxMin - fAltitudeMinMax) / m_nInterpolateCount;
 
                 SPairLevel vertex;
+                vertex.nOrbit = vNpt[i + 0].nOrbit;
                 vertex.fLatitude_begin = glm::radians(vNpt[i + 0].fLatitude);
                 vertex.fLatitude_end = glm::radians(vNpt[i + 1].fLatitude);
                 vertex.fLongitude_begin = glm::radians(vNpt[i + 0].fLongitude);
