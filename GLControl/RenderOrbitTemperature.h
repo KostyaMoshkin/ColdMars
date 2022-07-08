@@ -18,14 +18,15 @@ namespace GL {
 	class RenderOrbitTemperature : public Render
 	{
 		ShaderProgramPtr m_pOrbitTemperatureProgram = nullptr;
-		VertexBufferPtr m_pTemperatureVertex = nullptr;
 		IndexBufferPtr m_pIndex = nullptr;
 		IndirectBufferPtr m_pIndirect = nullptr;
 		TextureBufferPtr m_pPaletteTexture = nullptr;
 
 		PalettePtr m_pPalette = nullptr;
-		//orbit::OrbitTextReaderPtr m_pOrbitReader = nullptr;
 		orbit::OrbitBinReaderPtr m_pOrbitReader = nullptr;
+
+		bool m_bNeedFillLevelBufer = true;
+		std::vector<VertexBufferPtr> m_pvTemperatureVertex;
 
 		lib::Matrix4 m_mRotate = lib::Matrix4(1.0f);
 		lib::Matrix4 m_mTransform = lib::Matrix4(1.0f);
@@ -61,6 +62,7 @@ namespace GL {
 		// Унаследовано через Render
 		bool init() override;
 		void draw() override;
+		bool fillLevelBuffer();
 		void setFileArray(const std::vector<unsigned>& vOrbit_);
 		void setViewAngle(lib::Matrix4& mPerspective_) override;
 		void lookAt(lib::Matrix4& mView_) override;

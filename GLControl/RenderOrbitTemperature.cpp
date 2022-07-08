@@ -77,6 +77,8 @@ namespace GL {
 
 		m_pOrbitReader->setFileIndex(m_nFirstFile, m_nLastFile, m_vLevelData, m_bIncludeAtmosphere);
 
+		m_bNeedFillLevelBufer = true;
+
 		return true;
 	}
 
@@ -108,15 +110,6 @@ namespace GL {
 
 		int nPalette = 0;
 		m_pOrbitTemperatureProgram->setUniform1i("m_tPalette", &nPalette);
-
-		//-------------------------------------------------------------------------------------------------
-
-		m_pTemperatureVertex = GL::VertexBuffer::Create();
-		m_pTemperatureVertex->setUsage(GL_STATIC_DRAW);
-
-		BufferBounder<VertexBuffer> temperatureBounder(m_pTemperatureVertex);
-
-		m_pTemperatureVertex->attribPointer(0, 1, GL_FLOAT, GL_FALSE, 0, 0);
 
 		//-------------------------------------------------------------------------------------------------
 
@@ -170,18 +163,19 @@ namespace GL {
 		if (!isVisible())
 			return;
 
+		if (m_bNeedFillLevelBufer)
+			fillLevelBuffer();
+
 		BufferBounder<ShaderProgram> programBounder(m_pOrbitTemperatureProgram);
 		BufferBounder<RenderOrbitTemperature> renderBounder(this);
-		BufferBounder<VertexBuffer> temperatureBounder(m_pTemperatureVertex);
 		BufferBounder<TextureBuffer> paletteTextureBounder(m_pPaletteTexture);
 
-		for (const orbit::SPairLevel& levelData : m_vLevelData)
+		for (int i = 0; i < m_vLevelData.size(); ++i)
 		{
-			if (!m_pTemperatureVertex->fillBuffer(levelData.vTemperature.size() * sizeof(float), levelData.vTemperature.data()))
-			{
-				toLog("Error m_pTemperatureVertex->fillBuffer()");
-				return;
-			}
+			orbit::SPairLevel levelData = m_vLevelData[i];
+
+			BufferBounder<VertexBuffer> temperatureBounder(m_pvTemperatureVertex[i]);
+			m_pvTemperatureVertex[i]->attribPointer(0, 1, GL_FLOAT, GL_FALSE, 0, 0);
 
 			m_pOrbitTemperatureProgram->setUniform1f("m_fAltitudeMinMax", &levelData.fAltitudeMinMax);
 			m_pOrbitTemperatureProgram->setUniform1f("m_fAltitudeStep", &levelData.fAltitudeStep);
@@ -203,6 +197,29 @@ namespace GL {
 		renderBounder.unbound();
 	}
 
+	bool RenderOrbitTemperature::fillLevelBuffer()
+	{
+		m_bNeedFillLevelBufer = false;
+
+		m_pvTemperatureVertex.clear();
+		m_pvTemperatureVertex.resize(m_vLevelData.size());
+
+		for (int i = 0; i < m_vLevelData.size(); ++i)
+		{
+			m_pvTemperatureVertex[i] = GL::VertexBuffer::Create();
+			m_pvTemperatureVertex[i]->setUsage(GL_STATIC_DRAW);
+
+			BufferBounder<VertexBuffer> temperatureBounder(m_pvTemperatureVertex[i]);
+
+			orbit::SPairLevel levelData = m_vLevelData[i];
+			if (!m_pvTemperatureVertex[i]->fillBuffer(levelData.vTemperature.size() * sizeof(float), levelData.vTemperature.data()))
+			{
+				toLog("Error m_pvTemperatureVertex[i]->fillBuffer()");
+				return false;
+			}
+		}
+	}
+
 	void RenderOrbitTemperature::setFileArray(const std::vector<unsigned>& vOrbit_)
 	{
 		if (vOrbit_.empty())
@@ -215,6 +232,8 @@ namespace GL {
 
 			m_pOrbitReader->setFileIndex(m_nFirstFile, m_nLastFile, m_vLevelData, m_bIncludeAtmosphere, i == 0);
 		}
+
+		m_bNeedFillLevelBufer = true;
 	}
 
 	void RenderOrbitTemperature::setFileRange(int nFirstFile_, int nLasetFile_)
