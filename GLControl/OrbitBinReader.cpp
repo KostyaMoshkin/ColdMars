@@ -172,10 +172,9 @@ namespace orbit
         return std::vector<Snpt>(vNpt);
     }
 
-    void OrbitBinReader::setFileIndex(unsigned nFirstIndex_, std::vector<SPairLevel>& vLevelData_, bool bIncludeAtmosphere_, bool bClearLevel_)
+    void OrbitBinReader::setFileIndex(unsigned nFirstIndex_, std::vector<SPairLevel>& vLevelData_)
     {
-        if (bClearLevel_)
-            vLevelData_.clear();
+        vLevelData_.clear();
 
         unsigned nIndex = std::min<unsigned>(nFirstIndex_, (unsigned)m_vOrbit.size());
 
@@ -218,8 +217,8 @@ namespace orbit
             std::vector<float> vTemperature1;
             std::vector<float> vTemperature2;
  
-            interpolator1.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, bIncludeAtmosphere_ ? m_nInterpolateCount : 0, vTemperature1);
-            interpolator2.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, bIncludeAtmosphere_ ? m_nInterpolateCount : 0, vTemperature2);
+            interpolator1.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, m_nInterpolateCount, vTemperature1);
+            interpolator2.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, m_nInterpolateCount, vTemperature2);
  
             vertex.vTemperature.resize(vTemperature1.size() + vTemperature2.size());
  

@@ -6,6 +6,45 @@
 #pragma managed(push, off)
 
 namespace GL {
+
+	static void checkAddRemoveOrbits(const std::vector<unsigned>& vOrbit_, std::vector<unsigned>& vExistOrbit_, std::vector<unsigned>& vAddOrbit_, std::vector<unsigned>& vRemoveOrbit_)
+	{
+		vAddOrbit_.clear();
+		vRemoveOrbit_.clear();
+
+		for (const unsigned nExistOrbit : vExistOrbit_)
+		{
+			bool bExist = false;
+			for (const unsigned nUseOrbit : vOrbit_)
+			{
+				bExist = nUseOrbit == nExistOrbit;
+				if (bExist)
+					break;
+			}
+
+			if (!bExist)
+				vRemoveOrbit_.push_back(nExistOrbit);
+		}
+
+		for (const unsigned nUseOrbit : vOrbit_)
+		{
+			bool bExist = false;
+			for (const unsigned nExistOrbit : vExistOrbit_)
+			{
+				bExist = nUseOrbit == nExistOrbit;
+				if (bExist)
+					break;
+			}
+
+			if (!bExist)
+				vAddOrbit_.push_back(nUseOrbit);
+		}
+
+		vExistOrbit_ = vOrbit_;
+	}
+
+	//---------------------------------------------------------------------------------------------------
+
 	RenderOrbitTemperature::RenderOrbitTemperature()
 	{
 	}
@@ -73,7 +112,10 @@ namespace GL {
 	bool RenderOrbitTemperature::fillVertex(unsigned nOrbitStart_, unsigned nOrbitEnd_)
 	{
 		if (!m_pOrbitReader)
+		{
 			toLog("!m_pOrbitReader ");
+			return false;
+		}
 
 		std::vector<unsigned> vOrbit;
 		for (unsigned i = nOrbitStart_; i <= nOrbitEnd_; ++i)
@@ -117,10 +159,6 @@ namespace GL {
 
 		//-------------------------------------------------------------------------------------------------
 
-		//m_pvLevelPosition = GL::ShaderStorageBuffer::Create(0);
-
-		//-------------------------------------------------------------------------------------------------
-
 		int nBaseHeight;
 		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), Key::BaseHeight()), nBaseHeight))
 			nBaseHeight = 3396000;
@@ -159,7 +197,6 @@ namespace GL {
 		//-------------------------------------------------------------------------------------------------
 
 		setVisible(true);
-		return true;
 
 		//-------------------------------------------------------------------------------------------------
 
@@ -172,7 +209,10 @@ namespace GL {
 			return;
 
 		if (m_bNeedFillLevelBufer)
-			fillLevelBuffer();
+		{
+			if (!fillLevelBuffer())
+				return;
+		}
 
 		BufferBounder<ShaderProgram> programBounder(m_pOrbitTemperatureProgram);
 		BufferBounder<RenderOrbitTemperature> renderBounder(this);
@@ -215,7 +255,7 @@ namespace GL {
 
 		for (int i = 0; i < m_vAddOrbit.size(); ++i)
 		{
-			m_pOrbitReader->setFileIndex(m_vAddOrbit[i], m_vLevelData, m_bIncludeAtmosphere, true);
+			m_pOrbitReader->setFileIndex(m_vAddOrbit[i], m_vLevelData);
 
 			std::vector<std::pair<VertexBufferPtr, orbit::SPairLevel>> vTemperatureVertex(m_vLevelData.size());
 			std::vector<orbit::SLevelCoord> vLevelCoord(m_vLevelData.size());
@@ -265,56 +305,12 @@ namespace GL {
 		return true;
 	}
 
-	static void checkAddRemoveOrbits(const std::vector<unsigned>& vOrbit_, std::vector<unsigned>& vExistOrbit_, std::vector<unsigned>& vAddOrbit_, std::vector<unsigned>& vRemoveOrbit_)
-	{
-		vAddOrbit_.clear();
-		vRemoveOrbit_.clear();
-
-		for (const unsigned nExistOrbit : vExistOrbit_)		
-		{
-			bool bExist = false;
-			for (const unsigned nUseOrbit : vOrbit_)
-			{
-				bExist = nUseOrbit == nExistOrbit;
-				if (bExist)
-					break;
-			}
-
-			if (!bExist)
-				vRemoveOrbit_.push_back(nExistOrbit);
-		}
-
-		for (const unsigned nUseOrbit : vOrbit_)
-		{
-			bool bExist = false;
-			for (const unsigned nExistOrbit : vExistOrbit_)
-			{
-				bExist = nUseOrbit == nExistOrbit;
-				if (bExist)
-					break;
-			}
-
-			if (!bExist)
-				vAddOrbit_.push_back(nUseOrbit);
-		}
-
-		vExistOrbit_ = vOrbit_;
-	}
-
 	void RenderOrbitTemperature::setFileArray(const std::vector<unsigned>& vOrbit_)
 	{
 		if (vOrbit_.empty())
 			m_vLevelData.clear();
 
 		checkAddRemoveOrbits(vOrbit_, m_vExistOrbit, m_vAddOrbit, m_vRemoveOrbit);
-
-		//for (int i = 0; i < vOrbit_.size(); ++i)
-		//{
-		//	m_nFirstFile = vOrbit_[i];
-		//	m_nLastFile = vOrbit_[i] + 1;
-
-		//	m_pOrbitReader->setFileIndex(m_nFirstFile, m_vLevelData, m_bIncludeAtmosphere, i == 0);
-		//}
 
 		m_bNeedFillLevelBufer = true;
 	}
