@@ -117,7 +117,7 @@ namespace GLControl {
 		}
 
 		this->textBoxOrbitStart->Text = gcnew System::String(m_pBridge->getOrbit_by_index(m_nOrbitCurrentIndex).c_str());
-		this->textBoxOrbitEnd->Text = gcnew System::String(m_pBridge->getOrbit_by_index(m_nOrbitCurrentIndex + m_nOrbitQuantity).c_str());
+		this->textBoxOrbitEnd->Text = gcnew System::String(m_pBridge->getOrbit_by_index(m_nOrbitCurrentIndex + m_nOrbitQuantity - 1).c_str());
 
 		this->labelJulianDate->Text = gcnew System::String(std::to_string(m_pBridge->getJulianDate()).c_str());
 		this->labelLocalTime->Text = gcnew System::String(std::to_string(m_pBridge->getLocalTime()).c_str());
@@ -141,7 +141,7 @@ namespace GLControl {
 		unsigned nLS = unsigned(fLS * 100);
 		m_nLS = nLS;
 
-		m_nOrbitEndIndex = m_nOrbitCurrentIndex + m_nOrbitQuantity;
+		m_nOrbitEndIndex = m_nOrbitCurrentIndex + m_nOrbitQuantity - 1;
 	}
 
 	System::Void OpenGLControl::buttonSetOrbit_Click(System::Object^ sender, System::EventArgs^ e)
@@ -201,10 +201,10 @@ namespace GLControl {
 					bool bOrbitEndNumberChanged = m_nOrbitEndIndex != nOrbitEndIndex;
 
 					if (bOrbitEndNumberChanged)
-						m_nOrbitQuantity = nOrbitEndIndex - m_nOrbitCurrentIndex;
+						m_nOrbitQuantity = nOrbitEndIndex - m_nOrbitCurrentIndex + 1;
 
 					unsigned nOrbitQuantity = m_nOrbitQuantity;
-					m_nOrbitQuantity = std::min<unsigned>(nOrbitQuantity, m_pBridge->getOrbitCount() - m_nOrbitCurrentIndex - 1);
+					m_nOrbitQuantity = std::min<unsigned>(nOrbitQuantity, m_pBridge->getOrbitCount() - m_nOrbitCurrentIndex);
 
 
 				}
