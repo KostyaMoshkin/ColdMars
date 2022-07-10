@@ -6,6 +6,7 @@
 #include "IndirectBuffer.h"
 #include "TextureBuffer.h"
 #include "Palette.h"
+#include "ShaderStorageBuffer.h"
 
 #include "MegdrReader.h"
 #include "OrbitBinReader.h"
@@ -21,6 +22,7 @@ namespace GL {
 		IndexBufferPtr m_pIndex = nullptr;
 		IndirectBufferPtr m_pIndirect = nullptr;
 		TextureBufferPtr m_pPaletteTexture = nullptr;
+		ShaderStorageBufferPtr m_pLevelPosition = nullptr;
 
 		PalettePtr m_pPalette = nullptr;
 		orbit::OrbitBinReaderPtr m_pOrbitReader = nullptr;

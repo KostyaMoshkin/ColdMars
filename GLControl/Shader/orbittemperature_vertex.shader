@@ -1,24 +1,34 @@
-#version 330 core
+#version 430 core
 layout(location = 0) in float m_fTemperature;
 
-uniform float m_fAltitudeMinMax;
+struct SLevelCoord
+{
+	float fLatitude_begin;
+	float fLatitude_end;
 
-uniform float m_fAltitudeStep;
+	float fLongitude_begin;
+	float fLongitude_end;
 
-uniform float m_fDistance_begin;
-uniform float m_fDistance_end;
+	float fDistance_begin;
+	float fDistance_end;
 
-uniform float m_fLatitude_begin;
-uniform float m_fLatitude_end;
+	float fAltitudeMinMax;
 
-uniform float m_fLongitude_begin;
-uniform float m_fLongitude_end;
+	float fAltitudeStep;
+};
+
+layout(std430, binding = 0) buffer LevelCoord 
+{ 
+	SLevelCoord vLevelCoord[];
+};
 
 uniform float m_fPaletteValueMin;
 uniform float m_fPaletteValueMax;
 
 uniform float m_fScale;
 uniform int   m_nBaseHeight;
+
+uniform int   m_nLevelIndex;
 
 uniform mat4 m_mView;
 uniform mat4 m_mRotate;
@@ -31,13 +41,13 @@ void main()
 {
 	bool bBeginLevel = gl_VertexID % 2 == 0;
 
-	float fAltitudeMin = bBeginLevel ? m_fDistance_begin : m_fDistance_end;
+	float fAltitudeMin = bBeginLevel ? vLevelCoord[m_nLevelIndex].fDistance_begin : vLevelCoord[m_nLevelIndex].fDistance_end;
 
 	int nAltitudeOffetNumber = gl_VertexID / 2;
 
-	float fLatitude		= bBeginLevel ? m_fLatitude_begin : m_fLatitude_end;
-	float fLongitude	= bBeginLevel ? m_fLongitude_begin : m_fLongitude_end;
-	float fAltitude		= nAltitudeOffetNumber == 0 ? fAltitudeMin : m_fAltitudeMinMax + m_fAltitudeStep * nAltitudeOffetNumber;
+	float fLatitude		= bBeginLevel ? vLevelCoord[m_nLevelIndex].fLatitude_begin : vLevelCoord[m_nLevelIndex].fLatitude_end;
+	float fLongitude	= bBeginLevel ? vLevelCoord[m_nLevelIndex].fLongitude_begin : vLevelCoord[m_nLevelIndex].fLongitude_end;
+	float fAltitude		= nAltitudeOffetNumber == 0 ? fAltitudeMin : vLevelCoord[m_nLevelIndex].fAltitudeMinMax + vLevelCoord[m_nLevelIndex].fAltitudeStep * nAltitudeOffetNumber;
 
 	float fDistance = m_fScale * fAltitude / m_nBaseHeight + 1.0;
 

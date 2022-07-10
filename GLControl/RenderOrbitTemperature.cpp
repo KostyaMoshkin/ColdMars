@@ -113,6 +113,10 @@ namespace GL {
 
 		//-------------------------------------------------------------------------------------------------
 
+		m_pLevelPosition = GL::ShaderStorageBuffer::Create(0);
+
+		//-------------------------------------------------------------------------------------------------
+
 		int nBaseHeight;
 		if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), Key::BaseHeight()), nBaseHeight))
 			nBaseHeight = 3396000;
@@ -169,25 +173,17 @@ namespace GL {
 		BufferBounder<ShaderProgram> programBounder(m_pOrbitTemperatureProgram);
 		BufferBounder<RenderOrbitTemperature> renderBounder(this);
 		BufferBounder<TextureBuffer> paletteTextureBounder(m_pPaletteTexture);
+		BufferBounder<ShaderStorageBuffer> ssboBounder(m_pLevelPosition);
 
 		for (int i = 0; i < m_pvTemperatureVertex.size(); ++i)
 		{
-			orbit::SPairLevel& levelData = m_pvTemperatureVertex[i].second;
-
 			BufferBounder<VertexBuffer> temperatureBounder(m_pvTemperatureVertex[i].first);
 			m_pvTemperatureVertex[i].first->attribPointer(0, 1, GL_FLOAT, GL_FALSE, 0, 0);
 
-			m_pOrbitTemperatureProgram->setUniform1f("m_fAltitudeMinMax", &levelData.fAltitudeMinMax);
-			m_pOrbitTemperatureProgram->setUniform1f("m_fAltitudeStep", &levelData.fAltitudeStep);
-			m_pOrbitTemperatureProgram->setUniform1f("m_fDistance_begin", &levelData.fDistane_begin);
-			m_pOrbitTemperatureProgram->setUniform1f("m_fDistance_end", &levelData.fDistane_end);
-			m_pOrbitTemperatureProgram->setUniform1f("m_fLatitude_begin", &levelData.fLatitude_begin);
-			m_pOrbitTemperatureProgram->setUniform1f("m_fLatitude_end", &levelData.fLatitude_end);
-			m_pOrbitTemperatureProgram->setUniform1f("m_fLongitude_begin", &levelData.fLongitude_begin);
-			m_pOrbitTemperatureProgram->setUniform1f("m_fLongitude_end", &levelData.fLongitude_end);
+			m_pOrbitTemperatureProgram->setUniform1i("m_nLevelIndex", &i);
 
 			if(m_bIncludeAtmosphere)
-				glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)levelData.vTemperature.size());
+				glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_pvTemperatureVertex[i].second.vTemperature.size());
 
 			glLineWidth(m_bIncludeAtmosphere ? 3.0f : 9.0f);
 
@@ -200,6 +196,8 @@ namespace GL {
 	bool RenderOrbitTemperature::fillLevelBuffer()
 	{
 		m_bNeedFillLevelBufer = false;
+
+		std::vector<orbit::SLevelCoord> vLevelCoord(m_vLevelData.size());
 
 		m_pvTemperatureVertex.clear();
 		m_pvTemperatureVertex.resize(m_vLevelData.size());
@@ -219,6 +217,24 @@ namespace GL {
 				toLog("Error m_pvTemperatureVertex[i].first->fillBuffer");
 				return false;
 			}
+
+			vLevelCoord[i].fAltitudeMinMax = levelData.fAltitudeMinMax;
+			vLevelCoord[i].fAltitudeStep = levelData.fAltitudeStep;
+			vLevelCoord[i].fDistance_begin = levelData.fDistance_begin;
+			vLevelCoord[i].fDistance_end = levelData.fDistance_end;
+			vLevelCoord[i].fLatitude_begin = levelData.fLatitude_begin;
+			vLevelCoord[i].fLatitude_end = levelData.fLatitude_end;
+			vLevelCoord[i].fLongitude_begin = levelData.fLongitude_begin;
+			vLevelCoord[i].fLongitude_end = levelData.fLongitude_end;
+		}
+
+		//------------------------------------------------------------------------------------------------
+
+		BufferBounder<ShaderStorageBuffer> ssboBounder(m_pLevelPosition);
+		if (!m_pLevelPosition->fillBuffer(sizeof(orbit::SLevelCoord) * vLevelCoord.size(), vLevelCoord.data()))
+		{
+			toLog("ERROR m_pLevelPosition->fillBuffer");
+			return false;
 		}
 	}
 

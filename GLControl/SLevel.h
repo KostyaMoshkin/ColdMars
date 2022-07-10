@@ -81,23 +81,24 @@ namespace orbit
 		}
 	};
 
-	struct SPairLevel
+	struct SLevelCoord
 	{
-		unsigned nOrbit;
-
 		float fLatitude_begin;
 		float fLatitude_end;
 
 		float fLongitude_begin;
 		float fLongitude_end;
 
-		float fDistane_begin;
-		float fDistane_end;
+		float fDistance_begin;
+		float fDistance_end;
 
 		float fAltitudeMinMax;
 
 		float fAltitudeStep;
+	};
 
+	struct SPairLevel : SLevelCoord
+	{
 		std::vector<float> vTemperature;
 	};
 
