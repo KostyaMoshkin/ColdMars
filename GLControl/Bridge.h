@@ -80,7 +80,7 @@ namespace GL
 
 		void setFileArray(const std::vector<unsigned>& vOrbit_);
 
-		void setFileRange(int nFirstFile_, int nLasetFile_);
+		void setFileRange(unsigned nFirstFile_, unsigned nLasetFile_);
 
 		std::string getOrbit_by_index(unsigned nIndex_);
 		unsigned getOrbit_by_LS(unsigned nIndex_);

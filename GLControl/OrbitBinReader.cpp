@@ -21,7 +21,27 @@ namespace orbit
             sLevelFile = "Level.bin";
 
         if (fopen_s(&m_pLevelFile, sLevelFile.c_str(), "rb") != 0)
+        {
+            toLog("Can't open Levels bin file: " + sLevelFile);
             return false;
+        }
+
+        _fseeki64(m_pLevelFile, 0, SEEK_END);
+        long nLevelFileSize = ftell(m_pLevelFile);
+        _fseeki64(m_pLevelFile, 0, SEEK_SET);
+
+        unsigned nLevelBufferSize;
+        if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), Key::LevelBufferSize()), nLevelBufferSize))
+            nLevelBufferSize = 10;
+
+        m_vLevelReadBuffer.resize(std::min<long>(nLevelFileSize, 1024 * 1024 * nLevelBufferSize));
+
+        if (!m_vLevelReadBuffer.empty())
+            if (setvbuf(m_pLevelFile, m_vLevelReadBuffer.data(), _IOFBF, m_vLevelReadBuffer.size()) != 0)
+            {
+                toLog("Can't setup buffer for levels bin file. Asked for Mb: " + std::to_string(m_vLevelReadBuffer.size() / 1024 / 1024));
+                return false;
+            }
 
        //--------------------------------------------------------------------------------------------
 
@@ -31,7 +51,10 @@ namespace orbit
 
         FILE* pOrbitFile;
         if (fopen_s(&pOrbitFile, sOrbitFile.c_str(), "rb") != 0)
+        {
+            toLog("Can't open Orbit bin file: " + sOrbitFile);
             return false;
+        }
 
         _fseeki64(pOrbitFile, 0, SEEK_END);
         long nOrbitFileSize = ftell(pOrbitFile);
@@ -40,7 +63,10 @@ namespace orbit
         m_vOrbit.resize(nOrbitFileSize / sizeof(OrbitFile));
 
         if (fread(m_vOrbit.data(), nOrbitFileSize, 1, pOrbitFile) != 1)
+        {
+            toLog("Can't read from Orbit bin file: " + sOrbitFile);
             return false;
+        }
 
         fclose(pOrbitFile);
 
@@ -52,7 +78,10 @@ namespace orbit
 
         FILE* pNptFile;
         if (fopen_s(&pNptFile, sNptFile.c_str(), "rb") != 0)
+        {
+            toLog("Can't open Npt bin file: " + sNptFile);
             return false;
+        }
 
         _fseeki64(pNptFile, 0, SEEK_END);
         long nONptFileSize = ftell(pNptFile);
@@ -61,7 +90,10 @@ namespace orbit
         m_vNpt.resize(nONptFileSize / sizeof(NptFile));
 
         if (fread(&m_vNpt[0], nONptFileSize, 1, pNptFile) != 1)
+        {
+            toLog("Can't read from Npt bin file: " + sNptFile);
             return false;
+        }
 
         fclose(pNptFile);
 
@@ -140,70 +172,66 @@ namespace orbit
         return std::vector<Snpt>(vNpt);
     }
 
-    void OrbitBinReader::setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_, bool bIncludeAtmosphere_, bool bClearLevel_)
+    void OrbitBinReader::setFileIndex(unsigned nFirstIndex_, std::vector<SPairLevel>& vLevelData_, bool bIncludeAtmosphere_, bool bClearLevel_)
     {
         if (bClearLevel_)
             vLevelData_.clear();
 
-        unsigned nLastIndex = std::min<unsigned>(nLastIndex_, (unsigned)m_vOrbit.size());
+        unsigned nIndex = std::min<unsigned>(nFirstIndex_, (unsigned)m_vOrbit.size());
 
-        for (unsigned f = nFirstIndex_; f < nLastIndex; ++f)
+        std::vector<Snpt> vNpt = get_vNpt(m_vOrbit[nIndex]);
+ 
+        m_Snpt = vNpt[0];
+ 
+        for (unsigned i = 0; i < vNpt.size() - 1; ++i)
         {
-            std::vector<Snpt> vNpt = get_vNpt(m_vOrbit[f]);
-
-            if (f == nFirstIndex_)
-                m_Snpt = vNpt[0];
-
-            for (unsigned i = 0; i < vNpt.size() - 1; ++i)
+            if (std::abs(vNpt[i + 0].fLatitude - vNpt[i + 1].fLatitude) > m_fAngleContinues || std::abs(vNpt[i + 0].fLongitude - vNpt[i + 1].fLongitude > m_fAngleContinues))
+                continue;
+ 
+            Interpolator interpolator1(vNpt[i + 0].vLevel.data(), vNpt[i + 0].nLevelCount);
+            float fAltitudeMin1 = interpolator1.getAltitudeMin();
+            float fAltitudeMax1 = interpolator1.getAltitudeMax();
+ 
+            Interpolator interpolator2(vNpt[i + 1].vLevel.data(), vNpt[i + 1].nLevelCount);
+            float fAltitudeMin2 = interpolator2.getAltitudeMin();
+            float fAltitudeMax2 = interpolator2.getAltitudeMax();
+ 
+            float fAltitudeMinMax = std::max<float>(fAltitudeMin1, fAltitudeMin2);
+            float fAltitudeMaxMin = std::min<float>(std::min<float>(fAltitudeMax1, fAltitudeMax2), (float)m_nAltitudeMAX);
+ 
+            float fAltitudeStep = (fAltitudeMaxMin - fAltitudeMinMax) / m_nInterpolateCount;
+ 
+            SPairLevel vertex;
+            vertex.fLatitude_begin = glm::radians(vNpt[i + 0].fLatitude);
+            vertex.fLatitude_end = glm::radians(vNpt[i + 1].fLatitude);
+            vertex.fLongitude_begin = glm::radians(vNpt[i + 0].fLongitude);
+            vertex.fLongitude_end = glm::radians(vNpt[i + 1].fLongitude);
+            vertex.fDistance_begin = vNpt[i + 0].vLevel[0].fAltitude * 1000;
+ 
+            vertex.fDistance_end = vNpt[i + 1].vLevel[0].fAltitude * 1000;
+ 
+            vertex.fAltitudeMinMax = fAltitudeMinMax * 1000;
+            vertex.fAltitudeStep = fAltitudeStep * 1000;
+ 
+            //-----------------------------------------------------------------------------
+ 
+            std::vector<float> vTemperature1;
+            std::vector<float> vTemperature2;
+ 
+            interpolator1.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, bIncludeAtmosphere_ ? m_nInterpolateCount : 0, vTemperature1);
+            interpolator2.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, bIncludeAtmosphere_ ? m_nInterpolateCount : 0, vTemperature2);
+ 
+            vertex.vTemperature.resize(vTemperature1.size() + vTemperature2.size());
+ 
+            for (int k = 0; k < vTemperature1.size(); ++k)
             {
-                if (std::abs(vNpt[i + 0].fLatitude - vNpt[i + 1].fLatitude) > m_fAngleContinues || std::abs(vNpt[i + 0].fLongitude - vNpt[i + 1].fLongitude > m_fAngleContinues))
-                    continue;
-
-                Interpolator interpolator1(vNpt[i + 0].vLevel.data(), vNpt[i + 0].nLevelCount);
-                float fAltitudeMin1 = interpolator1.getAltitudeMin();
-                float fAltitudeMax1 = interpolator1.getAltitudeMax();
-
-                Interpolator interpolator2(vNpt[i + 1].vLevel.data(), vNpt[i + 1].nLevelCount);
-                float fAltitudeMin2 = interpolator2.getAltitudeMin();
-                float fAltitudeMax2 = interpolator2.getAltitudeMax();
-
-                float fAltitudeMinMax = std::max<float>(fAltitudeMin1, fAltitudeMin2);
-                float fAltitudeMaxMin = std::min<float>(std::min<float>(fAltitudeMax1, fAltitudeMax2), (float)m_nAltitudeMAX);
-
-                float fAltitudeStep = (fAltitudeMaxMin - fAltitudeMinMax) / m_nInterpolateCount;
-
-                SPairLevel vertex;
-                vertex.fLatitude_begin = glm::radians(vNpt[i + 0].fLatitude);
-                vertex.fLatitude_end = glm::radians(vNpt[i + 1].fLatitude);
-                vertex.fLongitude_begin = glm::radians(vNpt[i + 0].fLongitude);
-                vertex.fLongitude_end = glm::radians(vNpt[i + 1].fLongitude);
-                vertex.fDistance_begin = vNpt[i + 0].vLevel[0].fAltitude * 1000;
-
-                vertex.fDistance_end = vNpt[i + 1].vLevel[0].fAltitude * 1000;
-
-                vertex.fAltitudeMinMax = fAltitudeMinMax * 1000;
-                vertex.fAltitudeStep = fAltitudeStep * 1000;
-
-                //-----------------------------------------------------------------------------
-
-                std::vector<float> vTemperature1;
-                std::vector<float> vTemperature2;
-
-                interpolator1.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, bIncludeAtmosphere_ ? m_nInterpolateCount : 0, vTemperature1);
-                interpolator2.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, bIncludeAtmosphere_ ? m_nInterpolateCount : 0, vTemperature2);
-
-                vertex.vTemperature.resize(vTemperature1.size() + vTemperature2.size());
-
-                for (int k = 0; k < vTemperature1.size(); ++k)
-                {
-                    vertex.vTemperature[2 * k + 0] = vTemperature1[k];
-                    vertex.vTemperature[2 * k + 1] = vTemperature2[k];
-                }
-
-                //-----------------------------------------------------------------------------
-
-                vLevelData_.push_back(std::move(vertex));
+                vertex.vTemperature[2 * k + 0] = vTemperature1[k];
+                vertex.vTemperature[2 * k + 1] = vTemperature2[k];
             }
+ 
+            //-----------------------------------------------------------------------------
+ 
+            vLevelData_.push_back(std::move(vertex));
         }
     }
 

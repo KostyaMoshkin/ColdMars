@@ -18,6 +18,8 @@ namespace orbit
 		std::vector <std::vector<Snpt>> m_vvNpt;
 		std::vector<SPairLevel> m_vVertex;
 
+		std::vector<char> m_vLevelReadBuffer;
+
 		Snpt m_Snpt;
 
 		unsigned m_nAltitudeMAX = 90;   //  km
@@ -39,7 +41,7 @@ namespace orbit
 
 	public:
 		bool init();
-		void setFileIndex(unsigned nFirstIndex_, unsigned nLastIndex_, std::vector<SPairLevel>& vLevelData_, bool bIncludeAtmosphere_ = true, bool bClearLevel_ = true);
+		void setFileIndex(unsigned nFirstIndex_, std::vector<SPairLevel>& vLevelData_, bool bIncludeAtmosphere_ = true, bool bClearLevel_ = true);
 		size_t getOrbitCount();
 		std::vector<unsigned> getOrbitListByCoord(float fLatitude_, float fLongitude_);
 		Snpt getNpt();

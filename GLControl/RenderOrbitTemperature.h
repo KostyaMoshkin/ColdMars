@@ -22,14 +22,17 @@ namespace GL {
 		IndexBufferPtr m_pIndex = nullptr;
 		IndirectBufferPtr m_pIndirect = nullptr;
 		TextureBufferPtr m_pPaletteTexture = nullptr;
-		ShaderStorageBufferPtr m_pLevelPosition = nullptr;
+		std::vector < std::pair<unsigned, ShaderStorageBufferPtr>> m_pvLevelPosition;
 
 		PalettePtr m_pPalette = nullptr;
 		orbit::OrbitBinReaderPtr m_pOrbitReader = nullptr;
 
+		std::vector<unsigned> m_vExistOrbit;
+		std::vector<unsigned> m_vAddOrbit;
+		std::vector<unsigned> m_vRemoveOrbit;
 
 		bool m_bNeedFillLevelBufer = true;
-		std::vector<std::pair<VertexBufferPtr, orbit::SPairLevel>> m_pvTemperatureVertex;
+		std::vector<std::pair<unsigned, std::vector<std::pair<VertexBufferPtr, orbit::SPairLevel>>>> m_pvvTemperatureVertex;
 
 		lib::Matrix4 m_mRotate = lib::Matrix4(1.0f);
 		lib::Matrix4 m_mTransform = lib::Matrix4(1.0f);
@@ -59,7 +62,7 @@ namespace GL {
 		void setScale();
 
 		bool fillPalette();
-		bool fillVertex();
+		bool fillVertex(unsigned nOrbitStart_, unsigned nOrbitEnd_);
 
 	public:
 		// Унаследовано через Render
@@ -78,8 +81,6 @@ namespace GL {
 		void setScale(float fScale_) override;
 
 	public:
-		void setFileRange(int nFirstFile_, int nLasetFile_);
-
 		const orbit::OrbitBinReaderPtr getReader();
 
 		void getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_);

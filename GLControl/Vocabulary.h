@@ -6,6 +6,7 @@ namespace orbit {
 		static const char* OrbitFileName()					{ return "OrbitFile"; }
 		static const char* NptFileName()					{ return "NptFile"; }
 		static const char* LevelFileName()					{ return "LevelFile"; }
+		static const char* LevelBufferSize()				{ return "LevelBufferSize"; }
 		static const char* OrbitDir()						{ return "OrbitDir"; }
 		static const char* TemperartureAltitudeMax()		{ return "TemperartureAltitudeMax"; }
 		static const char* TemperatureInterpolateCount()	{ return "TemperatureInterpolateCount"; }

@@ -259,9 +259,13 @@ namespace GL
 		draw();
 	}
 
-	void Bridge::setFileRange(int nFirstFile_, int nLasetFile_)
+	void Bridge::setFileRange(unsigned nFirstFile_, unsigned nLasetFile_)
 	{
-		m_pRenderOrbitTemperature->setFileRange(nFirstFile_, nLasetFile_);
+		std::vector<unsigned> vOrbit;
+		for (unsigned i = nFirstFile_; i < nLasetFile_; ++i)
+			vOrbit.push_back(i);
+
+		m_pRenderOrbitTemperature->setFileArray(vOrbit);
 
 		draw();
 	}
