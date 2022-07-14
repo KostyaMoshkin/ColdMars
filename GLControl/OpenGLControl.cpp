@@ -184,8 +184,6 @@ namespace GLControl {
 
 	System::Void OpenGLControl::buttonSetOrbit_Click(System::Object^ sender, System::EventArgs^ e)
 	{
-		setLocalTimeFilter();
-
 		unsigned nOrbitQuantity = System::Int32::Parse(this->textBoxOrbitQuantity->Text);
 
 		double fLS;
@@ -262,6 +260,8 @@ namespace GLControl {
 		}
 
 		m_pBridge->setFileRange(m_nOrbitCurrentIndex, m_nOrbitCurrentIndex + m_nOrbitQuantity);
+
+		setLocalTimeFilter();
 
 		updateOrbitInfo(m_nOrbitCurrentIndex, true);
 

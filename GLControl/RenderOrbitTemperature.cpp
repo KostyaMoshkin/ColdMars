@@ -245,7 +245,7 @@ namespace GL {
 		m_bNeedFillLevelBufer = false;
 
 		for (const unsigned nRemoveOrbit : m_vRemoveOrbit)
-			for (unsigned i = 0; i < m_pvvTemperatureVertex.size(); ++i)
+			for (int i = 0; i < m_pvvTemperatureVertex.size(); ++i)
 				if (nRemoveOrbit == m_pvvTemperatureVertex[i].first)
 				{
 					m_pvvTemperatureVertex.erase(m_pvvTemperatureVertex.begin() + i);
@@ -255,7 +255,7 @@ namespace GL {
 
 		for (int i = 0; i < m_vAddOrbit.size(); ++i)
 		{
-			m_pOrbitReader->setFileIndex(m_vAddOrbit[i], m_vLevelData);
+			m_pOrbitReader->setFileIndex(m_vAddOrbit[i], m_vLevelData, m_fLocalTimeStart, m_fLocalTimeEnd);
 
 			std::vector<std::pair<VertexBufferPtr, orbit::SPairLevel>> vTemperatureVertex(m_vLevelData.size());
 			std::vector<orbit::SLevelCoord> vLevelCoord(m_vLevelData.size());
@@ -285,6 +285,9 @@ namespace GL {
 				vLevelCoord[l].fLongitude_begin = levelData.fLongitude_begin;
 				vLevelCoord[l].fLongitude_end = levelData.fLongitude_end;
 			}
+
+			if (vTemperatureVertex.empty())
+				continue;
 
 			m_pvvTemperatureVertex.push_back({ m_vAddOrbit[i], vTemperatureVertex });
 
@@ -342,6 +345,11 @@ namespace GL {
 	{
 		m_fLocalTimeStart = fLocalTimeStart_;
 		m_fLocalTimeEnd = fLocalTimeEnd_;
+
+		m_vRemoveOrbit = m_vExistOrbit;
+		m_vAddOrbit = m_vExistOrbit;
+
+		m_bNeedFillLevelBufer = true;
 	}
 
 	void RenderOrbitTemperature::bound()

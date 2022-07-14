@@ -196,7 +196,7 @@ namespace orbit
         return std::vector<Snpt>(vNpt);
     }
 
-    void OrbitBinReader::setFileIndex(unsigned nFirstIndex_, std::vector<SPairLevel>& vLevelData_)
+    void OrbitBinReader::setFileIndex(unsigned nFirstIndex_, std::vector<SPairLevel>& vLevelData_, double fLocalTimeStart_, double fLocalTimeEnd_)
     {
         vLevelData_.clear();
 
@@ -210,7 +210,10 @@ namespace orbit
         {
             if (std::abs(vNpt[i + 0].fLatitude - vNpt[i + 1].fLatitude) > m_fAngleContinues || std::abs(vNpt[i + 0].fLongitude - vNpt[i + 1].fLongitude > m_fAngleContinues))
                 continue;
- 
+
+            if (!lib::between((double)vNpt[i + 0].fLocalTime, fLocalTimeStart_, fLocalTimeEnd_) && !lib::between((double)vNpt[i + 1].fLocalTime, fLocalTimeStart_, fLocalTimeEnd_))
+                continue;
+
             Interpolator interpolator1(vNpt[i + 0].vLevel.data(), vNpt[i + 0].nLevelCount);
             float fAltitudeMin1 = interpolator1.getAltitudeMin();
             float fAltitudeMax1 = interpolator1.getAltitudeMax();
