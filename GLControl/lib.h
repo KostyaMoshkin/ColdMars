@@ -85,6 +85,12 @@ namespace lib
 		value = std::min<T>(std::max<T>(value, min), max);
 	}
 
+	template<typename T>
+	bool between(T& value, T min, T max)
+	{
+		return value <= max && value >= min;
+	}
+
 	inline unsigned getCoreCount()
 	{
 		return std::thread::hardware_concurrency();
