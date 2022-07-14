@@ -41,6 +41,8 @@ namespace GL {
 
 		std::vector<orbit::SPairLevel> m_vLevelData;
 
+		display::mode m_displayMode = display::mode::temperature;
+
 		float m_fViewAngle = 45.0;
 
 		unsigned m_nFileId = 4;
@@ -64,7 +66,7 @@ namespace GL {
 	private:
 		void setScale();
 
-		bool fillPalette();
+		bool fillPalette(int nPaletteIndex_);
 		bool fillVertex(unsigned nOrbitStart_, unsigned nOrbitEnd_);
 
 	public:
@@ -95,6 +97,8 @@ namespace GL {
 		void setIncludeAtmosphere(bool bInclude_);
 
 		void setLocalTimeFilter(double fLocalTimeStart_, double fLocalTimeEnd_);
+
+		void changeDisplay(display::mode displayMode_);
 
 	};
 }

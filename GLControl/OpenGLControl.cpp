@@ -247,8 +247,6 @@ namespace GLControl {
 
 					unsigned nOrbitQuantity = m_nOrbitQuantity;
 					m_nOrbitQuantity = std::min<unsigned>(nOrbitQuantity, m_pBridge->getOrbitCount() - m_nOrbitCurrentIndex);
-
-
 				}
 			}
 		}
@@ -519,6 +517,37 @@ namespace GLControl {
 
 		return System::Void();
 	}
+
+	System::Void OpenGLControl::radioButtonTemperature_CheckedChanged(System::Object^ sender, System::EventArgs^ e)
+	{
+		if (!this->radioButtonTemperature->Checked)
+			return;
+
+		//m_displayMode = display::mode::temperature;
+
+		m_pBridge->changeDisplay(display::mode::temperature);
+	}
+
+	System::Void OpenGLControl::radioButtonDust_CheckedChanged(System::Object^ sender, System::EventArgs^ e)
+	{
+		if (!this->radioButtonDust->Checked)
+			return;
+
+		//m_displayMode = display::mode::dust;
+
+		m_pBridge->changeDisplay(display::mode::dust);
+	}
+
+	System::Void OpenGLControl::radioButtonIce_CheckedChanged(System::Object^ sender, System::EventArgs^ e)
+	{
+		if(!this->radioButtonIce->Checked)
+			return;
+		
+		//m_displayMode = display::mode::ice;
+
+		m_pBridge->changeDisplay(display::mode::ice);
+	}
+
 
 	void OpenGLControl::init()
 	{

@@ -17,8 +17,8 @@ namespace GL {
 	{
 		lib::XMLnodePtr xmlPaletteDefault = lib::XMLreader::getNode(getConfig(), Key::sPaletteDefault());
 
-		if (!!xmlPaletteDefault && !lib::XMLreader::getInt(xmlPaletteDefault, m_nActivePaletteID))
-			m_nActivePaletteID = 1;
+		//if (!!xmlPaletteDefault && !lib::XMLreader::getInt(xmlPaletteDefault, m_nActivePaletteID))
+		//	m_nActivePaletteID = 1;
 
 		//---------------------------------------------------------------------------------------
 
@@ -79,29 +79,14 @@ namespace GL {
 		return true;
 	}
 
-	bool Palette::changePalette(bool bDirection_)
+	bool Palette::changePalette(int nPaletteIndex_)
 	{
-		auto iterPalette = m_vPaletteMap.find(m_nActivePaletteID);
-		
-		if (iterPalette == m_vPaletteMap.end())
-			iterPalette = m_vPaletteMap.begin();
+		m_nActivePaletteID = nPaletteIndex_;
 
-		if(bDirection_)
-		{
-			++iterPalette;
-			if (iterPalette == m_vPaletteMap.end())
-				iterPalette = m_vPaletteMap.begin();
-		}
-		else
-		{
-			if (iterPalette == m_vPaletteMap.begin())
-				iterPalette = m_vPaletteMap.end();
+		if (!fillPalette(m_nActivePaletteID))
+			return false;
 
-			--iterPalette;
-		}
-
-		m_nActivePaletteID = iterPalette->first;
-		return fillPalette(m_nActivePaletteID);
+		return true;
 	}
 
 	void Palette::getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_)

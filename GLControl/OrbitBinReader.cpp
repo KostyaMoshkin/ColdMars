@@ -232,6 +232,7 @@ namespace orbit
             float fAltitudeStep = (fAltitudeMaxMin - fAltitudeMinMax) / m_nInterpolateCount;
  
             SPairLevel vertex;
+
             vertex.fLatitude_begin = glm::radians(vNpt[i + 0].fLatitude);
             vertex.fLatitude_end = glm::radians(vNpt[i + 1].fLatitude);
             vertex.fLongitude_begin = glm::radians(vNpt[i + 0].fLongitude);
@@ -244,13 +245,21 @@ namespace orbit
             vertex.fAltitudeStep = fAltitudeStep * 1000;
  
             //-----------------------------------------------------------------------------
+
+            vertex.vDust[0] = vNpt[i + 0].fDustOpticalDepth;
+            vertex.vDust[1] = vNpt[i + 1].fDustOpticalDepth;
+            vertex.vIce[0] = vNpt[i + 0].fIceOpticalDepth;
+            vertex.vIce[1] = vNpt[i + 1].fIceOpticalDepth;
  
             std::vector<float> vTemperature1;
             std::vector<float> vTemperature2;
  
             interpolator1.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, m_nInterpolateCount, vTemperature1);
             interpolator2.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, m_nInterpolateCount, vTemperature2);
- 
+
+            vertex.vSerfaceTemperature[0] = vTemperature1[0];
+            vertex.vSerfaceTemperature[1] = vTemperature2[0];
+
             vertex.vTemperature.resize(vTemperature1.size() + vTemperature2.size());
  
             for (int k = 0; k < vTemperature1.size(); ++k)

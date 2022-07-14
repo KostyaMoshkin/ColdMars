@@ -109,6 +109,8 @@ namespace GL
 		void setIncludeAtmosphere(bool bInclude_);
 
 		void setLocalTimeFilter(double fLocalTimeStart_, double fLocalTimeEnd_);
+
+		void changeDisplay(display::mode displayMode_);
 	};
 
 }

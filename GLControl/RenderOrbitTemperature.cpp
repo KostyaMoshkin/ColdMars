@@ -81,8 +81,10 @@ namespace GL {
 		m_pOrbitTemperatureProgram->setUniformMat4f("m_mTranslate", &mTranslate_[0][0]);
 	}
 
-	bool RenderOrbitTemperature::fillPalette()
+	bool RenderOrbitTemperature::fillPalette(int nPaletteIndex_)
 	{
+		m_pPalette->changePalette(nPaletteIndex_);
+
 		float fDataMin;
 		float fDataMax;
 
@@ -191,7 +193,7 @@ namespace GL {
 		if (!m_pPalette->init())
 			return false;
 
-		if (!fillPalette())
+		if (!fillPalette(1))
 			return false;
 
 		//-------------------------------------------------------------------------------------------------
@@ -228,10 +230,10 @@ namespace GL {
 
 				m_pOrbitTemperatureProgram->setUniform1i("m_nLevelIndex", &i);
 
-				if (m_bIncludeAtmosphere)
-					glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_pvvTemperatureVertex[j].second[i].second.vTemperature.size());
+				if (m_displayMode == display::mode::temperature && m_bIncludeAtmosphere)
+					glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_pvvTemperatureVertex[j].second[i].second.nCount);
 
-				glLineWidth(m_bIncludeAtmosphere ? 3.0f : 9.0f);
+				glLineWidth(m_displayMode == display::mode::temperature && m_bIncludeAtmosphere ? 3.0f : 9.0f);
 
 				glDrawArrays(GL_LINES, 0, 2);
 			}
@@ -268,12 +270,39 @@ namespace GL {
 				BufferBounder<VertexBuffer> temperatureBounder(vTemperatureVertex[l].first);
 
 				orbit::SPairLevel& levelData = m_vLevelData[l];
-				vTemperatureVertex[l].second = levelData;
 
-				if (!vTemperatureVertex[l].first->fillBuffer(levelData.vTemperature.size() * sizeof(float), levelData.vTemperature.data()))
+				if (m_displayMode == display::mode::temperature)
 				{
-					toLog("Error vTemperatureVertex[l].first->fillBuffer");
-					return false;
+					if (m_bIncludeAtmosphere)
+						vTemperatureVertex[l].second = levelData;
+
+					vTemperatureVertex[l].second.nCount = levelData.vTemperature.size();
+
+					if (!vTemperatureVertex[l].first->fillBuffer(levelData.vTemperature.size() * sizeof(float), levelData.vTemperature.data()))
+					{
+						toLog("Error vTemperatureVertex[l].first->fillBuffer");
+						return false;
+					}
+				}
+				else if (m_displayMode == display::mode::dust)
+				{
+					vTemperatureVertex[l].second.nCount = 2;
+
+					if (!vTemperatureVertex[l].first->fillBuffer(levelData.vDust.size() * sizeof(float), levelData.vDust.data()))
+					{
+						toLog("Error vTemperatureVertex[l].first->fillBuffer");
+						return false;
+					}
+				}
+				else if (m_displayMode == display::mode::ice)
+				{
+					vTemperatureVertex[l].second.nCount = 2;
+
+					if (!vTemperatureVertex[l].first->fillBuffer(levelData.vIce.size() * sizeof(float), levelData.vIce.data()))
+					{
+						toLog("Error vTemperatureVertex[l].first->fillBuffer");
+						return false;
+					}
 				}
 
 				vLevelCoord[l].fAltitudeMinMax = levelData.fAltitudeMinMax;
@@ -348,6 +377,16 @@ namespace GL {
 
 		m_vRemoveOrbit = m_vExistOrbit;
 		m_vAddOrbit = m_vExistOrbit;
+
+		m_bNeedFillLevelBufer = true;
+	}
+
+	void RenderOrbitTemperature::changeDisplay(display::mode displayMode_)
+	{
+		m_displayMode = displayMode_;
+		m_pPalette->changePalette((int)displayMode_);
+
+		fillPalette((int)displayMode_);
 
 		m_bNeedFillLevelBufer = true;
 	}

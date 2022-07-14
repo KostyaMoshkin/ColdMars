@@ -35,6 +35,8 @@ namespace GLControl {
 
 		bool m_bMouseMove = false;
 
+		display::mode m_displayMode = display::mode::temperature;
+
 		static  cli::array<System::Windows::Forms::Label^>^ m_vLabel = gcnew cli::array<System::Windows::Forms::Label^>(10);
 
 	private: System::Windows::Forms::Button^ buttonSetOrbit;
@@ -470,6 +472,7 @@ namespace GLControl {
 			this->radioButtonIce->TabIndex = 2;
 			this->radioButtonIce->Text = L"Ice";
 			this->radioButtonIce->UseVisualStyleBackColor = true;
+			this->radioButtonIce->CheckedChanged += gcnew System::EventHandler(this, &OpenGLControl::radioButtonIce_CheckedChanged);
 			// 
 			// radioButtonDust
 			// 
@@ -480,6 +483,7 @@ namespace GLControl {
 			this->radioButtonDust->TabIndex = 1;
 			this->radioButtonDust->Text = L"Dust";
 			this->radioButtonDust->UseVisualStyleBackColor = true;
+			this->radioButtonDust->CheckedChanged += gcnew System::EventHandler(this, &OpenGLControl::radioButtonDust_CheckedChanged);
 			// 
 			// radioButtonTemperature
 			// 
@@ -492,6 +496,7 @@ namespace GLControl {
 			this->radioButtonTemperature->TabStop = true;
 			this->radioButtonTemperature->Text = L"Temperature";
 			this->radioButtonTemperature->UseVisualStyleBackColor = true;
+			this->radioButtonTemperature->CheckedChanged += gcnew System::EventHandler(this, &OpenGLControl::radioButtonTemperature_CheckedChanged);
 			// 
 			// checkBoxAtmosphere
 			// 
@@ -784,6 +789,9 @@ namespace GLControl {
 
 		System::Void buttonFindOrbitByLS_Click(System::Object^ sender, System::EventArgs^ e);
 
+		System::Void radioButtonTemperature_CheckedChanged(System::Object^ sender, System::EventArgs^ e);
+		System::Void radioButtonDust_CheckedChanged(System::Object^ sender, System::EventArgs^ e);
+		System::Void radioButtonIce_CheckedChanged(System::Object^ sender, System::EventArgs^ e);
 	private:
 		void init();
 

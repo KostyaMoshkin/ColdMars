@@ -99,7 +99,11 @@ namespace orbit
 
 	struct SPairLevel : SLevelCoord
 	{
+		unsigned nCount;
 		std::vector<float> vTemperature;
+		std::array<float, 2> vSerfaceTemperature;
+		std::array<float, 2> vDust;
+		std::array<float, 2> vIce;
 	};
 
 }

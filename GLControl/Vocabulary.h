@@ -49,3 +49,12 @@ namespace megdr {
 		static const char* sample()				{ return "sample";			}
 	}
 }
+
+namespace display {
+	enum mode
+	{
+		temperature = 1,
+		dust = 2,
+		ice = 3,
+	};
+}

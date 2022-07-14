@@ -366,4 +366,14 @@ namespace GL
 
 		draw();
 	}
+	
+	void Bridge::changeDisplay(display::mode displayMode_)
+	{
+		{
+			ContextSession contextSession(m_pControlContext);
+			m_pRenderOrbitTemperature->changeDisplay(displayMode_);
+
+			m_pSceneRender->draw();
+		}
+	}
 }

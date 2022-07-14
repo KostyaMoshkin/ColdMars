@@ -36,7 +36,7 @@ namespace GL {
 		void getMinMax(float& fMin_, float& fMax_);
 		unsigned getInterpolate();
 		bool fillPalette(unsigned nPaletteID_);
-		bool changePalette(bool bDirection_ = true);
+		bool changePalette(int nPaletteIndex_);
 		void getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_);
 	};
 }
