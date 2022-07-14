@@ -107,6 +107,7 @@ namespace GL
 
 		void setIncludeAtmosphere(bool bInclude_);
 
+		void setLocalTimeFilter(double fLocalTimeStart_, double fLocalTimeEnd_);
 	};
 
 }

@@ -53,6 +53,9 @@ namespace GL {
 
 		GLuint m_nVAO = 0;
 
+		double m_fLocalTimeStart = 0.0f;
+		double m_fLocalTimeEnd = 24.0f;
+
 	public:
 		RenderOrbitTemperature();
 
@@ -90,6 +93,9 @@ namespace GL {
 		unsigned getOrbit_by_LS(unsigned nNumber_);
 
 		void setIncludeAtmosphere(bool bInclude_);
+
+		void setLocalTimeFilter(double fLocalTimeStart_, double fLocalTimeEnd_);
+
 	};
 }
 

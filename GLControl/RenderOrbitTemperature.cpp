@@ -338,6 +338,12 @@ namespace GL {
 		m_bIncludeAtmosphere = bInclude_;
 	}
 
+	void RenderOrbitTemperature::setLocalTimeFilter(double fLocalTimeStart_, double fLocalTimeEnd_)
+	{
+		m_fLocalTimeStart = fLocalTimeStart_;
+		m_fLocalTimeEnd = fLocalTimeEnd_;
+	}
+
 	void RenderOrbitTemperature::bound()
 	{
 		glBindVertexArray(m_nVAO);

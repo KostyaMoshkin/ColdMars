@@ -164,17 +164,8 @@ namespace GLControl {
 		return System::Void();
 	}
 
-
-	System::Void OpenGLControl::buttonSetOrbit_Click(System::Object^ sender, System::EventArgs^ e)
+	void OpenGLControl::setLocalTimeFilter()
 	{
-		unsigned nOrbitQuantity = System::Int32::Parse(this->textBoxOrbitQuantity->Text);
-
-		double fLS;
-		if (!String_to_double(this->textBoxLsEnd->Text, fLS))
-			fLS = m_nLS;
-		if (!String_to_double(this->textBoxLsStart->Text, fLS))
-			fLS = m_nLS;
-
 		double fLocalTimeStart;
 		if (!String_to_double(this->textBoxLocalTimeStart->Text, fLocalTimeStart))
 			fLocalTimeStart = m_fLocalTimeStart;
@@ -186,6 +177,22 @@ namespace GLControl {
 			fLocalTimeEnd = m_fLocalTimeEnd;
 		else
 			m_fLocalTimeEnd = fLocalTimeEnd;
+
+		m_pBridge->setLocalTimeFilter(m_fLocalTimeStart, m_fLocalTimeEnd);
+
+	}
+
+	System::Void OpenGLControl::buttonSetOrbit_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		setLocalTimeFilter();
+
+		unsigned nOrbitQuantity = System::Int32::Parse(this->textBoxOrbitQuantity->Text);
+
+		double fLS;
+		if (!String_to_double(this->textBoxLsEnd->Text, fLS))
+			fLS = m_nLS;
+		if (!String_to_double(this->textBoxLsStart->Text, fLS))
+			fLS = m_nLS;
 
 		unsigned nLS = unsigned(fLS * 100);
 

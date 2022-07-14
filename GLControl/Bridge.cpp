@@ -354,4 +354,9 @@ namespace GL
 			m_pSceneRender->draw();
 		}
 	}
+
+	void Bridge::setLocalTimeFilter(double fLocalTimeStart_, double fLocalTimeEnd_)
+	{
+		m_pRenderOrbitTemperature->setLocalTimeFilter(fLocalTimeStart_, fLocalTimeEnd_);
+	}
 }

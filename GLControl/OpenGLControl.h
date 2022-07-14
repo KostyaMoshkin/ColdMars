@@ -786,5 +786,7 @@ namespace GLControl {
 
 	private:
 		void init();
+
+		void setLocalTimeFilter();
 };
 }
