@@ -142,6 +142,10 @@ namespace orbit
 
         //--------------------------------------------------------------------------------------------
 
+        lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), Key::TemperartureAltitudeMax()), m_nAltitudeMAX);
+
+        //--------------------------------------------------------------------------------------------
+
         lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), Key::TemperatureInterpolateCount()), m_nInterpolateCount);
 
         if (m_nInterpolateCount == 0)
@@ -322,6 +326,11 @@ namespace orbit
                 return value;
 
         return UINT_MAX;
+    }
+
+    int OrbitBinReader::getOrbitAltitudeMax()
+    {
+        return m_nAltitudeMAX;
     }
 }
 

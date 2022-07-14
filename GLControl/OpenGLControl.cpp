@@ -157,6 +157,8 @@ namespace GLControl {
 		m_nLS = nLS;
 
 		m_nOrbitEndIndex = nIndex_ + m_nOrbitQuantity - 1;
+
+		this->labelAtmosphereLimit->Text = intToString(m_pBridge->getOrbitAltitudeMax());
 	}
 
 	System::Void OpenGLControl::buttonFindOrbitByLS_Click(System::Object^ sender, System::EventArgs^ e)

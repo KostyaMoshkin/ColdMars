@@ -50,6 +50,8 @@ namespace orbit
 		unsigned getOrbitNumber_by_OrbitIndex(unsigned nNumber_);
 		unsigned getOrbitIndex_by_OrbitNumber(unsigned nNumber_);
 		unsigned getOrbit_by_LS(unsigned nNumber_);
+		int getOrbitAltitudeMax();
+
 	};
 }
 

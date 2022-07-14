@@ -99,6 +99,7 @@ namespace GL
 		float getJulianDate();
 		float getLocalTime();
 		std::string getUTC();
+		int getOrbitAltitudeMax();
 
 		void getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_);
 
