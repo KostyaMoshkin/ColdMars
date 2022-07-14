@@ -270,9 +270,9 @@ namespace GL
 		draw();
 	}
 
-	std::string Bridge::getOrbit_by_index(unsigned nIndex_)
+	unsigned Bridge::getOrbit_by_index(unsigned nIndex_)
 	{
-		return std::to_string(m_pRenderOrbitTemperature->getReader()->getOrbitNumber_by_OrbitIndex(nIndex_));
+		return m_pRenderOrbitTemperature->getReader()->getOrbitNumber_by_OrbitIndex(nIndex_);
 	}
 
 	unsigned Bridge::getOrbit_by_LS(unsigned nIndex_)

@@ -284,7 +284,6 @@ namespace GL {
 				vLevelCoord[l].fLatitude_end = levelData.fLatitude_end;
 				vLevelCoord[l].fLongitude_begin = levelData.fLongitude_begin;
 				vLevelCoord[l].fLongitude_end = levelData.fLongitude_end;
-
 			}
 
 			m_pvvTemperatureVertex.push_back({ m_vAddOrbit[i], vTemperatureVertex });
@@ -299,7 +298,6 @@ namespace GL {
 			}
 
 			m_pvLevelPosition.push_back({ m_vAddOrbit[i], pLevelPosition });
-
 		}
 
 		return true;

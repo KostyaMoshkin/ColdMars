@@ -82,7 +82,7 @@ namespace GL
 
 		void setFileRange(unsigned nFirstFile_, unsigned nLasetFile_);
 
-		std::string getOrbit_by_index(unsigned nIndex_);
+		unsigned getOrbit_by_index(unsigned nIndex_);
 		unsigned getOrbit_by_LS(unsigned nIndex_);
 		unsigned getOrbitIndex_by_OrbitNumber(unsigned nIndex_);
 

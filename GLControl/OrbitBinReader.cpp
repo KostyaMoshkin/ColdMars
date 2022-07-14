@@ -34,13 +34,37 @@ namespace orbit
         if (!lib::XMLreader::getInt(lib::XMLreader::getNode(getConfig(), Key::LevelBufferSize()), nLevelBufferSize))
             nLevelBufferSize = 10;
 
-        m_vLevelReadBuffer.resize(std::min<long>(nLevelFileSize, 1024 * 1024 * nLevelBufferSize));
+        unsigned nAskBufferSize = std::min<unsigned>(std::min<unsigned>((unsigned)nLevelFileSize, 1024 * 1024 * nLevelBufferSize), INT_MAX);
+
+        try
+        {
+            m_vLevelReadBuffer.reserve(nAskBufferSize);
+            m_vLevelReadBuffer.resize(nAskBufferSize);
+        }
+        catch (const std::exception&)
+        {
+            toLog("ERROR Can't setup buffer for levels bin file. Asked for Mb: " + std::to_string(nAskBufferSize));
+            nAskBufferSize /= 10;
+        }
+
+        try
+        {
+            if (m_vLevelReadBuffer.empty())
+            {
+                toLog("Ask for new size Mb: " + std::to_string(nAskBufferSize));
+                m_vLevelReadBuffer.reserve(nAskBufferSize);
+                m_vLevelReadBuffer.resize(nAskBufferSize);
+            }
+        }
+        catch (const std::exception&)
+        {
+            toLog("ERROR Can't setup buffer for levels bin file. Asked for Mb: " + std::to_string(nLevelBufferSize));
+        }
 
         if (!m_vLevelReadBuffer.empty())
             if (setvbuf(m_pLevelFile, m_vLevelReadBuffer.data(), _IOFBF, m_vLevelReadBuffer.size()) != 0)
             {
-                toLog("Can't setup buffer for levels bin file. Asked for Mb: " + std::to_string(m_vLevelReadBuffer.size() / 1024 / 1024));
-                return false;
+                toLog("ERROR Can't setup buffer for levels bin file.");
             }
 
        //--------------------------------------------------------------------------------------------
@@ -243,17 +267,18 @@ namespace orbit
     {
         std::vector<unsigned> result;
 
-        for (int i = 0; i < m_vOrbit.size(); ++i)
-        {
-            std::vector<Snpt> vNpt = get_vNpt(m_vOrbit[i]);
+#pragma omp parallel for
+            for (int i = 0; i < m_vOrbit.size(); ++i)
+            {
+                std::vector<Snpt> vNpt = get_vNpt(m_vOrbit[i]);
 
-            for (int j = 0; j < vNpt.size(); ++j)
-                if (std::abs(vNpt[j].fLatitude - fLatitude_) < 1 && (std::abs(vNpt[j].fLongitude - fLongitude_) < 1))
-                {
-                    result.push_back(m_vOrbit[i].nOrbit);
-                    break;
-                }
-        }
+                for (int j = 0; j < vNpt.size(); ++j)
+                    if (std::abs(vNpt[j].fLatitude - fLatitude_) < 1 && (std::abs(vNpt[j].fLongitude - fLongitude_) < 1))
+                    {
+                        result.push_back(m_vOrbit[i].nOrbit);
+                        break;
+                    }
+            }
 
         return std::move(result);
     }

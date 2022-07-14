@@ -20,6 +20,19 @@ namespace GLControl {
 		return true;
 	}
 
+	static System::String^ doubleToString(double fValue_, unsigned nAccuracy_ = 2)
+	{
+		std::string sValue = std::to_string(fValue_);
+		sValue = sValue.substr(0, sValue.find(".") + nAccuracy_ + 1);
+		return gcnew System::String(sValue.c_str());
+	}
+
+	static System::String^ intToString(int fValue_)
+	{
+		std::string sValue = std::to_string(fValue_);
+		return gcnew System::String(sValue.c_str());
+	}
+
 	//----------------------------------------------------------------------------------------------------
 
 	OpenGLControl::OpenGLControl()
@@ -61,13 +74,8 @@ namespace GLControl {
 		if (clickCoords.x > 1000)
 			return System::Void();
 
-		std::string sCoordX = std::to_string(clickCoords.x);
-		sCoordX = sCoordX.substr(0, sCoordX.find(".") + 3);
-		this->textLongitude->Text = gcnew System::String(sCoordX.c_str());
-
-		std::string sCoordY = std::to_string(clickCoords.y);
-		sCoordY = sCoordY.substr(0, sCoordY.find(".") + 3);
-		this->textLatitude->Text  = gcnew System::String(sCoordY.c_str());
+		this->textLongitude->Text = doubleToString(clickCoords.x, 2);
+		this->textLatitude->Text  = doubleToString(clickCoords.y, 2);
 	}
 
 	System::Void OpenGLControl::ScreenMouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
@@ -103,12 +111,12 @@ namespace GLControl {
 
 		m_pBridge->setFileRange(this->trackBarOrbit->Value, this->trackBarOrbit->Value + m_nOrbitQuantity);
 
-		updateOrbitInfo();
+		updateOrbitInfo(m_nOrbitCurrentIndex, true);
 
 		return System::Void();
 	}
 
-	System::Void OpenGLControl::updateOrbitInfo()
+	System::Void OpenGLControl::updateOrbitInfo(unsigned nIndex_, bool bRebiuldList_)
 	{
 		if (!m_pBridge->isInit())
 		{
@@ -116,41 +124,68 @@ namespace GLControl {
 			return System::Void();
 		}
 
-		this->textBoxOrbitStart->Text = gcnew System::String(m_pBridge->getOrbit_by_index(m_nOrbitCurrentIndex).c_str());
-		this->textBoxOrbitEnd->Text = gcnew System::String(m_pBridge->getOrbit_by_index(m_nOrbitCurrentIndex + m_nOrbitQuantity - 1).c_str());
+		this->textBoxOrbitStart->Text = intToString(m_pBridge->getOrbit_by_index(nIndex_));
+		this->textBoxOrbitEnd->Text = intToString(m_pBridge->getOrbit_by_index(nIndex_ + m_nOrbitQuantity - 1));
 
-		this->labelJulianDate->Text = gcnew System::String(std::to_string(m_pBridge->getJulianDate()).c_str());
-		this->labelLocalTime->Text = gcnew System::String(std::to_string(m_pBridge->getLocalTime()).c_str());
+		this->labelJulianDate->Text = doubleToString(m_pBridge->getJulianDate(), 2);
 		this->labelUTC->Text = gcnew System::String(m_pBridge->getUTC().c_str());
-		this->textBoxOrbitQuantity->Text = gcnew System::String(std::to_string(m_nOrbitQuantity).c_str());
-		this->textBoxLS->Text = gcnew System::String(std::to_string(m_pBridge->getLS()).c_str());
-		this->textBoxScale->Text = gcnew System::String(std::to_string(m_pBridge->getScale()).c_str());
+		this->textBoxOrbitQuantity->Text = intToString(m_nOrbitQuantity);
+		this->textBoxLsStart->Text = doubleToString(m_pBridge->getLS(), 2);
+		this->textBoxLsEnd->Text = doubleToString(m_pBridge->getLS(), 2);
+		this->textBoxScale->Text = doubleToString(m_pBridge->getScale(), 2);
+		this->textBoxLocalTimeStart->Text = doubleToString(m_fLocalTimeStart, 2);
+		this->textBoxLocalTimeEnd->Text = doubleToString(m_fLocalTimeEnd, 2);
 
-		this->checkedListOrbit->Items->Clear();
-		for (unsigned i = 0; i < m_nOrbitQuantity; ++i)
+		if (bRebiuldList_)
 		{
-			this->checkedListOrbit->ItemCheck -= gcnew System::Windows::Forms::ItemCheckEventHandler(this, &OpenGLControl::checkedListOrbit_CheckedChanged);
-			this->checkedListOrbit->Items->Add(gcnew System::String(m_pBridge->getOrbit_by_index(m_nOrbitCurrentIndex + i).c_str()), CheckState::Checked);
-			this->checkedListOrbit->ItemCheck += gcnew System::Windows::Forms::ItemCheckEventHandler(this, &OpenGLControl::checkedListOrbit_CheckedChanged);
+			this->checkedListOrbit->Items->Clear();
+			for (unsigned i = 0; i < m_nOrbitQuantity; ++i)
+			{
+				this->checkedListOrbit->ItemCheck -= gcnew System::Windows::Forms::ItemCheckEventHandler(this, &OpenGLControl::checkedListOrbit_CheckedChanged);
+				this->checkedListOrbit->Items->Add(intToString(m_pBridge->getOrbit_by_index(m_nOrbitCurrentIndex + i)), CheckState::Checked);
+				this->checkedListOrbit->ItemCheck += gcnew System::Windows::Forms::ItemCheckEventHandler(this, &OpenGLControl::checkedListOrbit_CheckedChanged);
+			}
 		}
 
 		double fLS;
-		if (!String_to_double(this->textBoxLS->Text, fLS))
+		if (!String_to_double(this->textBoxLsEnd->Text, fLS))
+			fLS = m_nLS;
+		if (!String_to_double(this->textBoxLsStart->Text, fLS))
 			fLS = m_nLS;
 
 		unsigned nLS = unsigned(fLS * 100);
 		m_nLS = nLS;
 
-		m_nOrbitEndIndex = m_nOrbitCurrentIndex + m_nOrbitQuantity - 1;
+		m_nOrbitEndIndex = nIndex_ + m_nOrbitQuantity - 1;
 	}
+
+	System::Void OpenGLControl::buttonFindOrbitByLS_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		return System::Void();
+	}
+
 
 	System::Void OpenGLControl::buttonSetOrbit_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		unsigned nOrbitQuantity = System::Int32::Parse(this->textBoxOrbitQuantity->Text);
 
 		double fLS;
-		if (!String_to_double(this->textBoxLS->Text, fLS))
+		if (!String_to_double(this->textBoxLsEnd->Text, fLS))
 			fLS = m_nLS;
+		if (!String_to_double(this->textBoxLsStart->Text, fLS))
+			fLS = m_nLS;
+
+		double fLocalTimeStart;
+		if (!String_to_double(this->textBoxLocalTimeStart->Text, fLocalTimeStart))
+			fLocalTimeStart = m_fLocalTimeStart;
+		else
+			m_fLocalTimeStart = fLocalTimeStart;
+
+		double fLocalTimeEnd;
+		if (!String_to_double(this->textBoxLocalTimeEnd->Text, fLocalTimeEnd))
+			fLocalTimeEnd = m_fLocalTimeEnd;
+		else
+			m_fLocalTimeEnd = fLocalTimeEnd;
 
 		unsigned nLS = unsigned(fLS * 100);
 
@@ -215,13 +250,13 @@ namespace GLControl {
 		for (unsigned i = 0; i < m_nOrbitQuantity; ++i)
 		{
 			this->checkedListOrbit->ItemCheck -= gcnew System::Windows::Forms::ItemCheckEventHandler(this, &OpenGLControl::checkedListOrbit_CheckedChanged);
-			this->checkedListOrbit->Items->Add(gcnew System::String(m_pBridge->getOrbit_by_index(m_nOrbitCurrentIndex + i).c_str()), CheckState::Checked);
+			this->checkedListOrbit->Items->Add(intToString(m_pBridge->getOrbit_by_index(m_nOrbitCurrentIndex + i)), CheckState::Checked);
 			this->checkedListOrbit->ItemCheck += gcnew System::Windows::Forms::ItemCheckEventHandler(this, &OpenGLControl::checkedListOrbit_CheckedChanged);
 		}
 
 		m_pBridge->setFileRange(m_nOrbitCurrentIndex, m_nOrbitCurrentIndex + m_nOrbitQuantity);
 
-		updateOrbitInfo();
+		updateOrbitInfo(m_nOrbitCurrentIndex, true);
 
 		this->trackBarOrbit->Maximum = m_pBridge->getOrbitCount() - m_nOrbitQuantity - 1;
 		this->trackBarOrbit->Value = m_nOrbitCurrentIndex;
@@ -265,7 +300,7 @@ namespace GLControl {
 			m_vLabel[i]->AutoSize = true;
 			m_vLabel[i]->Size = System::Drawing::Size(25, 13);
 			m_vLabel[i]->TabIndex = i;
-			m_vLabel[i]->Text = gcnew System::String(std::to_string(nPaletteMin + i * (nPaletteMax - nPaletteMin) / (nLabelCount - 1)).c_str());
+			m_vLabel[i]->Text = intToString(nPaletteMin + i * (nPaletteMax - nPaletteMin) / (nLabelCount - 1));
 		}
 
 		return System::Void();
@@ -300,7 +335,7 @@ namespace GLControl {
 
 		m_pBridge->setFileRange(m_nOrbitCurrentIndex, m_nOrbitCurrentIndex + m_nOrbitQuantity);
 
-		updateOrbitInfo();
+		updateOrbitInfo(m_nOrbitCurrentIndex, true);
 
 		this->trackBarOrbit->Value = m_nOrbitCurrentIndex;
 
@@ -316,7 +351,7 @@ namespace GLControl {
 
 		m_pBridge->setFileRange(m_nOrbitCurrentIndex, m_nOrbitCurrentIndex + m_nOrbitQuantity);
 
-		updateOrbitInfo();
+		updateOrbitInfo(m_nOrbitCurrentIndex, true);
 
 		this->trackBarOrbit->Value = m_nOrbitCurrentIndex;
 
@@ -384,7 +419,7 @@ namespace GLControl {
 		m_nScale = unsigned(1.0 * m_nScale / 1.2);
 		m_pBridge->setScale(1.0f * m_nScale / 100.0f);
 
-		updateOrbitInfo();
+		updateOrbitInfo(m_nOrbitCurrentIndex, true);
 
 		return System::Void();
 	}
@@ -394,7 +429,7 @@ namespace GLControl {
 		m_nScale = unsigned(1.0 * m_nScale * 1.2);
 		m_pBridge->setScale(1.0f * m_nScale / 100.0f);
 
-		updateOrbitInfo();
+		updateOrbitInfo(m_nOrbitCurrentIndex, true);
 
 		return System::Void();
 	}
@@ -410,7 +445,7 @@ namespace GLControl {
 	{
 		
 		unsigned nOrbitIndex = m_pBridge->getOrbitIndex_by_OrbitNumber(System::Int32::Parse(this->textBoxOrbitStart->Text));
-		System::String^ sOrbit = gcnew System::String(m_pBridge->getOrbit_by_index(nOrbitIndex).c_str());
+		System::String^ sOrbit = intToString(m_pBridge->getOrbit_by_index(nOrbitIndex));
 
 		if (this->checkedListOrbit->CheckedItems->Contains(sOrbit) == false)
 			this->checkedListOrbit->Items->Add(sOrbit, CheckState::Checked);
@@ -435,27 +470,43 @@ namespace GLControl {
 
 	System::Void OpenGLControl::buttonSearchOrbits_Click(System::Object^ sender, System::EventArgs^ e)
 	{
-		this->checkedListOrbit->Items->Clear();
+		this->buttonSearchOrbits->Click -= gcnew System::EventHandler(this, &OpenGLControl::buttonSearchOrbits_Click);
+		this->buttonSearchOrbits->Enabled = false;
 
 		double fLatitude;
 		double fLonditude;
 
 		if (!String_to_double(this->textLatitude->Text, fLatitude))
+		{
+			toLog("ERROR Can't turn latitude from string to double. ");
 			return System::Void();
+		}
 
 		if (!String_to_double(this->textLongitude->Text, fLonditude))
+		{
+			toLog("ERROR Can't turn londitude from string to double. ");
 			return System::Void();
+		}
 
 		std::vector<unsigned> vOrbit = m_pBridge->getOrbitListByCoord((float)fLatitude, (float)fLonditude);
 
+		this->checkedListOrbit->Items->Clear();
 		for(const auto nOrbit : vOrbit)
-			this->checkedListOrbit->Items->Add(gcnew System::String(std::to_string(nOrbit).c_str()), CheckState::Checked);
+			this->checkedListOrbit->Items->Add(intToString(nOrbit));
 
 		for (auto& nOrbit : vOrbit)
 			nOrbit = m_pBridge->getOrbitIndex_by_OrbitNumber(nOrbit);
 
 		m_pBridge->setFileArray(vOrbit);
 
+		if (!vOrbit.empty())
+		{
+			m_nOrbitCurrentIndex = vOrbit[0];
+			updateOrbitInfo(vOrbit[0], false);
+		}
+
+		this->buttonSearchOrbits->Enabled = true;
+		this->buttonSearchOrbits->Click += gcnew System::EventHandler(this, &OpenGLControl::buttonSearchOrbits_Click);
 
 		return System::Void();
 	}
@@ -467,7 +518,7 @@ namespace GLControl {
 
 		this->trackBarOrbit->Maximum = m_pBridge->getOrbitCount() - m_nOrbitQuantity - 1;
 
-		updateOrbitInfo();
+		updateOrbitInfo(m_nOrbitCurrentIndex, true);
 
 		m_bBridgeInit = true;
 	}
