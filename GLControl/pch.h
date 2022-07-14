@@ -10,6 +10,7 @@
 #include <utility>
 #include <memory>
 #include <vector>
+#include <array>
 #include <string>
 #include <map>
 #include <fstream>
