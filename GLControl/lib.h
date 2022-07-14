@@ -86,7 +86,7 @@ namespace lib
 	}
 
 	template<typename T>
-	bool between(T& value, T min, T max)
+	bool between(T value, T min, T max)
 	{
 		return value <= max && value >= min;
 	}
