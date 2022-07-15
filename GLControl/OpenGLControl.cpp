@@ -67,7 +67,7 @@ namespace GLControl {
 
 		this->textBoxOrbitQuantity->Text = gcnew System::String(std::to_string(m_nOrbitQuantity).c_str());
 
-		for (int i = 0; i < 10; ++i)
+		for (int i = 0; i < 11; ++i)
 		{
 			m_vLabel[i] = (gcnew System::Windows::Forms::Label());
 			this->panelLabels->Controls->Add(m_vLabel[i]);
@@ -281,7 +281,7 @@ namespace GLControl {
 
 		//---------------------------------------------------------------------------
 
-		const unsigned nLabelCount = std::min<unsigned>(this->panelLabels->Size.Height / 30, 10);
+		const unsigned nLabelCount = std::min<unsigned>(this->panelLabels->Size.Height / 30, 11);
 
 		double fFactor = 1.0 * this->panelLabels->Size.Height / (nLabelCount - 1);
 

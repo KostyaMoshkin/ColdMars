@@ -34,7 +34,7 @@ namespace GLControl {
 
 		bool m_bMouseMove = false;
 
-		static  cli::array<System::Windows::Forms::Label^>^ m_vLabel = gcnew cli::array<System::Windows::Forms::Label^>(10);
+		static cli::array<System::Windows::Forms::Label^>^ m_vLabel = gcnew cli::array<System::Windows::Forms::Label^>(11);
 
 	private: System::Windows::Forms::Button^ buttonSetOrbit;
 	private: System::Windows::Forms::Panel^ panelInfo;
