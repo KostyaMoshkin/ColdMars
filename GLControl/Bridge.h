@@ -97,7 +97,7 @@ namespace GL
 		orbit::Snpt getNpt(unsigned nIndex_);
 		int getOrbitAltitudeMax();
 
-		void getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_);
+		void getPalette(std::vector<lib::iPoint3D>& vPalette_, float& fPaletteMin_, float& fPaletteMax_);
 
 		float getScale();
 		void setScale(float fScale_);

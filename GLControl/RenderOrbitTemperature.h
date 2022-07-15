@@ -88,7 +88,7 @@ namespace GL {
 	public:
 		const orbit::OrbitBinReaderPtr getReader();
 
-		void getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_);
+		void getPalette(std::vector<lib::iPoint3D>& vPalette_, float& fPaletteMin_, float& fPaletteMax_);
 
 		unsigned getOrbitIndex_by_OrbitNumber(unsigned nNumber_);
 

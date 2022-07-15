@@ -74,6 +74,28 @@ namespace lib {
 		return true;
 	}
 
+	bool XMLreader::getFloat(XMLnodePtr xNode_, const char* sNode_, float& nValue_)
+	{
+		if (!xNode_)
+			return false;
+
+		std::string sValue = std::string(xNode_->ToElement()->Attribute(sNode_));
+
+		if (sValue.empty())
+			return false;
+
+		try
+		{
+			nValue_ = (float)std::stod(sValue);
+		}
+		catch (const std::exception&)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
 	bool XMLreader::getInt(XMLnodePtr xNode_, int& nValue_)
 	{
 		if (!xNode_)

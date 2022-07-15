@@ -310,9 +310,9 @@ namespace GL
 		return m_pRenderOrbitTemperature->getReader()->getOrbitAltitudeMax();
 	}
 
-	void Bridge::getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_)
+	void Bridge::getPalette(std::vector<lib::iPoint3D>& vPalette_, float& fPaletteMin_, float& fPaletteMax_)
 	{
-		m_pRenderOrbitTemperature->getPalette(vPalette_, nPaletteMin_, nPaletteMax_);
+		m_pRenderOrbitTemperature->getPalette(vPalette_, fPaletteMin_, fPaletteMax_);
 	}
 	float Bridge::getScale()
 	{

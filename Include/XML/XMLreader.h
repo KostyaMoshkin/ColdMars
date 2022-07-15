@@ -35,6 +35,7 @@ namespace lib {
 		bool getNextCurrentNode();
 
 		static bool getFloat(XMLnodePtr xNode_, float& nValue_);
+		static bool getFloat(XMLnodePtr xNode_, const char* sNode_, float& nValue_);
 
 		static bool getInt(XMLnodePtr xNode_, int& nValue_);
 		static bool getInt(XMLnodePtr xNode_, unsigned& nValue_);

@@ -8,10 +8,10 @@ namespace GL {
 
 	class Palette : public lib::CConfig
 	{
-		std::vector<std::pair<int, lib::iPoint3D>> m_vPalette;
+		std::vector<std::pair<float, lib::iPoint3D>> m_vPalette;
 
-		int m_nMinValue = 0;
-		int m_nMaxValue = 0;
+		float m_fMinValue = 0;
+		float m_fMaxValue = 0;
 
 		unsigned m_nActivePaletteID = 1;
 		unsigned m_nPaletteInterpolate = 16;
@@ -31,13 +31,13 @@ namespace GL {
 		void arrange();
 
 	public:
-		void add(int value_, lib::iPoint3D color_);
+		void add(float value_, lib::iPoint3D color_);
 		lib::iPoint3D get(double value_);
 		void getMinMax(float& fMin_, float& fMax_);
 		unsigned getInterpolate();
 		bool fillPalette(unsigned nPaletteID_);
 		bool changePalette(int nPaletteIndex_);
-		void getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_);
+		void getPalette(std::vector<lib::iPoint3D>& vPalette_, float& fPaletteMin_, float& fPaletteMax_);
 	};
 }
 

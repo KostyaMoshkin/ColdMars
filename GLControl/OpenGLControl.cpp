@@ -265,10 +265,10 @@ namespace GLControl {
 	{
 		std::vector<lib::iPoint3D> vPalette;
 
-		int nPaletteMin;
-		int nPaletteMax;
+		float fPaletteMin;
+		float fPaletteMax;
 
-		m_pBridge->getPalette(vPalette, nPaletteMin, nPaletteMax);
+		m_pBridge->getPalette(vPalette, fPaletteMin, fPaletteMax);
 
 		for (int y = 0; y < this->panelLabels->Size.Height; ++y)
 		{
@@ -298,8 +298,8 @@ namespace GLControl {
 			m_vLabel[i]->Size = System::Drawing::Size(25, 13);
 			m_vLabel[i]->TabIndex = i;
 
-			int nPaletteRange = nPaletteMax - nPaletteMin;
-			m_vLabel[i]->Text = doubleToString(nPaletteMin + (double)i * nPaletteRange / (nLabelCount - 1))->Substring(0, nPaletteRange < 10 ? 4 : 3);
+			float fPaletteRange = fPaletteMax - fPaletteMin;
+			m_vLabel[i]->Text = doubleToString(fPaletteMin + fPaletteRange * i / (nLabelCount - 1))->Substring(0, fPaletteRange < 10 ? 4 : 3);
 		}
 
 		return System::Void();

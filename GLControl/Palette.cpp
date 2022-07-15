@@ -53,10 +53,10 @@ namespace GL {
 		while (!!xmlColor)
 		{
 			unsigned nColor = 0;
-			int nTemperature = 0;
+			float fPaletteLevel = 0;
 
-			if (lib::XMLreader::getInt(xmlColor, nColor) && lib::XMLreader::getInt(xmlColor, Key::Level(), nTemperature))
-				add(nTemperature, { nColor >> 16, (nColor & 0x00FF00) >> 8, nColor & 0x0000FF });
+			if (lib::XMLreader::getInt(xmlColor, nColor) && lib::XMLreader::getFloat(xmlColor, Key::Level(), fPaletteLevel))
+				add(fPaletteLevel, { nColor >> 16, (nColor & 0x00FF00) >> 8, nColor & 0x0000FF });
 
 			xmlColor = xmlColor->NextSibling(Key::sColor());
 		}
@@ -82,26 +82,26 @@ namespace GL {
 		return true;
 	}
 
-	void Palette::getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_)
+	void Palette::getPalette(std::vector<lib::iPoint3D>& vPalette_, float& fPaletteMin_, float& fPaletteMax_)
 	{
 		vPalette_.resize(m_nPaletteInterpolate);
 
 		for (int i = 0; i < vPalette_.size(); ++i)
-			vPalette_[i] = get(m_nMinValue + 1.0 * i / m_nPaletteInterpolate * (m_nMaxValue - m_nMinValue));
+			vPalette_[i] = get(m_fMinValue + 1.0 * i / m_nPaletteInterpolate * (m_fMaxValue - m_fMinValue));
 
-		nPaletteMin_ = m_nMinValue;
-		nPaletteMax_ = m_nMaxValue;
+		fPaletteMin_ = m_fMinValue;
+		fPaletteMax_ = m_fMaxValue;
 	}
 
 	void Palette::arrange()
 	{
-		std::sort(m_vPalette.begin(), m_vPalette.end(), [] (std::pair<int, lib::iPoint3D> p1, std::pair<int, lib::iPoint3D> p2) {return p1.first < p2.first;});
+		std::sort(m_vPalette.begin(), m_vPalette.end(), [] (std::pair<float, lib::iPoint3D> p1, std::pair<float, lib::iPoint3D> p2) {return p1.first < p2.first;});
 
-		m_nMinValue = m_vPalette[0].first;
-		m_nMaxValue = m_vPalette[m_vPalette.size() - 1].first;
+		m_fMinValue = m_vPalette[0].first;
+		m_fMaxValue = m_vPalette[m_vPalette.size() - 1].first;
 	}
 
-	void Palette::add(int value_, lib::iPoint3D color_)
+	void Palette::add(float value_, lib::iPoint3D color_)
 	{
 		m_vPalette.push_back({value_, color_});
 		arrange();
@@ -109,15 +109,15 @@ namespace GL {
 
 	lib::iPoint3D Palette::get(double value_)
 	{
-		if (value_ <= m_nMinValue)
+		if (value_ <= m_fMinValue)
 			return m_vPalette[0].second;
 
-		if (value_ >= m_nMaxValue)
+		if (value_ >= m_fMaxValue)
 			return m_vPalette[m_vPalette.size() - 1].second;
 
-		std::pair<int, lib::iPoint3D> paletteElementPrevious = m_vPalette[0];
+		std::pair<float, lib::iPoint3D> paletteElementPrevious = m_vPalette[0];
 
-		for (std::pair<int, lib::iPoint3D> paletteElement : m_vPalette)
+		for (std::pair<float, lib::iPoint3D> paletteElement : m_vPalette)
 		{
 			if (value_ == paletteElement.first)
 				return paletteElement.second;
@@ -128,7 +128,7 @@ namespace GL {
 				continue;
 			}
 
-			int nPaletteValueDistace =  paletteElement.first - paletteElementPrevious.first;
+			double nPaletteValueDistace =  paletteElement.first - paletteElementPrevious.first;
 
 			if (nPaletteValueDistace == 0)
 				continue;
@@ -147,8 +147,8 @@ namespace GL {
 
 	void Palette::getMinMax(float& fMin_, float& fMax_)
 	{
-		fMin_ = (float)m_nMinValue;
-		fMax_ = (float)m_nMaxValue;
+		fMin_ = (float)m_fMinValue;
+		fMax_ = (float)m_fMaxValue;
 	}
 
 	unsigned Palette::getInterpolate()

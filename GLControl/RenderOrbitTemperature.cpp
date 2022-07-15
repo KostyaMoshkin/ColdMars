@@ -364,9 +364,9 @@ namespace GL {
 		return m_pOrbitReader;
 	}
 
-	void RenderOrbitTemperature::getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_)
+	void RenderOrbitTemperature::getPalette(std::vector<lib::iPoint3D>& vPalette_, float& fPaletteMin_, float& fPaletteMax_)
 	{
-		m_pPalette->getPalette(vPalette_, nPaletteMin_, nPaletteMax_);
+		m_pPalette->getPalette(vPalette_, fPaletteMin_, fPaletteMax_);
 	}
 
 	unsigned RenderOrbitTemperature::getOrbitIndex_by_OrbitNumber(unsigned nNumber_)
