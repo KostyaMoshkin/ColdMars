@@ -163,14 +163,6 @@ namespace GLControl {
 			}
 		}
 
-		//double fLS;
-
-		//if (!StringToDouble(this->textBoxLsStart, fLS))
-		//	m_nLsStart = unsigned(fLS * 100);
-
-		//if (!StringToDouble(this->textBoxLsEnd, fLS))
-		//	m_nLsEnd = unsigned(fLS * 100);
-
 		m_nOrbitEndIndex = nIndex_ + m_nOrbitQuantity - 1;
 
 		this->labelAtmosphereLimit->Text = intToString(m_pBridge->getOrbitAltitudeMax());
@@ -198,28 +190,6 @@ namespace GLControl {
 	{
 		unsigned nOrbitQuantity = System::Int32::Parse(this->textBoxOrbitQuantity->Text);
 
-
-		//
-		//
-		//
-
-		/// <summary>
-		/// 
-		/// 
-		/// 
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		/// <returns></returns>
-		//double fLS;
-		//if (!StringToDouble(this->textBoxLsEnd, fLS))
-		//	fLS = m_nLsEnd;
-
-		//if (!StringToDouble(this->textBoxLsStart, fLS))
-		//	fLS = m_nLsStart;
-
-		//unsigned nLS = unsigned(fLS * 100);
-
 		double fScale;
 		if (!StringToDouble(this->textBoxScale, fScale))
 			fScale = (double)m_nScale;
@@ -231,16 +201,6 @@ namespace GLControl {
 			m_nOrbitQuantity = std::min<unsigned>(nOrbitQuantity, m_pBridge->getOrbitCount() - m_nOrbitCurrentIndex - 1);
 
 		}
-		//else if (m_nLS != nLS)
-		//{
-		//	unsigned nFindIndex = m_pBridge->getOrbit_by_LS(nLS);
-
-		//	if (nFindIndex != UINT_MAX)
-		//	{
-		//		m_nOrbitCurrentIndex = nFindIndex;
-		//		m_nLS = nLS;
-		//	}
-		//}
 		else if (m_nScale != nScale)
 		{
 			m_pBridge->setScale(1.0f * nScale / 100.0f);
