@@ -525,6 +525,7 @@ namespace GLControl {
 
 		//m_displayMode = display::mode::temperature;
 
+		checkBoxAtmosphere->Enabled = true;
 		m_pBridge->changeDisplay(display::mode::temperature);
 		this->pictureBox1->Refresh();
 	}
@@ -536,6 +537,7 @@ namespace GLControl {
 
 		//m_displayMode = display::mode::dust;
 
+		checkBoxAtmosphere->Enabled = false;
 		m_pBridge->changeDisplay(display::mode::dust);
 		this->pictureBox1->Refresh();
 	}
@@ -547,6 +549,7 @@ namespace GLControl {
 		
 		//m_displayMode = display::mode::ice;
 
+		checkBoxAtmosphere->Enabled = false;
 		m_pBridge->changeDisplay(display::mode::ice);
 		this->pictureBox1->Refresh();
 	}
