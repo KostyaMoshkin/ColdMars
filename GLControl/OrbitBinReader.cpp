@@ -215,8 +215,21 @@ namespace orbit
             if (std::abs(vNpt[i + 0].fLatitude - vNpt[i + 1].fLatitude) > m_fAngleContinues || std::abs(vNpt[i + 0].fLongitude - vNpt[i + 1].fLongitude > m_fAngleContinues))
                 continue;
 
-            if (!lib::between((double)vNpt[i + 0].fLocalTime, fLocalTimeStart_, fLocalTimeEnd_) && !lib::between((double)vNpt[i + 1].fLocalTime, fLocalTimeStart_, fLocalTimeEnd_))
-                continue;
+            if (fLocalTimeStart_ < fLocalTimeEnd_)
+            {
+                if (!lib::between((double)vNpt[i + 0].fLocalTime, fLocalTimeStart_, fLocalTimeEnd_) && !lib::between((double)vNpt[i + 1].fLocalTime, fLocalTimeStart_, fLocalTimeEnd_))
+                    continue;
+            }
+            else
+            {
+                if (
+                    !lib::between((double)vNpt[i + 0].fLocalTime, 0.0, fLocalTimeEnd_)
+                    && !lib::between((double)vNpt[i + 1].fLocalTime, fLocalTimeStart_, 24.0)
+                    && !lib::between((double)vNpt[i + 0].fLocalTime, 0.0, fLocalTimeEnd_)
+                    && !lib::between((double)vNpt[i + 1].fLocalTime, fLocalTimeStart_, 24.0)
+                    )
+                    continue;
+            }
 
             Interpolator interpolator1(vNpt[i + 0].vLevel.data(), vNpt[i + 0].nLevelCount);
             float fAltitudeMin1 = interpolator1.getAltitudeMin();
@@ -246,10 +259,10 @@ namespace orbit
  
             //-----------------------------------------------------------------------------
 
-            vertex.vDust[0] = exp(-1 * vNpt[i + 0].fDustOpticalDepth);
-            vertex.vDust[1] = exp(-1 * vNpt[i + 1].fDustOpticalDepth);
-            vertex.vIce[0] = exp(-1 * vNpt[i + 0].fIceOpticalDepth);
-            vertex.vIce[1] = exp(-1 * vNpt[i + 1].fIceOpticalDepth);
+            vertex.vDust[0] = vNpt[i + 0].fDustOpticalDepth;
+            vertex.vDust[1] = vNpt[i + 1].fDustOpticalDepth;
+            vertex.vIce[0]  = vNpt[i + 0].fIceOpticalDepth;
+            vertex.vIce[1]  = vNpt[i + 1].fIceOpticalDepth;
  
             std::vector<float> vTemperature1;
             std::vector<float> vTemperature2;
