@@ -35,8 +35,6 @@ namespace GLControl {
 
 		bool m_bMouseMove = false;
 
-		display::mode m_displayMode = display::mode::temperature;
-
 		static  cli::array<System::Windows::Forms::Label^>^ m_vLabel = gcnew cli::array<System::Windows::Forms::Label^>(10);
 
 	private: System::Windows::Forms::Button^ buttonSetOrbit;

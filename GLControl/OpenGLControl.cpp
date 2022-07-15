@@ -3,7 +3,7 @@
 
 namespace GLControl {
 
-	static bool String_to_double(System::String^ str_, double& value_)
+	static bool StringToDouble(System::Windows::Forms::TextBox^ control_, double& value_)
 	{
 		auto style = System::Globalization::NumberStyles::AllowParentheses |
 			System::Globalization::NumberStyles::AllowLeadingWhite |
@@ -12,11 +12,28 @@ namespace GLControl {
 			System::Globalization::NumberStyles::AllowDecimalPoint |
 			System::Globalization::NumberStyles::AllowLeadingSign;
 
-		if (!System::Double::TryParse(str_, style, System::Globalization::CultureInfo::CurrentCulture, value_) &&
-			!System::Double::TryParse(str_, style, System::Globalization::CultureInfo::InvariantCulture, value_)
+		if (!System::Double::TryParse(control_->Text, style, System::Globalization::CultureInfo::CurrentCulture, value_) &&
+			!System::Double::TryParse(control_->Text, style, System::Globalization::CultureInfo::InvariantCulture, value_)
 			)
+		{
+			control_->BackColor = System::Drawing::Color::MistyRose;
 			return false;
+		}
 
+		control_->BackColor = System::Drawing::Color::White;
+		return true;
+	}
+
+	static bool StringToInt(System::Windows::Forms::TextBox^ control_, int& value_, int nDefault_ = 0)
+	{
+		if (!System::Int32::TryParse(control_->Text, value_))
+		{
+			value_ = nDefault_;
+			control_->BackColor = System::Drawing::Color::MistyRose;
+			return false;
+		}
+
+		control_->BackColor = System::Drawing::Color::White;
 		return true;
 	}
 
@@ -148,9 +165,9 @@ namespace GLControl {
 		}
 
 		double fLS;
-		if (!String_to_double(this->textBoxLsEnd->Text, fLS))
+		if (!StringToDouble(this->textBoxLsEnd, fLS))
 			fLS = m_nLS;
-		if (!String_to_double(this->textBoxLsStart->Text, fLS))
+		if (!StringToDouble(this->textBoxLsStart, fLS))
 			fLS = m_nLS;
 
 		unsigned nLS = unsigned(fLS * 100);
@@ -169,13 +186,13 @@ namespace GLControl {
 	void OpenGLControl::setLocalTimeFilter()
 	{
 		double fLocalTimeStart;
-		if (!String_to_double(this->textBoxLocalTimeStart->Text, fLocalTimeStart))
+		if (!StringToDouble(this->textBoxLocalTimeStart, fLocalTimeStart))
 			fLocalTimeStart = m_fLocalTimeStart;
 		else
 			m_fLocalTimeStart = fLocalTimeStart;
 
 		double fLocalTimeEnd;
-		if (!String_to_double(this->textBoxLocalTimeEnd->Text, fLocalTimeEnd))
+		if (!StringToDouble(this->textBoxLocalTimeEnd, fLocalTimeEnd))
 			fLocalTimeEnd = m_fLocalTimeEnd;
 		else
 			m_fLocalTimeEnd = fLocalTimeEnd;
@@ -189,15 +206,16 @@ namespace GLControl {
 		unsigned nOrbitQuantity = System::Int32::Parse(this->textBoxOrbitQuantity->Text);
 
 		double fLS;
-		if (!String_to_double(this->textBoxLsEnd->Text, fLS))
+		if (!StringToDouble(this->textBoxLsEnd, fLS))
 			fLS = m_nLS;
-		if (!String_to_double(this->textBoxLsStart->Text, fLS))
+
+		if (!StringToDouble(this->textBoxLsStart, fLS))
 			fLS = m_nLS;
 
 		unsigned nLS = unsigned(fLS * 100);
 
 		double fScale;
-		if (!String_to_double(this->textBoxScale->Text, fScale))
+		if (!StringToDouble(this->textBoxScale, fScale))
 			fScale = (double)m_nScale;
 
 		unsigned nScale = unsigned(fScale * 100);
@@ -226,8 +244,14 @@ namespace GLControl {
 		else
 		{
 			//  Здесь проверяется какой номер изменился и менять ли количество отображаемых обит
-			int nOrbitStartNumber = System::Int32::Parse(this->textBoxOrbitStart->Text);
-			int nOrbitEndNumber = System::Int32::Parse(this->textBoxOrbitEnd->Text);
+
+			int nOrbitStartNumber;
+			if (!StringToInt(this->textBoxOrbitStart, nOrbitStartNumber, m_pBridge->getOrbit_by_index(m_nOrbitCurrentIndex)))
+				return;
+
+			int nOrbitEndNumber;
+			if (!StringToInt(this->textBoxOrbitEnd, nOrbitEndNumber, m_pBridge->getOrbit_by_index(m_nOrbitCurrentIndex + m_nOrbitQuantity - 1)))
+				return;
 
 			unsigned nOrbitCurrentIndex = m_pBridge->getOrbitIndex_by_OrbitNumber(nOrbitStartNumber);
 
@@ -483,13 +507,13 @@ namespace GLControl {
 		double fLatitude;
 		double fLonditude;
 
-		if (!String_to_double(this->textLatitude->Text, fLatitude))
+		if (!StringToDouble(this->textLatitude, fLatitude))
 		{
 			toLog("ERROR Can't turn latitude from string to double. ");
 			return System::Void();
 		}
 
-		if (!String_to_double(this->textLongitude->Text, fLonditude))
+		if (!StringToDouble(this->textLongitude, fLonditude))
 		{
 			toLog("ERROR Can't turn londitude from string to double. ");
 			return System::Void();
@@ -523,8 +547,6 @@ namespace GLControl {
 		if (!this->radioButtonTemperature->Checked)
 			return;
 
-		//m_displayMode = display::mode::temperature;
-
 		checkBoxAtmosphere->Enabled = true;
 		m_pBridge->changeDisplay(display::mode::temperature);
 		this->pictureBox1->Refresh();
@@ -535,8 +557,6 @@ namespace GLControl {
 		if (!this->radioButtonDust->Checked)
 			return;
 
-		//m_displayMode = display::mode::dust;
-
 		checkBoxAtmosphere->Enabled = false;
 		m_pBridge->changeDisplay(display::mode::dust);
 		this->pictureBox1->Refresh();
@@ -546,8 +566,6 @@ namespace GLControl {
 	{
 		if(!this->radioButtonIce->Checked)
 			return;
-		
-		//m_displayMode = display::mode::ice;
 
 		checkBoxAtmosphere->Enabled = false;
 		m_pBridge->changeDisplay(display::mode::ice);
