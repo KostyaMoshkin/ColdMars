@@ -22,7 +22,8 @@ namespace GLControl {
 
 		unsigned m_nOrbitCurrentIndex = 0;
 		unsigned m_nOrbitQuantity = 2;
-		unsigned m_nLS = 0;
+		unsigned m_nLsStart = 0;
+		unsigned m_nLsEnd = 0;
 
 		double m_fLocalTimeStart = 0.0f;
 		double m_fLocalTimeEnd   = 24.0f;
