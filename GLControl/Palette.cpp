@@ -15,13 +15,6 @@ namespace GL {
 
 	bool Palette::init()
 	{
-		lib::XMLnodePtr xmlPaletteDefault = lib::XMLreader::getNode(getConfig(), Key::sPaletteDefault());
-
-		//if (!!xmlPaletteDefault && !lib::XMLreader::getInt(xmlPaletteDefault, m_nActivePaletteID))
-		//	m_nActivePaletteID = 1;
-
-		//---------------------------------------------------------------------------------------
-
 		lib::XMLnodePtr xmlPalette = lib::XMLreader::getNode(getConfig(), Key::sPalette());
 		while (!!xmlPalette)
 		{
@@ -62,7 +55,7 @@ namespace GL {
 			unsigned nColor = 0;
 			int nTemperature = 0;
 
-			if (lib::XMLreader::getInt(xmlColor, nColor) && lib::XMLreader::getInt(xmlColor, Key::sTemperature(), nTemperature))
+			if (lib::XMLreader::getInt(xmlColor, nColor) && lib::XMLreader::getInt(xmlColor, Key::Level(), nTemperature))
 				add(nTemperature, { nColor >> 16, (nColor & 0x00FF00) >> 8, nColor & 0x0000FF });
 
 			xmlColor = xmlColor->NextSibling(Key::sColor());
