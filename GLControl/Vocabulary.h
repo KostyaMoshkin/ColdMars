@@ -17,12 +17,11 @@ namespace GL {
 	namespace Key {
 		static const char* OrbitDir() { return "OrbitDir"; }
 
-		static const char* sPalette()			{ return "Palette";			}
-		static const char* sPaletteDefault()	{ return "PaletteDefault";	}
-		static const char* sId()				{ return "id";				}
-		static const char* sTemperature()		{ return "Temperature";		}
-		static const char* sColor()				{ return "Color";			}
-		static const char* sInterpolate()		{ return "interpolate";		}
+		static const char* sPalette()		{ return "Palette";		}
+		static const char* sId()			{ return "id";			}
+		static const char* Level()			{ return "Level";		}
+		static const char* sColor()			{ return "Color";		}
+		static const char* sInterpolate()	{ return "interpolate";	}
 
 		static const char* Albedo()			{ return "Albedo";		}
 		static const char* MarsTone()		{ return "MarsTone";	}
@@ -31,7 +30,7 @@ namespace GL {
 		static const char* DigitsColor()	{ return "DigitsColor";	}
 		static const char* BaseHeight()		{ return "BaseHeight";	}
 
-		static const char* ViewAngle()	{ return "ViewAngle";	}
+		static const char* ViewAngle()		{ return "ViewAngle";	}
 	}
 }
 
