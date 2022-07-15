@@ -300,6 +300,11 @@ namespace GL
 		return m_pRenderOrbitTemperature->getReader()->getOrbitListByCoord(fLatitude_, fLongitude_);
 	}
 
+	std::vector<unsigned> Bridge::getOrbitListByLs(float fLsStart_, float fLsEnd_) const
+	{
+		return m_pRenderOrbitTemperature->getReader()->getOrbitListByLs(fLsStart_, fLsEnd_);
+	}
+
 	unsigned Bridge::getSpectrumNumb()
 	{
 		return m_pRenderOrbitTemperature->getReader()->getNpt().nSpectrumNumb;

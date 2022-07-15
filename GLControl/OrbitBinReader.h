@@ -44,6 +44,7 @@ namespace orbit
 		void setFileIndex(unsigned nFirstIndex_, std::vector<SPairLevel>& vLevelData_, double fLocalTimeStart_, double fLocalTimeEnd_);
 		size_t getOrbitCount();
 		std::vector<unsigned> getOrbitListByCoord(float fLatitude_, float fLongitude_);
+		std::vector<unsigned> getOrbitListByLs(float fLsStart_, float fLsEnd_);
 		Snpt getNpt();
 
 	public:

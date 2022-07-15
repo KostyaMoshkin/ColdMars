@@ -299,6 +299,26 @@ namespace orbit
         return std::move(result);
     }
 
+    std::vector<unsigned> OrbitBinReader::getOrbitListByLs(float fLsStart_, float fLsEnd_)
+    {
+        std::vector<unsigned> result;
+
+#pragma omp parallel for
+            for (int i = 0; i < m_vOrbit.size(); ++i)
+            {
+                std::vector<Snpt> vNpt = get_vNpt(m_vOrbit[i]);
+
+                for (int j = 0; j < vNpt.size(); ++j)
+                    if (vNpt[j].fLS > fLsStart_ && vNpt[j].fLS < fLsEnd_)
+                    {
+                        result.push_back(m_vOrbit[i].nOrbit);
+                        break;
+                    }
+            }
+
+        return std::move(result);
+    }
+
     Snpt OrbitBinReader::getNpt()
     {
         return m_Snpt;

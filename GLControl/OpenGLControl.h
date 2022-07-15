@@ -22,8 +22,6 @@ namespace GLControl {
 
 		unsigned m_nOrbitCurrentIndex = 0;
 		unsigned m_nOrbitQuantity = 2;
-		unsigned m_nLsStart = 0;
-		unsigned m_nLsEnd = 0;
 
 		double m_fLocalTimeStart = 0.0f;
 		double m_fLocalTimeEnd   = 24.0f;
@@ -79,7 +77,9 @@ namespace GLControl {
 	private: System::Windows::Forms::RadioButton^ radioButtonDust;
 	private: System::Windows::Forms::RadioButton^ radioButtonTemperature;
 	private: System::Windows::Forms::Button^ buttonFindOrbitByLS;
-	//private: System::Windows::Forms::Button^ buttonAddOrbit;
+	private: System::Windows::Forms::Label^ labelLS;
+	private: System::Windows::Forms::Label^ label13;
+		   //private: System::Windows::Forms::Button^ buttonAddOrbit;
 	private: System::Windows::Forms::TextBox^ textBoxLocalTimeStart;	
 	//private: System::Windows::Forms::TextBox^ textBox2;
 	//private: System::Windows::Forms::TextBox^ textBox1;
@@ -178,6 +178,8 @@ namespace GLControl {
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->panelLabels = (gcnew System::Windows::Forms::Panel());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
+			this->label13 = (gcnew System::Windows::Forms::Label());
+			this->labelLS = (gcnew System::Windows::Forms::Label());
 			this->panelControl->SuspendLayout();
 			this->panelObitList->SuspendLayout();
 			this->panelInfo->SuspendLayout();
@@ -212,9 +214,9 @@ namespace GLControl {
 			this->panelObitList->Controls->Add(this->label4);
 			this->panelObitList->Controls->Add(this->checkedListOrbit);
 			this->panelObitList->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->panelObitList->Location = System::Drawing::Point(0, 425);
+			this->panelObitList->Location = System::Drawing::Point(0, 450);
 			this->panelObitList->Name = L"panelObitList";
-			this->panelObitList->Size = System::Drawing::Size(297, 267);
+			this->panelObitList->Size = System::Drawing::Size(297, 242);
 			this->panelObitList->TabIndex = 3;
 			// 
 			// label10
@@ -293,12 +295,14 @@ namespace GLControl {
 			this->checkedListOrbit->FormattingEnabled = true;
 			this->checkedListOrbit->Location = System::Drawing::Point(16, 12);
 			this->checkedListOrbit->Name = L"checkedListOrbit";
-			this->checkedListOrbit->Size = System::Drawing::Size(104, 229);
+			this->checkedListOrbit->Size = System::Drawing::Size(104, 199);
 			this->checkedListOrbit->TabIndex = 0;
 			this->checkedListOrbit->ItemCheck += gcnew System::Windows::Forms::ItemCheckEventHandler(this, &OpenGLControl::checkedListOrbit_CheckedChanged);
 			// 
 			// panelInfo
 			// 
+			this->panelInfo->Controls->Add(this->labelLS);
+			this->panelInfo->Controls->Add(this->label13);
 			this->panelInfo->Controls->Add(this->labelAtmosphereLimit);
 			this->panelInfo->Controls->Add(this->label8);
 			this->panelInfo->Controls->Add(this->labelUTC);
@@ -308,7 +312,7 @@ namespace GLControl {
 			this->panelInfo->Dock = System::Windows::Forms::DockStyle::Top;
 			this->panelInfo->Location = System::Drawing::Point(0, 351);
 			this->panelInfo->Name = L"panelInfo";
-			this->panelInfo->Size = System::Drawing::Size(297, 74);
+			this->panelInfo->Size = System::Drawing::Size(297, 99);
 			this->panelInfo->TabIndex = 2;
 			// 
 			// labelAtmosphereLimit
@@ -715,6 +719,24 @@ namespace GLControl {
 			// timer1
 			// 
 			this->timer1->Tick += gcnew System::EventHandler(this, &OpenGLControl::timer1_Tick);
+			// 
+			// label13
+			// 
+			this->label13->AutoSize = true;
+			this->label13->Location = System::Drawing::Point(73, 73);
+			this->label13->Name = L"label13";
+			this->label13->Size = System::Drawing::Size(20, 13);
+			this->label13->TabIndex = 12;
+			this->label13->Text = L"LS";
+			// 
+			// labelLS
+			// 
+			this->labelLS->AutoSize = true;
+			this->labelLS->Location = System::Drawing::Point(101, 73);
+			this->labelLS->Name = L"labelLS";
+			this->labelLS->Size = System::Drawing::Size(41, 13);
+			this->labelLS->TabIndex = 13;
+			this->labelLS->Text = L"label14";
 			// 
 			// OpenGLControl
 			// 

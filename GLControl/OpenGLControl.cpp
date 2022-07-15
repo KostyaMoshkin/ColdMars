@@ -147,8 +147,7 @@ namespace GLControl {
 		this->labelJulianDate->Text = doubleToString(m_pBridge->getJulianDate(), 2);
 		this->labelUTC->Text = gcnew System::String(m_pBridge->getUTC().c_str());
 		this->textBoxOrbitQuantity->Text = intToString(m_nOrbitQuantity);
-		this->textBoxLsStart->Text = doubleToString(m_pBridge->getLS(), 2);
-		this->textBoxLsEnd->Text = doubleToString(m_pBridge->getLS(), 2);
+		this->labelLS->Text = doubleToString(m_pBridge->getLS(), 2);
 		this->textBoxScale->Text = doubleToString(m_pBridge->getScale(), 2);
 		this->textBoxLocalTimeStart->Text = doubleToString(m_fLocalTimeStart, 2);
 		this->textBoxLocalTimeEnd->Text = doubleToString(m_fLocalTimeEnd, 2);
@@ -164,22 +163,17 @@ namespace GLControl {
 			}
 		}
 
-		double fLS;
+		//double fLS;
 
-		if (!StringToDouble(this->textBoxLsStart, fLS))
-			m_nLsStart = unsigned(fLS * 100);
+		//if (!StringToDouble(this->textBoxLsStart, fLS))
+		//	m_nLsStart = unsigned(fLS * 100);
 
-		if (!StringToDouble(this->textBoxLsEnd, fLS))
-			m_nLsEnd = unsigned(fLS * 100);
+		//if (!StringToDouble(this->textBoxLsEnd, fLS))
+		//	m_nLsEnd = unsigned(fLS * 100);
 
 		m_nOrbitEndIndex = nIndex_ + m_nOrbitQuantity - 1;
 
 		this->labelAtmosphereLimit->Text = intToString(m_pBridge->getOrbitAltitudeMax());
-	}
-
-	System::Void OpenGLControl::buttonFindOrbitByLS_Click(System::Object^ sender, System::EventArgs^ e)
-	{
-		return System::Void();
 	}
 
 	void OpenGLControl::setLocalTimeFilter()
@@ -204,14 +198,27 @@ namespace GLControl {
 	{
 		unsigned nOrbitQuantity = System::Int32::Parse(this->textBoxOrbitQuantity->Text);
 
-		double fLS;
-		if (!StringToDouble(this->textBoxLsEnd, fLS))
-			fLS = m_nLsEnd;
 
-		if (!StringToDouble(this->textBoxLsStart, fLS))
-			fLS = m_nLsStart;
+		//
+		//
+		//
 
-		unsigned nLS = unsigned(fLS * 100);
+		/// <summary>
+		/// 
+		/// 
+		/// 
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		/// <returns></returns>
+		//double fLS;
+		//if (!StringToDouble(this->textBoxLsEnd, fLS))
+		//	fLS = m_nLsEnd;
+
+		//if (!StringToDouble(this->textBoxLsStart, fLS))
+		//	fLS = m_nLsStart;
+
+		//unsigned nLS = unsigned(fLS * 100);
 
 		double fScale;
 		if (!StringToDouble(this->textBoxScale, fScale))
@@ -496,6 +503,48 @@ namespace GLControl {
 		}
 
 		m_pBridge->setFileArray(vOrbit);
+	}
+
+	System::Void OpenGLControl::buttonFindOrbitByLS_Click(System::Object^ sender, System::EventArgs^ e)
+	{
+		this->buttonFindOrbitByLS->Click -= gcnew System::EventHandler(this, &OpenGLControl::buttonFindOrbitByLS_Click);
+		this->buttonFindOrbitByLS->Enabled = false;
+
+
+		double fLsStart;
+		if (!StringToDouble(this->textBoxLsStart, fLsStart))
+		{
+			this->buttonFindOrbitByLS->Click += gcnew System::EventHandler(this, &OpenGLControl::buttonFindOrbitByLS_Click);
+			this->buttonFindOrbitByLS->Enabled = true;
+
+			return System::Void();
+		}
+
+		double fLsEnd;
+		if (!StringToDouble(this->textBoxLsEnd, fLsEnd))
+		{
+			this->buttonFindOrbitByLS->Click += gcnew System::EventHandler(this, &OpenGLControl::buttonFindOrbitByLS_Click);
+			this->buttonFindOrbitByLS->Enabled = true;
+
+			return System::Void();
+		}
+
+		std::vector<unsigned> vOrbit = m_pBridge->getOrbitListByLs((float)fLsStart, (float)fLsEnd);
+
+		std::sort(vOrbit.begin(), vOrbit.end());
+
+		if (!vOrbit.empty())
+		{
+			m_nOrbitCurrentIndex = m_pBridge->getOrbitIndex_by_OrbitNumber(vOrbit[0]);
+			m_nOrbitQuantity = vOrbit.size();
+		}
+
+		updateOrbitInfo(m_nOrbitCurrentIndex, false);
+
+		this->buttonFindOrbitByLS->Click += gcnew System::EventHandler(this, &OpenGLControl::buttonFindOrbitByLS_Click);
+		this->buttonFindOrbitByLS->Enabled = true;
+
+		return System::Void();
 	}
 
 	System::Void OpenGLControl::buttonSearchOrbits_Click(System::Object^ sender, System::EventArgs^ e)

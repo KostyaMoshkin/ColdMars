@@ -92,6 +92,7 @@ namespace GL
 		ControlContextPtr getContext();
 
 		std::vector<unsigned> getOrbitListByCoord(float fLatitude_, float fLongitude_) const;
+		std::vector<unsigned> getOrbitListByLs(float fLatitude_, float fLongitude_) const;
 
 	public:
 		unsigned getSpectrumNumb();
