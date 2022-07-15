@@ -36,7 +36,6 @@ namespace GL {
 
 namespace megdr {
 	namespace Key {
-		static const char* nMegdrDefault()		{ return "MegdrDefault";	}
 		static const char* sMegdr()				{ return "Megdr";			}
 		static const char* sRadiusFile()		{ return "RadiusFile";		}
 		static const char* sTopographyFile()	{ return "TopographyFile";	}
