@@ -307,7 +307,7 @@ namespace GLControl {
 			m_vLabel[i]->AutoSize = true;
 			m_vLabel[i]->Size = System::Drawing::Size(25, 13);
 			m_vLabel[i]->TabIndex = i;
-			m_vLabel[i]->Text = intToString(nPaletteMin + i * (nPaletteMax - nPaletteMin) / (nLabelCount - 1));
+			m_vLabel[i]->Text = doubleToString(nPaletteMin + (double)i * (nPaletteMax - nPaletteMin) / (nLabelCount - 1))->Substring(0, 3);
 		}
 
 		return System::Void();
@@ -526,6 +526,7 @@ namespace GLControl {
 		//m_displayMode = display::mode::temperature;
 
 		m_pBridge->changeDisplay(display::mode::temperature);
+		this->pictureBox1->Refresh();
 	}
 
 	System::Void OpenGLControl::radioButtonDust_CheckedChanged(System::Object^ sender, System::EventArgs^ e)
@@ -536,6 +537,7 @@ namespace GLControl {
 		//m_displayMode = display::mode::dust;
 
 		m_pBridge->changeDisplay(display::mode::dust);
+		this->pictureBox1->Refresh();
 	}
 
 	System::Void OpenGLControl::radioButtonIce_CheckedChanged(System::Object^ sender, System::EventArgs^ e)
@@ -546,6 +548,7 @@ namespace GLControl {
 		//m_displayMode = display::mode::ice;
 
 		m_pBridge->changeDisplay(display::mode::ice);
+		this->pictureBox1->Refresh();
 	}
 
 
