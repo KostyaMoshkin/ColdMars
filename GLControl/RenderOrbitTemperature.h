@@ -92,8 +92,6 @@ namespace GL {
 
 		unsigned getOrbitIndex_by_OrbitNumber(unsigned nNumber_);
 
-		unsigned getOrbit_by_LS(unsigned nNumber_);
-
 		void setIncludeAtmosphere(bool bInclude_);
 
 		void setLocalTimeFilter(double fLocalTimeStart_, double fLocalTimeEnd_);

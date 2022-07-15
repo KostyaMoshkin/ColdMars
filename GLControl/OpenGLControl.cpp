@@ -144,10 +144,10 @@ namespace GLControl {
 		this->textBoxOrbitStart->Text = intToString(m_pBridge->getOrbit_by_index(nIndex_));
 		this->textBoxOrbitEnd->Text = intToString(m_pBridge->getOrbit_by_index(nIndex_ + m_nOrbitQuantity - 1));
 
-		this->labelJulianDate->Text = doubleToString(m_pBridge->getJulianDate(), 2);
-		this->labelUTC->Text = gcnew System::String(m_pBridge->getUTC().c_str());
+		this->labelJulianDate->Text = doubleToString(m_pBridge->getNpt(nIndex_).fJulianDate, 2);
+		this->labelUTC->Text = gcnew System::String(m_pBridge->getNpt(nIndex_).sUTC.c_str());
 		this->textBoxOrbitQuantity->Text = intToString(m_nOrbitQuantity);
-		this->labelLS->Text = doubleToString(m_pBridge->getLS(), 2);
+		this->labelLS->Text = doubleToString(m_pBridge->getNpt(nIndex_).fLS, 2);
 		this->textBoxScale->Text = doubleToString(m_pBridge->getScale(), 2);
 		this->textBoxLocalTimeStart->Text = doubleToString(m_fLocalTimeStart, 2);
 		this->textBoxLocalTimeEnd->Text = doubleToString(m_fLocalTimeEnd, 2);
@@ -297,7 +297,9 @@ namespace GLControl {
 			m_vLabel[i]->AutoSize = true;
 			m_vLabel[i]->Size = System::Drawing::Size(25, 13);
 			m_vLabel[i]->TabIndex = i;
-			m_vLabel[i]->Text = doubleToString(nPaletteMin + (double)i * (nPaletteMax - nPaletteMin) / (nLabelCount - 1))->Substring(0, 3);
+
+			int nPaletteRange = nPaletteMax - nPaletteMin;
+			m_vLabel[i]->Text = doubleToString(nPaletteMin + (double)i * nPaletteRange / (nLabelCount - 1))->Substring(0, nPaletteRange < 10 ? 4 : 3);
 		}
 
 		return System::Void();
@@ -496,8 +498,11 @@ namespace GLControl {
 		if (!vOrbit.empty())
 		{
 			m_nOrbitCurrentIndex = m_pBridge->getOrbitIndex_by_OrbitNumber(vOrbit[0]);
-			m_nOrbitQuantity = vOrbit.size();
+			m_nOrbitQuantity = (unsigned)vOrbit.size();
+			this->buttonFindOrbitByLS->BackColor = System::Drawing::Color::LightGray;
 		}
+		else
+			this->buttonFindOrbitByLS->BackColor = System::Drawing::Color::MistyRose;
 
 		updateOrbitInfo(m_nOrbitCurrentIndex, false);
 

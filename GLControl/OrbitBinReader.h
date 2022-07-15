@@ -20,7 +20,7 @@ namespace orbit
 
 		std::vector<char> m_vLevelReadBuffer;
 
-		Snpt m_Snpt;
+		std::shared_ptr<Snpt> m_pSnpt = nullptr;
 
 		unsigned m_nAltitudeMAX = 90;   //  km
 		unsigned m_nInterpolateCount = 30;
@@ -45,12 +45,11 @@ namespace orbit
 		size_t getOrbitCount();
 		std::vector<unsigned> getOrbitListByCoord(float fLatitude_, float fLongitude_);
 		std::vector<unsigned> getOrbitListByLs(float fLsStart_, float fLsEnd_);
-		Snpt getNpt();
+		Snpt getNpt(unsigned nIndex_);
 
 	public:
 		unsigned getOrbitNumber_by_OrbitIndex(unsigned nNumber_);
 		unsigned getOrbitIndex_by_OrbitNumber(unsigned nNumber_);
-		unsigned getOrbit_by_LS(unsigned nNumber_);
 		int getOrbitAltitudeMax();
 
 	};

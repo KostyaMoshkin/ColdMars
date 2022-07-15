@@ -208,7 +208,7 @@ namespace orbit
 
         std::vector<Snpt> vNpt = get_vNpt(m_vOrbit[nIndex]);
  
-        m_Snpt = vNpt[0];
+        m_pSnpt = std::make_shared<Snpt>(vNpt[0]);
  
         for (unsigned i = 0; i < vNpt.size() - 1; ++i)
         {
@@ -319,9 +319,12 @@ namespace orbit
         return std::move(result);
     }
 
-    Snpt OrbitBinReader::getNpt()
+    Snpt OrbitBinReader::getNpt(unsigned nIndex_)
     {
-        return m_Snpt;
+        if (!!m_pSnpt)
+            return *m_pSnpt;
+
+        return get_vNpt(m_vOrbit[nIndex_])[0];
     }
 
     unsigned OrbitBinReader::getOrbitNumber_by_OrbitIndex(unsigned nIndex_)
@@ -339,18 +342,6 @@ namespace orbit
             return m_mOrbit[nNumber_];
 
         for (auto const& [key, value] : m_mOrbit)
-            if (key >= (int)nNumber_)
-                return value;
-
-        return UINT_MAX;
-    }
-
-    unsigned OrbitBinReader::getOrbit_by_LS(unsigned nNumber_)
-    {
-        if (m_mLS.find(nNumber_) != m_mLS.end())
-            return m_mLS[nNumber_];
-
-        for (auto const& [key, value] : m_mLS)
             if (key >= (int)nNumber_)
                 return value;
 

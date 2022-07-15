@@ -275,11 +275,6 @@ namespace GL
 		return m_pRenderOrbitTemperature->getReader()->getOrbitNumber_by_OrbitIndex(nIndex_);
 	}
 
-	unsigned Bridge::getOrbit_by_LS(unsigned nIndex_)
-	{
-		return m_pRenderOrbitTemperature->getOrbit_by_LS(nIndex_);
-	}
-
 	unsigned Bridge::getOrbitIndex_by_OrbitNumber(unsigned nIndex_)
 	{
 		return m_pRenderOrbitTemperature->getOrbitIndex_by_OrbitNumber(nIndex_);
@@ -305,29 +300,9 @@ namespace GL
 		return m_pRenderOrbitTemperature->getReader()->getOrbitListByLs(fLsStart_, fLsEnd_);
 	}
 
-	unsigned Bridge::getSpectrumNumb()
+	orbit::Snpt Bridge::getNpt(unsigned nIndex_)
 	{
-		return m_pRenderOrbitTemperature->getReader()->getNpt().nSpectrumNumb;
-	}
-
-	float Bridge::getLS()
-	{
-		return m_pRenderOrbitTemperature->getReader()->getNpt().fLS;
-	}
-
-	float Bridge::getJulianDate()
-	{
-		return m_pRenderOrbitTemperature->getReader()->getNpt().fJulianDate;
-	}
-
-	float Bridge::getLocalTime()
-	{
-		return m_pRenderOrbitTemperature->getReader()->getNpt().fLocalTime;
-	}
-
-	std::string Bridge::getUTC()
-	{
-		return m_pRenderOrbitTemperature->getReader()->getNpt().sUTC;
+		return m_pRenderOrbitTemperature->getReader()->getNpt(nIndex_);
 	}
 
 	int Bridge::getOrbitAltitudeMax()

@@ -374,11 +374,6 @@ namespace GL {
 		return m_pOrbitReader->getOrbitIndex_by_OrbitNumber(nNumber_);
 	}
 
-	unsigned RenderOrbitTemperature::getOrbit_by_LS(unsigned nNumber_)
-	{
-		return m_pOrbitReader->getOrbit_by_LS(nNumber_);
-	}
-
 	void RenderOrbitTemperature::setIncludeAtmosphere(bool bInclude_)
 	{
 		m_bIncludeAtmosphere = bInclude_;

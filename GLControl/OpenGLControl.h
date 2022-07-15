@@ -136,6 +136,8 @@ namespace GLControl {
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->checkedListOrbit = (gcnew System::Windows::Forms::CheckedListBox());
 			this->panelInfo = (gcnew System::Windows::Forms::Panel());
+			this->labelLS = (gcnew System::Windows::Forms::Label());
+			this->label13 = (gcnew System::Windows::Forms::Label());
 			this->labelAtmosphereLimit = (gcnew System::Windows::Forms::Label());
 			this->label8 = (gcnew System::Windows::Forms::Label());
 			this->labelUTC = (gcnew System::Windows::Forms::Label());
@@ -178,8 +180,6 @@ namespace GLControl {
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->panelLabels = (gcnew System::Windows::Forms::Panel());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
-			this->label13 = (gcnew System::Windows::Forms::Label());
-			this->labelLS = (gcnew System::Windows::Forms::Label());
 			this->panelControl->SuspendLayout();
 			this->panelObitList->SuspendLayout();
 			this->panelInfo->SuspendLayout();
@@ -314,6 +314,24 @@ namespace GLControl {
 			this->panelInfo->Name = L"panelInfo";
 			this->panelInfo->Size = System::Drawing::Size(297, 99);
 			this->panelInfo->TabIndex = 2;
+			// 
+			// labelLS
+			// 
+			this->labelLS->AutoSize = true;
+			this->labelLS->Location = System::Drawing::Point(101, 73);
+			this->labelLS->Name = L"labelLS";
+			this->labelLS->Size = System::Drawing::Size(41, 13);
+			this->labelLS->TabIndex = 13;
+			this->labelLS->Text = L"label14";
+			// 
+			// label13
+			// 
+			this->label13->AutoSize = true;
+			this->label13->Location = System::Drawing::Point(73, 73);
+			this->label13->Name = L"label13";
+			this->label13->Size = System::Drawing::Size(20, 13);
+			this->label13->TabIndex = 12;
+			this->label13->Text = L"LS";
 			// 
 			// labelAtmosphereLimit
 			// 
@@ -459,7 +477,7 @@ namespace GLControl {
 			this->groupBox1->Controls->Add(this->radioButtonIce);
 			this->groupBox1->Controls->Add(this->radioButtonDust);
 			this->groupBox1->Controls->Add(this->radioButtonTemperature);
-			this->groupBox1->Location = System::Drawing::Point(9, 227);
+			this->groupBox1->Location = System::Drawing::Point(10, 275);
 			this->groupBox1->Name = L"groupBox1";
 			this->groupBox1->Size = System::Drawing::Size(270, 38);
 			this->groupBox1->TabIndex = 15;
@@ -506,7 +524,7 @@ namespace GLControl {
 			this->checkBoxAtmosphere->AutoSize = true;
 			this->checkBoxAtmosphere->Checked = true;
 			this->checkBoxAtmosphere->CheckState = System::Windows::Forms::CheckState::Checked;
-			this->checkBoxAtmosphere->Location = System::Drawing::Point(21, 278);
+			this->checkBoxAtmosphere->Location = System::Drawing::Point(22, 326);
 			this->checkBoxAtmosphere->Name = L"checkBoxAtmosphere";
 			this->checkBoxAtmosphere->Size = System::Drawing::Size(82, 17);
 			this->checkBoxAtmosphere->TabIndex = 13;
@@ -612,7 +630,7 @@ namespace GLControl {
 			// 
 			// buttonSetOrbit
 			// 
-			this->buttonSetOrbit->Location = System::Drawing::Point(180, 274);
+			this->buttonSetOrbit->Location = System::Drawing::Point(178, 233);
 			this->buttonSetOrbit->Name = L"buttonSetOrbit";
 			this->buttonSetOrbit->Size = System::Drawing::Size(100, 23);
 			this->buttonSetOrbit->TabIndex = 5;
@@ -719,24 +737,6 @@ namespace GLControl {
 			// timer1
 			// 
 			this->timer1->Tick += gcnew System::EventHandler(this, &OpenGLControl::timer1_Tick);
-			// 
-			// label13
-			// 
-			this->label13->AutoSize = true;
-			this->label13->Location = System::Drawing::Point(73, 73);
-			this->label13->Name = L"label13";
-			this->label13->Size = System::Drawing::Size(20, 13);
-			this->label13->TabIndex = 12;
-			this->label13->Text = L"LS";
-			// 
-			// labelLS
-			// 
-			this->labelLS->AutoSize = true;
-			this->labelLS->Location = System::Drawing::Point(101, 73);
-			this->labelLS->Name = L"labelLS";
-			this->labelLS->Size = System::Drawing::Size(41, 13);
-			this->labelLS->TabIndex = 13;
-			this->labelLS->Text = L"label14";
 			// 
 			// OpenGLControl
 			// 

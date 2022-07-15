@@ -83,7 +83,6 @@ namespace GL
 		void setFileRange(unsigned nFirstFile_, unsigned nLasetFile_);
 
 		unsigned getOrbit_by_index(unsigned nIndex_);
-		unsigned getOrbit_by_LS(unsigned nIndex_);
 		unsigned getOrbitIndex_by_OrbitNumber(unsigned nIndex_);
 
 	public:
@@ -95,11 +94,7 @@ namespace GL
 		std::vector<unsigned> getOrbitListByLs(float fLatitude_, float fLongitude_) const;
 
 	public:
-		unsigned getSpectrumNumb();
-		float getLS();
-		float getJulianDate();
-		float getLocalTime();
-		std::string getUTC();
+		orbit::Snpt getNpt(unsigned nIndex_);
 		int getOrbitAltitudeMax();
 
 		void getPalette(std::vector<lib::iPoint3D>& vPalette_, int& nPaletteMin_, int& nPaletteMax_);
