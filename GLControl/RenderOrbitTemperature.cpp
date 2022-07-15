@@ -94,7 +94,7 @@ namespace GL {
 
 		std::vector<lib::fPoint3D> vColorText(nPaletteSize);
 		for (size_t i = 0; i < nPaletteSize; ++i)
-			lib::unpackColor(m_pPalette->get(int(fDataMin + (fDataMax - fDataMin) * i / (nPaletteSize - 1))), vColorText[i]);
+			lib::unpackColor(m_pPalette->get(fDataMin + (fDataMax - fDataMin) * i / (nPaletteSize - 1)), vColorText[i]);
 
 		BufferBounder<ShaderProgram> programBounder(m_pOrbitTemperatureProgram);
 		BufferBounder<TextureBuffer> paletteTextureBounder(m_pPaletteTexture);
@@ -260,59 +260,73 @@ namespace GL {
 			m_pOrbitReader->setFileIndex(m_vAddOrbit[i], m_vLevelData, m_fLocalTimeStart, m_fLocalTimeEnd);
 
 			std::vector<std::pair<VertexBufferPtr, orbit::SPairLevel>> vTemperatureVertex(m_vLevelData.size());
-			std::vector<orbit::SLevelCoord> vLevelCoord(m_vLevelData.size());
+			std::vector<orbit::SLevelCoord> vLevelPosition(m_vLevelData.size());
 
 			for (int l = 0; l < m_vLevelData.size(); ++l)
 			{
-				vTemperatureVertex[l].first = GL::VertexBuffer::Create();
-				vTemperatureVertex[l].first->setUsage(GL_STATIC_DRAW);
+				VertexBufferPtr& pVertex = vTemperatureVertex[l].first;
 
-				BufferBounder<VertexBuffer> temperatureBounder(vTemperatureVertex[l].first);
+				pVertex = GL::VertexBuffer::Create();
+				pVertex->setUsage(GL_STATIC_DRAW);
+
+				BufferBounder<VertexBuffer> temperatureBounder(pVertex);
 
 				orbit::SPairLevel& levelData = m_vLevelData[l];
+				unsigned& nPointBufferCount = vTemperatureVertex[l].second.nCount;
 
 				if (m_displayMode == display::mode::temperature)
 				{
 					if (m_bIncludeAtmosphere)
-						vTemperatureVertex[l].second = levelData;
-
-					vTemperatureVertex[l].second.nCount = levelData.vTemperature.size();
-
-					if (!vTemperatureVertex[l].first->fillBuffer(levelData.vTemperature.size() * sizeof(float), levelData.vTemperature.data()))
 					{
-						toLog("Error vTemperatureVertex[l].first->fillBuffer");
-						return false;
+						vTemperatureVertex[l].second.vTemperature = levelData.vTemperature;
+						nPointBufferCount = (unsigned)levelData.vTemperature.size();
+
+						if (!pVertex->fillBuffer(nPointBufferCount * sizeof(float), levelData.vTemperature.data()))
+						{
+							toLog("Error pVertex->fillBuffer");
+							return false;
+						}
+					}
+					else
+					{
+						nPointBufferCount = (unsigned)levelData.vSerfaceTemperature.size();;
+
+						if (!pVertex->fillBuffer(nPointBufferCount * sizeof(float), levelData.vSerfaceTemperature.data()))
+						{
+							toLog("Error pVertex->fillBuffer");
+							return false;
+						}
 					}
 				}
 				else if (m_displayMode == display::mode::dust)
 				{
-					vTemperatureVertex[l].second.nCount = 2;
+					nPointBufferCount = (unsigned)levelData.vDust.size();
 
-					if (!vTemperatureVertex[l].first->fillBuffer(levelData.vDust.size() * sizeof(float), levelData.vDust.data()))
+					if (!pVertex->fillBuffer(nPointBufferCount * sizeof(float), levelData.vDust.data()))
 					{
-						toLog("Error vTemperatureVertex[l].first->fillBuffer");
+						toLog("Error pVertex->fillBuffer");
 						return false;
 					}
 				}
 				else if (m_displayMode == display::mode::ice)
 				{
-					vTemperatureVertex[l].second.nCount = 2;
+					nPointBufferCount = (unsigned)levelData.vIce.size();
 
-					if (!vTemperatureVertex[l].first->fillBuffer(levelData.vIce.size() * sizeof(float), levelData.vIce.data()))
+					if (!pVertex->fillBuffer(nPointBufferCount * sizeof(float), levelData.vIce.data()))
 					{
-						toLog("Error vTemperatureVertex[l].first->fillBuffer");
+						toLog("Error pVertex->fillBuffer");
 						return false;
 					}
 				}
 
-				vLevelCoord[l].fAltitudeMinMax = levelData.fAltitudeMinMax;
-				vLevelCoord[l].fAltitudeStep = levelData.fAltitudeStep;
-				vLevelCoord[l].fDistance_begin = levelData.fDistance_begin;
-				vLevelCoord[l].fDistance_end = levelData.fDistance_end;
-				vLevelCoord[l].fLatitude_begin = levelData.fLatitude_begin;
-				vLevelCoord[l].fLatitude_end = levelData.fLatitude_end;
-				vLevelCoord[l].fLongitude_begin = levelData.fLongitude_begin;
-				vLevelCoord[l].fLongitude_end = levelData.fLongitude_end;
+				vLevelPosition[l].fAltitudeMinMax = levelData.fAltitudeMinMax;
+				vLevelPosition[l].fAltitudeStep = levelData.fAltitudeStep;
+				vLevelPosition[l].fDistance_begin = levelData.fDistance_begin;
+				vLevelPosition[l].fDistance_end = levelData.fDistance_end;
+				vLevelPosition[l].fLatitude_begin = levelData.fLatitude_begin;
+				vLevelPosition[l].fLatitude_end = levelData.fLatitude_end;
+				vLevelPosition[l].fLongitude_begin = levelData.fLongitude_begin;
+				vLevelPosition[l].fLongitude_end = levelData.fLongitude_end;
 			}
 
 			if (vTemperatureVertex.empty())
@@ -323,7 +337,7 @@ namespace GL {
 			ShaderStorageBufferPtr pLevelPosition = GL::ShaderStorageBuffer::Create(0);
 
 			BufferBounder<ShaderStorageBuffer> ssboBounder(pLevelPosition);
-			if (!pLevelPosition->fillBuffer(sizeof(orbit::SLevelCoord) * vLevelCoord.size(), vLevelCoord.data()))
+			if (!pLevelPosition->fillBuffer(sizeof(orbit::SLevelCoord) * vLevelPosition.size(), vLevelPosition.data()))
 			{
 				toLog("ERROR pLevelPosition[i].second->fillBuffer");
 				return false;
@@ -368,6 +382,7 @@ namespace GL {
 	void RenderOrbitTemperature::setIncludeAtmosphere(bool bInclude_)
 	{
 		m_bIncludeAtmosphere = bInclude_;
+		m_bNeedFillLevelBufer = true;
 	}
 
 	void RenderOrbitTemperature::setLocalTimeFilter(double fLocalTimeStart_, double fLocalTimeEnd_)
@@ -387,6 +402,9 @@ namespace GL {
 		m_pPalette->changePalette((int)displayMode_);
 
 		fillPalette((int)displayMode_);
+
+		m_vRemoveOrbit = m_vExistOrbit;
+		m_vAddOrbit = m_vExistOrbit;
 
 		m_bNeedFillLevelBufer = true;
 	}

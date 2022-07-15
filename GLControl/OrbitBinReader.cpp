@@ -246,10 +246,10 @@ namespace orbit
  
             //-----------------------------------------------------------------------------
 
-            vertex.vDust[0] = vNpt[i + 0].fDustOpticalDepth;
-            vertex.vDust[1] = vNpt[i + 1].fDustOpticalDepth;
-            vertex.vIce[0] = vNpt[i + 0].fIceOpticalDepth;
-            vertex.vIce[1] = vNpt[i + 1].fIceOpticalDepth;
+            vertex.vDust[0] = exp(-1 * vNpt[i + 0].fDustOpticalDepth);
+            vertex.vDust[1] = exp(-1 * vNpt[i + 1].fDustOpticalDepth);
+            vertex.vIce[0] = exp(-1 * vNpt[i + 0].fIceOpticalDepth);
+            vertex.vIce[1] = exp(-1 * vNpt[i + 1].fIceOpticalDepth);
  
             std::vector<float> vTemperature1;
             std::vector<float> vTemperature2;
