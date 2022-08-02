@@ -263,24 +263,31 @@ namespace orbit
             vertex.vDust[1] = vNpt[i + 1].fDustOpticalDepth;
             vertex.vIce[0]  = vNpt[i + 0].fIceOpticalDepth;
             vertex.vIce[1]  = vNpt[i + 1].fIceOpticalDepth;
- 
-            std::vector<float> vTemperature1;
-            std::vector<float> vTemperature2;
- 
-            interpolator1.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, m_nInterpolateCount, vTemperature1);
-            interpolator2.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, m_nInterpolateCount, vTemperature2);
 
+            //-----------------------------------------------------------------------------
+
+            vertex.vTemperature.resize((m_nInterpolateCount + 1) * 2);
+ 
+            std::vector<float> vTemperature1(m_nInterpolateCount + 1);
+
+            //-----------------------------------------------------------------------------
+
+            interpolator1.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, m_nInterpolateCount, vTemperature1);
             vertex.vSerfaceTemperature[0] = vTemperature1[0];
+
+            for (int k = 0; k < vTemperature1.size(); ++k)
+                vertex.vTemperature[2 * k + 0] = vTemperature1[k];
+
+            //-----------------------------------------------------------------------------
+
+            std::vector<float> vTemperature2(m_nInterpolateCount + 1);
+
+            interpolator2.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, m_nInterpolateCount, vTemperature2);
             vertex.vSerfaceTemperature[1] = vTemperature2[0];
 
-            vertex.vTemperature.resize(vTemperature1.size() + vTemperature2.size());
- 
-            for (int k = 0; k < vTemperature1.size(); ++k)
-            {
-                vertex.vTemperature[2 * k + 0] = vTemperature1[k];
-                vertex.vTemperature[2 * k + 1] = vTemperature2[k];
-            }
- 
+            for (int k = 0; k < vTemperature2.size(); ++k)
+                 vertex.vTemperature[2 * k + 1] = vTemperature2[k];
+
             //-----------------------------------------------------------------------------
  
             vLevelData_.push_back(std::move(vertex));

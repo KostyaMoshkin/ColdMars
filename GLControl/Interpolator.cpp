@@ -28,18 +28,15 @@ namespace orbit
 	{
 		m_interpolateMin = interpolateMin_;
 		m_interpolateMax = std::min<float>(interpolateMax_, m_fAltitudeMax);
-		m_nInterpolateCount = nInterpolateCount_;
 
-		vTemperature_.resize(m_nInterpolateCount + 1);
-
-		if (m_nInterpolateCount > 2)
-			m_fAltitudeStep = (m_interpolateMax - m_interpolateMin) / (m_nInterpolateCount - 1);
+		if (nInterpolateCount_ > 2)
+			m_fAltitudeStep = (m_interpolateMax - m_interpolateMin) / (nInterpolateCount_ - 1);
 		else
 			m_fAltitudeStep = m_interpolateMax - m_interpolateMin;
 
 		vTemperature_[0] = m_pData[0].fTemperature;
 
-		for (unsigned i = 0; i < m_nInterpolateCount; ++i)
+		for (unsigned i = 0; i < nInterpolateCount_; ++i)
 			vTemperature_[i + 1] = getTemperature(m_interpolateMin + m_fAltitudeStep * i);
 	}
 

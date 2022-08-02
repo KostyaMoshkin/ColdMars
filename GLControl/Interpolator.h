@@ -10,7 +10,6 @@ namespace orbit
 
 		float m_interpolateMin = 0.0f;
 		float m_interpolateMax = 60;
-		unsigned m_nInterpolateCount = 30;
 
 		float m_fAltitudeMin = 0;
 		float m_fAltitudeMax = 0;
