@@ -79,7 +79,14 @@ namespace lib {
 		if (!xNode_)
 			return false;
 
-		std::string sValue = std::string(xNode_->ToElement()->Attribute(sNode_));
+		auto attribute = xNode_->ToElement()->Attribute(sNode_);
+		if (!attribute)
+		{
+			toLog("WARNING Expect attribute: " + std::string(sNode_) + " in node " + std::string(xNode_->Value()));
+			return false;
+		}
+
+		std::string sValue = attribute;
 
 		if (sValue.empty())
 			return false;
@@ -155,10 +162,18 @@ namespace lib {
 		if (!xNode_)
 			return false;
 
-		std::string sValue = std::string(xNode_->ToElement()->Attribute(sNode_));
+		auto attribute = xNode_->ToElement()->Attribute(sNode_);
+		if (!attribute)
+		{
+			toLog("WARNING Expect attribute: " + std::string(sNode_) + " in node " + std::string(xNode_->Value()));
+			return false;
+		}
+
+		std::string sValue = attribute;
 
 		if (sValue.empty())
 			return false;
+
 		int nBase = 10;
 
 		if (sValue.find('x') != std::string::npos)
@@ -181,10 +196,18 @@ namespace lib {
 		if (!xNode_)
 			return false;
 
-		std::string sValue = xNode_->ToElement()->Attribute(sNode_);
+		auto attribute = xNode_->ToElement()->Attribute(sNode_);
+		if (!attribute)
+		{
+			toLog("WARNING Expect attribute: " + std::string(sNode_) + " in node " + std::string(xNode_->Value()));
+			return false;
+		}
+
+		std::string sValue = attribute;
 
 		if (sValue.empty())
 			return false;
+
 		int nBase = 10;
 
 		if (sValue.find('x') != std::string::npos)
