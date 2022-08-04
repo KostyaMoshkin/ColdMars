@@ -536,7 +536,7 @@ namespace GLControl {
 
 		this->checkedListOrbit->Items->Clear();
 		for(const auto nOrbit : vOrbit)
-			this->checkedListOrbit->Items->Add(intToString(nOrbit));
+			this->checkedListOrbit->Items->Add(intToString(nOrbit), System::Windows::Forms::CheckState::Checked);
 
 		for (auto& nOrbit : vOrbit)
 			nOrbit = m_pBridge->getOrbitIndex_by_OrbitNumber(nOrbit);

@@ -303,7 +303,7 @@ namespace orbit
     {
         std::vector<unsigned> result;
 
-#pragma omp parallel for
+#pragma omp parallel for shared(result)
             for (int i = 0; i < m_vOrbit.size(); ++i)
             {
                 std::vector<Snpt> vNpt = get_vNpt(m_vOrbit[i]);
