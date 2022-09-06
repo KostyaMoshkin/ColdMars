@@ -57,6 +57,8 @@
             virtual float getScale() = 0;
             virtual void setScale(float fScale_) = 0;
 
+            virtual void changeLongitudeMode(longitude::mode longitudeMode_) = 0;
+
       public:
           void setVisible(bool bVisible_) { m_bVisible = bVisible_; }
           bool isVisible() { return m_bVisible; }

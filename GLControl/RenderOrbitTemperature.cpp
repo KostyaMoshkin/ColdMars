@@ -198,6 +198,7 @@ namespace GL {
 
 		//-------------------------------------------------------------------------------------------------
 
+		changeLongitudeMode(longitude::mode::angle);
 		setVisible(true);
 
 		//-------------------------------------------------------------------------------------------------
@@ -327,6 +328,8 @@ namespace GL {
 				vLevelPosition[l].fLatitude_end = levelData.fLatitude_end;
 				vLevelPosition[l].fLongitude_begin = levelData.fLongitude_begin;
 				vLevelPosition[l].fLongitude_end = levelData.fLongitude_end;
+				vLevelPosition[l].fLocalTime_begin = levelData.fLocalTime_begin;
+				vLevelPosition[l].fLocalTime_end = levelData.fLocalTime_end;
 			}
 
 			if (vTemperatureVertex.empty())
@@ -389,6 +392,14 @@ namespace GL {
 		m_vAddOrbit = m_vExistOrbit;
 
 		m_bNeedFillLevelBufer = true;
+	}
+
+	void RenderOrbitTemperature::changeLongitudeMode(longitude::mode longitudeMode_)
+	{
+		BufferBounder<ShaderProgram> programBounder(m_pOrbitTemperatureProgram);
+
+		int m_nLongitudeMode = int(longitudeMode_);
+		m_pOrbitTemperatureProgram->setUniform1i("m_nLongitudeMode", &m_nLongitudeMode);
 	}
 
 	void RenderOrbitTemperature::changeDisplay(display::mode displayMode_)

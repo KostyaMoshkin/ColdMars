@@ -246,10 +246,12 @@ namespace orbit
  
             SPairLevel vertex;
 
-            vertex.fLatitude_begin = glm::radians(vNpt[i + 0].fLatitude);
-            vertex.fLatitude_end = glm::radians(vNpt[i + 1].fLatitude);
-            vertex.fLongitude_begin = glm::radians(vNpt[i + 0].fLongitude);
-            vertex.fLongitude_end = glm::radians(vNpt[i + 1].fLongitude);
+            vertex.fLatitude_begin = vNpt[i + 0].fLatitude;
+            vertex.fLatitude_end = vNpt[i + 1].fLatitude;
+            vertex.fLongitude_begin = vNpt[i + 0].fLongitude;
+            vertex.fLongitude_end = vNpt[i + 1].fLongitude;
+            vertex.fLocalTime_begin = vNpt[i + 0].fLocalTime;
+            vertex.fLocalTime_end = vNpt[i + 1].fLocalTime;
             vertex.fDistance_begin = vNpt[i + 0].vLevel[0].fAltitude * 1000;
  
             vertex.fDistance_end = vNpt[i + 1].vLevel[0].fAltitude * 1000;
@@ -267,26 +269,32 @@ namespace orbit
             //-----------------------------------------------------------------------------
 
             vertex.vTemperature.resize((m_nInterpolateCount + 1) * 2);
- 
-            std::vector<float> vTemperature1(m_nInterpolateCount + 1);
 
             //-----------------------------------------------------------------------------
 
-            interpolator1.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, m_nInterpolateCount, vTemperature1);
-            vertex.vSerfaceTemperature[0] = vTemperature1[0];
+#pragma omp parallel sections
+            {
+#pragma omp section
+                {
+                    std::vector<float> vTemperature1(m_nInterpolateCount + 1);
 
-            for (int k = 0; k < vTemperature1.size(); ++k)
-                vertex.vTemperature[2 * k + 0] = vTemperature1[k];
+                    interpolator1.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, m_nInterpolateCount, vTemperature1);
+                    vertex.vSerfaceTemperature[0] = vTemperature1[0];
 
-            //-----------------------------------------------------------------------------
+                    for (int k = 0; k < vTemperature1.size(); ++k)
+                        vertex.vTemperature[2 * k + 0] = vTemperature1[k];
+                }
+#pragma omp section
+                {
+                    std::vector<float> vTemperature2(m_nInterpolateCount + 1);
 
-            std::vector<float> vTemperature2(m_nInterpolateCount + 1);
+                    interpolator2.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, m_nInterpolateCount, vTemperature2);
+                    vertex.vSerfaceTemperature[1] = vTemperature2[0];
 
-            interpolator2.getTemperature(fAltitudeMinMax, fAltitudeMaxMin, m_nInterpolateCount, vTemperature2);
-            vertex.vSerfaceTemperature[1] = vTemperature2[0];
-
-            for (int k = 0; k < vTemperature2.size(); ++k)
-                 vertex.vTemperature[2 * k + 1] = vTemperature2[k];
+                    for (int k = 0; k < vTemperature2.size(); ++k)
+                        vertex.vTemperature[2 * k + 1] = vTemperature2[k];
+                }
+            }
 
             //-----------------------------------------------------------------------------
  

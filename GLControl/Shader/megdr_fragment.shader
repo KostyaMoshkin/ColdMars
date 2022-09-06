@@ -5,6 +5,8 @@ layout(std430, binding = 0) buffer BufferCoord { vec3 m_vScreen[]; };
 uniform sampler2D m_tAlbedo;
 uniform sampler2D m_tDigit;
 
+uniform int m_nLongitudeMode;
+
 uniform vec3 m_vMarsTone;
 uniform vec3 m_vDigitColor;
 uniform vec3 m_vNetColor;
@@ -14,12 +16,19 @@ uniform vec2 m_vWindowClick;
 smooth in vec2 vAlbedoCoords;
 smooth in vec3 vSurfaceCoords;
 
-ivec2 getNetCoord()
+ivec2 getAngleNetCoord()
 {
 	int nLongitude = (int(vAlbedoCoords.x * 360.0) / 30) * 30;
 	int nLatitude = (int(vAlbedoCoords.y * 180.0) / 30) * 30;
 
 	return ivec2(nLongitude < 180 ? nLongitude : nLongitude - 360, 90 - nLatitude);
+}
+
+ivec2 getLocalTimeNetCoord()
+{
+	int nLatitude = (int(vAlbedoCoords.y * 180.0) / 30) * 30;
+
+	return ivec2(int(vAlbedoCoords.x * 24.0), 90 - nLatitude);
 }
 
 vec2 getDigitCoord()
@@ -72,7 +81,7 @@ bool isNet(int nStep_)
 
 float getDigitBrightness(vec2 textDigit_)
 {
-	ivec2 netCoord = getNetCoord();
+	ivec2 netCoord = m_nLongitudeMode == 1 ? getAngleNetCoord() : getLocalTimeNetCoord();
 
 	int nDigitPosition = int(textDigit_.x * 8);
 
@@ -143,7 +152,7 @@ void main()
 
 	vec2 vAlbedo = vec2(vAlbedoCoords.x + 0.5 > 1.0 ? vAlbedoCoords.x - 0.5 : vAlbedoCoords.x + 0.5, vAlbedoCoords.y);
 
-	float fAlbedo = texture(m_tAlbedo, vAlbedo).r;
+	float fAlbedo = m_nLongitudeMode == 1 ? texture(m_tAlbedo, vAlbedo).r : 0.5;
 
 	if (vAlbedoCoords.y < 0.05 || vAlbedoCoords.y > 0.97)
 	{

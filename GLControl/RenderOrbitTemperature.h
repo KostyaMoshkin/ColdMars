@@ -85,6 +85,8 @@ namespace GL {
 		float getScale() override;
 		void setScale(float fScale_) override;
 
+		void changeLongitudeMode(longitude::mode longitudeMode_) override;;
+
 	public:
 		const orbit::OrbitBinReaderPtr getReader();
 

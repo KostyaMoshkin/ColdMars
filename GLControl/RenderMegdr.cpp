@@ -123,6 +123,8 @@ namespace GL {
 
 		//-------------------------------------------------------------------------------------------------
 
+		changeLongitudeMode(longitude::mode::angle);
+
 		setScale();
 
 		sizeChanged(2048, 2048);
@@ -351,6 +353,14 @@ namespace GL {
 	{
 		m_fScale = fScale_;
 		setScale();
+	}
+
+	void RenderMegdr::changeLongitudeMode(longitude::mode longitudeMode_)
+	{
+		int m_nLongitudeMode = int(longitudeMode_);
+
+		BufferBounder<ShaderProgram> programBounder(m_pMegdrProgram);
+		m_pMegdrProgram->setUniform1i("m_nLongitudeMode", &m_nLongitudeMode);
 	}
 
 	void RenderMegdr::sizeChanged(int nWidth_, int nHeight_)

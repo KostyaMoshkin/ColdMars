@@ -585,6 +585,23 @@ namespace GLControl {
 		this->pictureBox1->Refresh();
 	}
 
+	System::Void OpenGLControl::radioButtonAngle_CheckedChanged(System::Object^ sender, System::EventArgs^ e)
+	{
+		if(!this->radioButtonAngle->Checked)
+			return;
+
+		m_pBridge->changeLongitudeMode(longitude::mode::angle);
+		this->pictureBox1->Refresh();
+	}
+
+	System::Void OpenGLControl::radioButtonLocalTime_CheckedChanged(System::Object^ sender, System::EventArgs^ e)
+	{
+		if(!this->radioButtonLocalTime->Checked)
+			return;
+
+		m_pBridge->changeLongitudeMode(longitude::mode::localtime);
+		this->pictureBox1->Refresh();
+	}
 
 	void OpenGLControl::init()
 	{

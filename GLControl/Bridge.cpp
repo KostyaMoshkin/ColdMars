@@ -356,4 +356,15 @@ namespace GL
 			m_pSceneRender->draw();
 		}
 	}
+	
+	void Bridge::changeLongitudeMode(longitude::mode longitudeMode_)
+	{
+		{
+			ContextSession contextSession(m_pControlContext);
+			m_pRenderMegdr->changeLongitudeMode(longitudeMode_);
+			m_pRenderOrbitTemperature->changeLongitudeMode(longitudeMode_);
+
+			m_pSceneRender->draw();
+		}
+	}
 }

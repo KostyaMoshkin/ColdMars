@@ -10,6 +10,8 @@ uniform int	m_nLines;
 uniform int	m_nLineSamples;
 uniform int m_nBaseHeight;
 
+uniform int m_nLongitudeMode;
+
 uniform mat4 m_mView;
 uniform mat4 m_mRotate;
 uniform mat4 m_mTranslate;
@@ -21,7 +23,7 @@ smooth out vec3 vSurfaceCoords;
 void main()
 {
 	float fAreoid = m_nRadius - m_nTopography;
-	float fDistance = (m_fScale * m_nTopography + fAreoid) / m_nBaseHeight + 1.0;
+	float fDistance = m_nLongitudeMode == 1 ? (m_fScale * m_nTopography + fAreoid) / m_nBaseHeight + 1.0 : 0.95;
 
 	float x = float(gl_VertexID % m_nLineSamples) / float(m_nLineSamples);
 	float y = float(gl_VertexID / m_nLineSamples) / float(m_nLines - 1);

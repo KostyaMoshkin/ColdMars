@@ -81,7 +81,10 @@ namespace GLControl {
 	private: System::Windows::Forms::Label^ label13;
 		   //private: System::Windows::Forms::Button^ buttonAddOrbit;
 	private: System::Windows::Forms::TextBox^ textBoxLocalTimeStart;	
-	//private: System::Windows::Forms::TextBox^ textBox2;
+	private: System::Windows::Forms::GroupBox^ groupBox2;
+	private: System::Windows::Forms::RadioButton^ radioButtonLocalTime;
+	private: System::Windows::Forms::RadioButton^ radioButtonAngle;
+		   //private: System::Windows::Forms::TextBox^ textBox2;
 	//private: System::Windows::Forms::TextBox^ textBox1;
 	private: System::Windows::Forms::TextBox^ textBoxLocalTimeEnd;
 	private: System::Windows::Forms::Label^ labelAtmosphereLimit;
@@ -145,6 +148,9 @@ namespace GLControl {
 			this->labelJulianDate = (gcnew System::Windows::Forms::Label());
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->panelOrbit = (gcnew System::Windows::Forms::Panel());
+			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+			this->radioButtonLocalTime = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButtonAngle = (gcnew System::Windows::Forms::RadioButton());
 			this->label12 = (gcnew System::Windows::Forms::Label());
 			this->label11 = (gcnew System::Windows::Forms::Label());
 			this->textBoxLsStart = (gcnew System::Windows::Forms::TextBox());
@@ -184,6 +190,7 @@ namespace GLControl {
 			this->panelObitList->SuspendLayout();
 			this->panelInfo->SuspendLayout();
 			this->panelOrbit->SuspendLayout();
+			this->groupBox2->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			this->panelOrbiMovie->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBarOrbit))->BeginInit();
@@ -214,9 +221,9 @@ namespace GLControl {
 			this->panelObitList->Controls->Add(this->label4);
 			this->panelObitList->Controls->Add(this->checkedListOrbit);
 			this->panelObitList->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->panelObitList->Location = System::Drawing::Point(0, 450);
+			this->panelObitList->Location = System::Drawing::Point(0, 457);
 			this->panelObitList->Name = L"panelObitList";
-			this->panelObitList->Size = System::Drawing::Size(297, 242);
+			this->panelObitList->Size = System::Drawing::Size(297, 235);
 			this->panelObitList->TabIndex = 3;
 			// 
 			// label10
@@ -295,7 +302,7 @@ namespace GLControl {
 			this->checkedListOrbit->FormattingEnabled = true;
 			this->checkedListOrbit->Location = System::Drawing::Point(16, 12);
 			this->checkedListOrbit->Name = L"checkedListOrbit";
-			this->checkedListOrbit->Size = System::Drawing::Size(104, 199);
+			this->checkedListOrbit->Size = System::Drawing::Size(104, 184);
 			this->checkedListOrbit->TabIndex = 0;
 			this->checkedListOrbit->ItemCheck += gcnew System::Windows::Forms::ItemCheckEventHandler(this, &OpenGLControl::checkedListOrbit_CheckedChanged);
 			// 
@@ -310,7 +317,7 @@ namespace GLControl {
 			this->panelInfo->Controls->Add(this->labelJulianDate);
 			this->panelInfo->Controls->Add(this->label6);
 			this->panelInfo->Dock = System::Windows::Forms::DockStyle::Top;
-			this->panelInfo->Location = System::Drawing::Point(0, 351);
+			this->panelInfo->Location = System::Drawing::Point(0, 358);
 			this->panelInfo->Name = L"panelInfo";
 			this->panelInfo->Size = System::Drawing::Size(297, 99);
 			this->panelInfo->TabIndex = 2;
@@ -389,6 +396,7 @@ namespace GLControl {
 			// 
 			// panelOrbit
 			// 
+			this->panelOrbit->Controls->Add(this->groupBox2);
 			this->panelOrbit->Controls->Add(this->label12);
 			this->panelOrbit->Controls->Add(this->label11);
 			this->panelOrbit->Controls->Add(this->textBoxLsStart);
@@ -413,8 +421,42 @@ namespace GLControl {
 			this->panelOrbit->Dock = System::Windows::Forms::DockStyle::Top;
 			this->panelOrbit->Location = System::Drawing::Point(0, 0);
 			this->panelOrbit->Name = L"panelOrbit";
-			this->panelOrbit->Size = System::Drawing::Size(297, 351);
+			this->panelOrbit->Size = System::Drawing::Size(297, 358);
 			this->panelOrbit->TabIndex = 1;
+			// 
+			// groupBox2
+			// 
+			this->groupBox2->Controls->Add(this->radioButtonLocalTime);
+			this->groupBox2->Controls->Add(this->radioButtonAngle);
+			this->groupBox2->Location = System::Drawing::Point(110, 314);
+			this->groupBox2->Name = L"groupBox2";
+			this->groupBox2->Size = System::Drawing::Size(170, 38);
+			this->groupBox2->TabIndex = 23;
+			this->groupBox2->TabStop = false;
+			// 
+			// radioButtonLocalTime
+			// 
+			this->radioButtonLocalTime->AutoSize = true;
+			this->radioButtonLocalTime->Location = System::Drawing::Point(83, 15);
+			this->radioButtonLocalTime->Name = L"radioButtonLocalTime";
+			this->radioButtonLocalTime->Size = System::Drawing::Size(74, 17);
+			this->radioButtonLocalTime->TabIndex = 1;
+			this->radioButtonLocalTime->Text = L"LocalTime";
+			this->radioButtonLocalTime->UseVisualStyleBackColor = true;
+			this->radioButtonLocalTime->CheckedChanged += gcnew System::EventHandler(this, &OpenGLControl::radioButtonLocalTime_CheckedChanged);
+			// 
+			// radioButtonAngle
+			// 
+			this->radioButtonAngle->AutoSize = true;
+			this->radioButtonAngle->Checked = true;
+			this->radioButtonAngle->Location = System::Drawing::Point(6, 15);
+			this->radioButtonAngle->Name = L"radioButtonAngle";
+			this->radioButtonAngle->Size = System::Drawing::Size(72, 17);
+			this->radioButtonAngle->TabIndex = 0;
+			this->radioButtonAngle->TabStop = true;
+			this->radioButtonAngle->Text = L"Longitude";
+			this->radioButtonAngle->UseVisualStyleBackColor = true;
+			this->radioButtonAngle->CheckedChanged += gcnew System::EventHandler(this, &OpenGLControl::radioButtonAngle_CheckedChanged);
 			// 
 			// label12
 			// 
@@ -759,6 +801,8 @@ namespace GLControl {
 			this->panelInfo->PerformLayout();
 			this->panelOrbit->ResumeLayout(false);
 			this->panelOrbit->PerformLayout();
+			this->groupBox2->ResumeLayout(false);
+			this->groupBox2->PerformLayout();
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox1->PerformLayout();
 			this->panelOrbiMovie->ResumeLayout(false);
@@ -813,6 +857,9 @@ namespace GLControl {
 		System::Void radioButtonTemperature_CheckedChanged(System::Object^ sender, System::EventArgs^ e);
 		System::Void radioButtonDust_CheckedChanged(System::Object^ sender, System::EventArgs^ e);
 		System::Void radioButtonIce_CheckedChanged(System::Object^ sender, System::EventArgs^ e);
+
+		System::Void radioButtonAngle_CheckedChanged(System::Object^ sender, System::EventArgs^ e);
+		System::Void radioButtonLocalTime_CheckedChanged(System::Object^ sender, System::EventArgs^ e);
 	private:
 		void init();
 

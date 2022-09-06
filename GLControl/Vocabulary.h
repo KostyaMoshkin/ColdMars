@@ -56,3 +56,11 @@ namespace display {
 		ice = 3,
 	};
 }
+
+namespace longitude {
+	enum mode
+	{
+		angle = 1,
+		localtime = 2,
+	};
+}

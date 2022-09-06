@@ -63,6 +63,8 @@ namespace GL {
 		float getScale() override;
 		void setScale(float fScale_) override;
 
+		void changeLongitudeMode(longitude::mode longitudeMode_) override;;
+
 		void sizeChanged(int nWidth_, int nHeight_) override;
 
 	public:

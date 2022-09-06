@@ -74,6 +74,7 @@ namespace GL
 		void on_mouse_double_click() override;
 		lib::fPoint2D on_mouse_click(int nPosX_, int nPosY_) override;
 
+	public:
 		bool isInit();
 
 		unsigned getOrbitCount();
@@ -107,6 +108,8 @@ namespace GL
 		void setLocalTimeFilter(double fLocalTimeStart_, double fLocalTimeEnd_);
 
 		void changeDisplay(display::mode displayMode_);
+
+		void changeLongitudeMode(longitude::mode longitudeMode_);
 	};
 
 }

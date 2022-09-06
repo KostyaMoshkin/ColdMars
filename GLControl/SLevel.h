@@ -89,6 +89,9 @@ namespace orbit
 		float fLongitude_begin;
 		float fLongitude_end;
 
+		float fLocalTime_begin;
+		float fLocalTime_end;
+
 		float fDistance_begin;
 		float fDistance_end;
 
